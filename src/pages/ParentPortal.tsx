@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
-import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import type { Session } from "@supabase/supabase-js";
+import MessagesInbox from "@/components/MessagesInbox";
 
 const ParentPortal = () => {
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [session, setSession] = useState<Session | null>(null);
+  const [authLoading, setAuthLoading] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [signupName, setSignupName] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+
+  
+  const [portalLoading, setPortalLoading] = useState(false);
   const [tuitionUrl, setTuitionUrl] = useState<string | null>(null);
+
+  const [isStaff, setIsStaff] = useState(false);
 
   useEffect(() => {
     const prevTitle = document.title;
@@ -26,28 +39,79 @@ const ParentPortal = () => {
     };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
+      setSession(s);
+      if (s) checkStaff(s.user.id);
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      if (data.session) checkStaff(data.session.user.id);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkStaff = async (uid: string) => {
+    const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+    const staff = (data ?? []).some((r) => r.role === "teacher" || r.role === "admin");
+    setIsStaff(staff);
+    if (staff) navigate("/admin/mensajes");
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password.trim()) return;
-    setLoading(true);
+    setAuthLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email: signupEmail.trim(),
+      password: signupPassword,
+      options: {
+        emailRedirectTo: `${window.location.origin}/portal-padres`,
+        data: { display_name: signupName.trim() },
+      },
+    });
+    setAuthLoading(false);
+    if (error) {
+      toast({ title: "Error al crear cuenta", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "¡Cuenta creada!", description: "Revisa tu correo para confirmar tu cuenta." });
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail.trim(),
+      password: loginPassword,
+    });
+    setAuthLoading(false);
+    if (error) {
+      toast({ title: "Error al iniciar sesión", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setTuitionUrl(null);
+    setIsStaff(false);
+  };
+
+  const handleOpenPagos = async () => {
+    setPortalLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("parent-portal-auth", {
-        body: { password: password.trim() },
-      });
-      if (error || !data?.tuitionUrl) {
-        toast({
-          title: "Acceso denegado",
-          description: "La contraseña ingresada no es correcta.",
-          variant: "destructive",
-        });
-        return;
+      let url = tuitionUrl;
+      if (!url) {
+        const { data, error } = await supabase.functions.invoke("parent-portal-auth", { body: {} });
+        if (error || !data?.tuitionUrl) {
+          toast({ title: "Error", description: "No se pudo abrir el pago.", variant: "destructive" });
+          return;
+        }
+        url = data.tuitionUrl;
+        setTuitionUrl(url);
       }
-      setTuitionUrl(data.tuitionUrl);
-      setPassword("");
-    } catch {
-      toast({ title: "Error", description: "Intenta de nuevo en unos segundos.", variant: "destructive" });
+      window.open(url, "_blank", "noopener,noreferrer");
     } finally {
-      setLoading(false);
+      setPortalLoading(false);
     }
   };
 
@@ -58,7 +122,7 @@ const ParentPortal = () => {
           <ArrowLeft className="h-4 w-4" /> Volver al inicio
         </Link>
 
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/15 text-primary mb-4">
               <Lock className="h-8 w-8" />
@@ -66,71 +130,103 @@ const ParentPortal = () => {
             <h1 className="text-4xl sm:text-5xl text-ink mb-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Portal de Padres
             </h1>
-            <p className="text-muted-foreground">
-              Esta página es para familias actualmente matriculadas.
-            </p>
+            <p className="text-muted-foreground">Inicia sesión para mensajear a las maestras y acceder a recursos.</p>
           </div>
 
-          {!tuitionUrl ? (
+          {!session ? (
             <Card className="p-8 rounded-3xl border-2 shadow-soft">
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label htmlFor="portal-password" className="block text-sm font-semibold text-ink mb-2">
-                    Contraseña del portal
-                  </label>
-                  <Input
-                    id="portal-password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Ingresa la contraseña"
-                    autoComplete="current-password"
-                    maxLength={200}
-                    required
-                    className="h-12 rounded-xl"
-                  />
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Si no la tienes, contáctanos en el WhatsApp del preescolar.
-                  </p>
-                </div>
-                <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
-                  {loading ? "Verificando…" : "Ingresar"}
-                </Button>
-              </form>
+              <Tabs defaultValue="login" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
+                  <TabsTrigger value="login"><LogIn className="h-4 w-4 mr-2" />Iniciar sesión</TabsTrigger>
+                  <TabsTrigger value="signup"><UserPlus className="h-4 w-4 mr-2" />Crear cuenta</TabsTrigger>
+                </TabsList>
+                <TabsContent value="login">
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
+                      <Input type="email" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="h-12 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
+                      <Input type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="h-12 rounded-xl" />
+                    </div>
+                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                      {authLoading ? "Ingresando…" : "Iniciar sesión"}
+                    </Button>
+                  </form>
+                </TabsContent>
+                <TabsContent value="signup">
+                  <form onSubmit={handleSignup} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Nombre completo</label>
+                      <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
+                      <Input type="email" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} className="h-12 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
+                      <Input type="password" required minLength={6} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} className="h-12 rounded-xl" />
+                    </div>
+                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                      {authLoading ? "Creando…" : "Crear cuenta"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
             </Card>
           ) : (
             <div className="space-y-6">
-              <Card className="p-8 rounded-3xl border-2 shadow-soft text-center">
-                <h2 className="text-2xl text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                  ¡Bienvenidos, familia Sonsoles!
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  Aquí puedes pagar la matrícula y acceder a recursos de la escuela.
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Hola, <span className="font-semibold text-ink">{session.user.email}</span>
                 </p>
-                <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
-                  <a href={tuitionUrl} target="_blank" rel="noopener noreferrer">
-                    <CreditCard className="h-5 w-5" /> Pagar matrícula
-                  </a>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4" /> Salir
                 </Button>
-              </Card>
-
-              <div className="grid sm:grid-cols-3 gap-4">
-                <Card className="p-5 rounded-2xl border-2 hover:-translate-y-1 transition-transform">
-                  <Calendar className="h-6 w-6 text-primary mb-3" />
-                  <h3 className="font-bold text-ink mb-1">Calendario</h3>
-                  <p className="text-sm text-muted-foreground">Próximamente</p>
-                </Card>
-                <Card className="p-5 rounded-2xl border-2 hover:-translate-y-1 transition-transform">
-                  <FileText className="h-6 w-6 text-leaf mb-3" />
-                  <h3 className="font-bold text-ink mb-1">Formularios</h3>
-                  <p className="text-sm text-muted-foreground">Próximamente</p>
-                </Card>
-                <Card className="p-5 rounded-2xl border-2 hover:-translate-y-1 transition-transform">
-                  <Megaphone className="h-6 w-6 text-azure mb-3" />
-                  <h3 className="font-bold text-ink mb-1">Anuncios</h3>
-                  <p className="text-sm text-muted-foreground">Próximamente</p>
-                </Card>
               </div>
+
+              <Tabs defaultValue="messages" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="messages"><MessageCircle className="h-4 w-4 mr-2" />Mensajes</TabsTrigger>
+                  <TabsTrigger value="tuition"><CreditCard className="h-4 w-4 mr-2" />Recursos</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="messages" className="mt-6">
+                  <MessagesInbox userId={session.user.id} isStaff={isStaff} />
+                </TabsContent>
+
+                <TabsContent value="tuition" className="mt-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                      onClick={handleOpenPagos}
+                    >
+                      <Receipt className="h-6 w-6 text-leaf mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Pagos</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {portalLoading ? "Abriendo…" : "Pagar matrícula"}
+                      </p>
+                    </Card>
+                    <Card className="p-5 rounded-2xl border-2">
+                      <Calendar className="h-6 w-6 text-primary mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Calendario</h3>
+                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                    </Card>
+                    <Card className="p-5 rounded-2xl border-2">
+                      <FileText className="h-6 w-6 text-accent mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Formularios</h3>
+                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                    </Card>
+                    <Card className="p-5 rounded-2xl border-2">
+                      <Megaphone className="h-6 w-6 text-azure mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Anuncios</h3>
+                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                    </Card>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           )}
         </div>

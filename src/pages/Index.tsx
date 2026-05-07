@@ -1,0 +1,519 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import logo from "@/assets/logo.gif";
+import VideoTestimonials from "@/components/VideoTestimonials";
+import Performances from "@/components/Performances";
+import WhatsAppChat from "@/components/WhatsAppChat";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
+import heroKids from "/lovable-uploads/hero-kids-new.jpg";
+import founderPhoto from "@/assets/founder-griselle-new.png";
+
+import kidsDrawing from "@/assets/kids-drawing.gif";
+import duckAnimation from "@/assets/duck-animation.gif";
+import playground from "@/assets/playground.jpg";
+import contactKids from "@/assets/contact-kids.jpg";
+import facility1 from "@/assets/facility-1.jpg";
+import facility2 from "@/assets/facility-2.jpg";
+import facility3 from "@/assets/facility-classroom.jpg";
+import facility4 from "/lovable-uploads/facility-play-new.jpg";
+import facility5 from "/lovable-uploads/facility-extra-1.jpeg";
+import facility6 from "/lovable-uploads/facility-extra-2.jpeg";
+import facility7 from "/lovable-uploads/facility-extra-3.jpeg";
+import sonsolesBuilding from "@/assets/sonsoles-building.jpg";
+import { useEffect, useState } from "react";
+
+const Index = () => {
+  const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const facilityImages = [facility1, facility2, facility3, facility4, facility5, facility6, facility7];
+  const [facilityIndex, setFacilityIndex] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setFacilityIndex((i) => (i + 1) % facilityImages.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [facilityImages.length]);
+
+  useEffect(() => {
+    const scriptId = "elfsight-platform-script";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src = "https://elfsightcdn.com/platform.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // Elfsight widgets render inside Shadow DOM, so external CSS can't style
+    // their inputs. Inject a stylesheet into each shadow root so form fields
+    // have readable dark text on their light backgrounds.
+    const FORM_STYLES = `
+      input, textarea, select {
+        color: #1f2937 !important;
+        -webkit-text-fill-color: #1f2937 !important;
+        caret-color: #1f2937 !important;
+      }
+      input::placeholder, textarea::placeholder {
+        color: #6b7280 !important;
+        -webkit-text-fill-color: #6b7280 !important;
+        opacity: 1 !important;
+      }
+    `;
+
+    const styledRoots = new WeakSet<ShadowRoot>();
+    const injectStyles = (root: ShadowRoot) => {
+      if (styledRoots.has(root)) return;
+      styledRoots.add(root);
+      const style = document.createElement("style");
+      style.setAttribute("data-elfsight-fix", "true");
+      style.textContent = FORM_STYLES;
+      root.appendChild(style);
+    };
+
+    const scanForShadowRoots = (node: Element | Document) => {
+      const elements = node.querySelectorAll('[class*="elfsight-app-"], [class*="elfsight-app-"] *');
+      elements.forEach((el) => {
+        const sr = (el as Element & { shadowRoot?: ShadowRoot }).shadowRoot;
+        if (sr) {
+          injectStyles(sr);
+          scanForShadowRoots(sr as unknown as Document);
+        }
+      });
+    };
+
+    const interval = setInterval(() => scanForShadowRoots(document), 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Announcement bar */}
+      <div className="bg-accent text-accent-foreground text-center text-sm font-bold py-2.5 px-4">
+        <a
+          href="https://wa.me/17879935623"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Comunícate por WhatsApp al 787-993-5623"
+          className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          MATRÍCULA ABIERTA — Comunícate por{"\n"}
+          <WhatsAppIcon className="h-5 w-5" />
+          <span className="underline">787-993-5623</span>
+        </a>
+      </div>
+
+      {/* Nav */}
+      <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
+        <div className="container flex items-center justify-between py-3">
+          <a href="#top" className="flex items-center gap-3">
+            <img src={logo} alt="Preescolar Sonsoles escudo" className="h-12 w-12" />
+            <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar Sonsoles</span>
+          </a>
+          <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-ink">
+            <a href="#sobre" className="hover:text-primary transition-colors">Sobre Nosotros</a>
+            <a href="#metodologia" className="hover:text-primary transition-colors">Metodología</a>
+            <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
+            <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
+            <a href="#ubicacion" className="hover:text-primary transition-colors">Contacto</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
+            <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-ink hover:text-secondary hidden sm:inline-flex"><Facebook className="h-5 w-5" /></a>
+            <Button asChild variant="outlineWarm" size="lg" className="hidden md:inline-flex">
+              <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
+            </Button>
+            <Button asChild variant="hero" size="lg" className="hidden sm:inline-flex">
+              <a href="#contacto">Matricúlate</a>
+            </Button>
+
+            {/* Mobile menu */}
+            <Sheet>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon" aria-label="Abrir menú">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[85%] max-w-sm">
+                <SheetTitle className="text-left text-lg font-bold text-ink mb-6" style={{ fontFamily: "'SoupBone', serif" }}>
+                  Menú
+                </SheetTitle>
+                <nav className="flex flex-col gap-1 text-base font-semibold text-ink">
+                  {[
+                    { href: '#sobre', label: 'Sobre Nosotros' },
+                    { href: '#metodologia', label: 'Metodología' },
+                    { href: '#facilidades', label: 'Facilidades' },
+                    { href: '#testimonios', label: 'Testimonios' },
+                    { href: '#ubicacion', label: 'Contacto' },
+                  ].map((item) => (
+                    <SheetClose asChild key={item.href}>
+                      <a href={item.href} className="py-3 px-2 rounded-lg hover:bg-muted transition-colors">{item.label}</a>
+                    </SheetClose>
+                  ))}
+                </nav>
+                <div className="mt-6 flex flex-col gap-3">
+                  <SheetClose asChild>
+                    <Button asChild variant="outlineWarm" size="lg" className="w-full">
+                      <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
+                    </Button>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Button asChild variant="hero" size="lg" className="w-full">
+                      <a href="#contacto">Matricúlate</a>
+                    </Button>
+                  </SheetClose>
+                </div>
+                <div className="mt-8 flex items-center gap-5 justify-center">
+                  <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary"><Instagram className="h-6 w-6" /></a>
+                  <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-ink hover:text-secondary"><Facebook className="h-6 w-6" /></a>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section
+        id="top"
+        className="relative overflow-hidden isolate pb-16 sm:pb-24"
+      >
+        <video
+          key={typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop"}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+        >
+          <source src="/compressed-herovideo-mobile-fallback.mp4" media="(max-width: 767px)" type="video/mp4" />
+          <source src="/compressed-website-hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/30 -z-10" />
+        <div className="container grid lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold mb-6">
+              <Sparkles className="h-4 w-4 text-primary" /> Maternal · PreKinder
+            </div>
+            <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Sembrando <span className="text-primary-foreground">valores</span>,<br />
+              cultivando <span className="text-primary-foreground">grandeza</span>.
+            </h1>
+            <div className="flex flex-wrap gap-4">
+              <Button asChild variant="hero" size="xl"><a href="#contacto">Agenda un tour</a></Button>
+              <Button asChild variant="outlineWarm" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda una cita</a></Button>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute -top-8 -left-8 w-24 h-24 bg-accent rounded-full animate-float-slow opacity-80" />
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-leaf/30 rounded-full animate-float-slow" style={{ animationDelay: '1.5s' }} />
+            <img
+              src={heroKids}
+              alt="Niños felices en Preescolar Sonsoles"
+              width={1024}
+              height={1024}
+              className="relative rounded-full shadow-playful w-full max-w-[520px] mx-auto aspect-square object-cover border-8 border-primary"
+            />
+            <div className="absolute bottom-4 left-0 sm:left-4 bg-card rounded-2xl shadow-soft px-5 py-4 flex items-center gap-3 animate-wiggle">
+              <div className="flex -space-x-1">
+                {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-accent text-accent" />)}
+              </div>
+              <div className="text-sm">
+                <div className="font-bold text-ink">5.0 en Google</div>
+                <div className="text-muted-foreground text-xs">Familias felices</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-16 overflow-hidden pointer-events-none" aria-hidden="true">
+          <svg className="h-full w-full block" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="hsl(var(--primary))">
+              <animate
+                attributeName="d"
+                dur="6s"
+                repeatCount="indefinite"
+                values="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z;M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z;M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z"
+              />
+            </path>
+          </svg>
+        </div>
+      </section>
+
+      {/* INTRO */}
+      <section id="sobre" className="bg-muted py-20">
+        <div className="container text-center max-w-5xl mb-14">
+          <h2 className="text-5xl sm:text-6xl text-ink mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Sembrando excelencia en el corazón de la familia puertorriqueña.</h2>
+          <p className="text-lg text-muted-foreground font-semibold" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>Un programa diseñado para Maternal a PreKinder donde cada niño descubre su mejor versión rodeado de amor y aprendizaje significativo.</p>
+        </div>
+
+        <div className="container grid md:grid-cols-3 gap-6 mb-16">
+          {[
+            { color: 'bg-accent text-accent-foreground', text: 'Educación personalizada para los líderes del mañana.', icon: BookOpen },
+            { color: 'bg-secondary text-secondary-foreground', text: 'Un entorno seguro, saludable y lleno de alegría y cariño.', icon: Heart },
+            { color: 'bg-primary text-primary-foreground', text: 'Ofrecemos una dieta balanceada cada día.', icon: Apple },
+          ].map((item, i) => (
+            <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>
+              <item.icon className="h-10 w-10 mb-4 opacity-90" />
+              <p className="text-base md:text-lg leading-snug" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="container relative pb-16">
+          <Carousel opts={{ loop: true }} plugins={[sobreAutoplay.current]} className="group">
+            <CarouselContent>
+              {/* Slide 1 — Pink: Founder */}
+              <CarouselItem>
+                <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#FF80B0" }}>
+                  <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+                    <img
+                      src={founderPhoto}
+                      alt="Griselle Bou, Directora de Preescolar Sonsoles"
+                      loading="lazy"
+                      className="w-64 sm:w-80 md:w-96 h-auto object-contain flex-shrink-0 self-center block"
+                    />
+                    <div className="flex flex-col justify-center text-left max-w-2xl">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4">
+                        FUNDADORA Y DIRECTORA
+                      </span>
+                      <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                        Griselle Bou de Blanco
+                      </h3>
+                      <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
+                        Más de 30 años formando voces y amando la música
+                      </p>
+                      <p className="text-base sm:text-lg leading-relaxed text-ink/90 mb-8">
+                        Pianista formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff y Kindermusik, y directora coral con décadas al servicio de la infancia puertorriqueña.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5">
+                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
+                          Bachillerato y Maestría en Educación del Niño — UPR
+                        </div>
+                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
+                          30 años en el Coro de Niños de San Juan
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-ink px-6 py-5 mb-8">
+                        <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-2" style={{ color: "#FF80B0" }}>
+                          Reconocimiento Internacional
+                        </span>
+                        <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#fadfef" }}>
+                          Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
+                        </p>
+                      </div>
+
+                      <div>
+                        <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
+                          <a href="mailto:grisellebou@gmail.com">
+                            <Mail className="h-4 w-4" /> Escríbele a Griselle
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </CarouselItem>
+
+              {/* Slide 2 — Green: Family illustration */}
+              <CarouselItem>
+                <div className="relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
+                  <div className="w-full overflow-hidden min-h-[560px] h-full flex items-center justify-center">
+                    <img
+                      src={kidsDrawing}
+                      alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10">
+                    <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
+                  </div>
+                </div>
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </Carousel>
+        </div>
+      </section>
+
+      {/* METODOLOGÍA */}
+      <section id="metodologia" className="relative w-full overflow-hidden lg:aspect-[2241/1600]">
+        <img
+          src={duckAnimation}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-background/40" aria-hidden="true" />
+        <div className="relative z-10 container py-24 lg:absolute lg:inset-0 lg:py-24 lg:flex lg:flex-col lg:justify-center">
+          <div className="max-w-2xl mx-auto mb-14 text-center">
+            <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Metodología</span>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-3">Aprender jugando, crecer con propósito.</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Music, title: 'Música & Movimiento', desc: 'Ritmo y expresión corporal desde temprana edad.', color: 'text-primary', bg: 'bg-primary/10' },
+              { icon: Palette, title: 'Arte & Creatividad', desc: 'Clases que despiertan la imaginación y la sensibilidad.', color: 'text-secondary', bg: 'bg-secondary/10' },
+              { icon: BookOpen, title: 'Lectoescritura', desc: 'Bases sólidas para leer, escribir y comunicarse con confianza.', color: 'text-leaf', bg: 'bg-leaf/10' },
+              { icon: Users, title: 'Valores & Familia', desc: 'Cultivamos respeto, empatía y orgullo por nuestras raíces.', color: 'text-azure', bg: 'bg-azure/10' },
+            ].map((f, i) => (
+              <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all">
+                <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>
+                  <f.icon className="h-7 w-7" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
+                <p className="text-muted-foreground text-sm">{f.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FACILIDADES */}
+      <section id="facilidades" className="bg-secondary text-secondary-foreground py-24 relative overflow-hidden">
+        <div className="container grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <span className="font-bold uppercase tracking-wider text-sm opacity-80">Facilidades</span>
+            <h2 className="text-4xl sm:text-5xl mt-3 mb-6">Un espacio diseñado para soñar en grande.</h2>
+            <p className="text-lg opacity-90 mb-8">Salones luminosos, áreas de juego seguras y rincones pensados para que cada niño explore, aprenda y se sienta como en casa.</p>
+            <ul className="grid sm:grid-cols-2 gap-4 mb-8">
+              {['Salones climatizados', 'Patio de juegos', 'Cocina propia', 'Personal certificado', 'Limpieza diarimente'].map((f) => (
+                <li key={f} className="flex items-center gap-3 text-base">
+                  <Apple className="h-5 w-5 text-accent flex-shrink-0" /> {f}
+                </li>
+              ))}
+            </ul>
+            <Button asChild variant="sun" size="xl"><a href="#contacto">Visítanos</a></Button>
+          </div>
+          <div className="relative">
+            <div className="relative w-full aspect-square rounded-[2rem] shadow-playful overflow-hidden">
+              <div
+                className="flex h-full w-full transition-transform duration-1000 ease-in-out"
+                style={{ transform: `translateX(-${facilityIndex * 100}%)` }}
+              >
+                {facilityImages.map((src) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt="Facilidades del Preescolar Sonsoles"
+                    loading="lazy"
+                    width={1280}
+                    height={1280}
+                    className="w-full h-full flex-shrink-0 object-cover"
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="absolute -top-5 -right-5 bg-accent text-accent-foreground rounded-2xl p-4 shadow-soft animate-float-slow">
+              <div className="text-3xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 700 }}>+15</div>
+              <div className="text-xs font-bold">Años educando</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PRESENTACIONES */}
+      <Performances />
+
+      {/* VIDEO TESTIMONIOS */}
+      <VideoTestimonials />
+
+      {/* TESTIMONIOS */}
+      <section id="testimonios" className="py-24 bg-muted">
+        <div className="container">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Testimonios</span>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-3">Deja que nuestros padres te cuenten.</h2>
+            <p className="text-muted-foreground mt-4">Por qué las familias eligen Sonsoles.</p>
+          </div>
+          <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
+        </div>
+      </section>
+
+      {/* CONTACTO */}
+      <section id="contacto" className="bg-accent py-24">
+        <div className="container grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-4xl sm:text-5xl text-ink mb-5">¿Listo para matricular a tu hijo(a)?</h2>
+            <p className="text-ink/80 text-lg mb-8">Envíanos un breve mensaje sobre lo que buscas y te orientaremos con los próximos pasos dentro de un día laborable.</p>
+            <div className="elfsight-app-f6462d1d-0531-4524-91a2-7492f550169d" data-elfsight-app-lazy></div>
+          </div>
+          <div className="hidden lg:block relative">
+            <img src={contactKids} alt="Niños de Sonsoles en el patio" loading="lazy" width={1280} height={1280} className="rounded-[2rem] shadow-playful w-full object-cover aspect-[4/5]" />
+          </div>
+        </div>
+      </section>
+
+      {/* MAP */}
+      <section id="ubicacion" className="bg-muted py-20">
+        <div className="container text-center max-w-3xl mb-10">
+          <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Ubicación</span>
+          <h2 className="text-4xl sm:text-5xl text-ink mt-5 mb-4">Visítanos en Puerto Rico</h2>
+          <p className="text-lg text-muted-foreground font-bold">Encuéntranos fácilmente en el mapa.</p>
+        </div>
+        <div className="container grid md:grid-cols-2 gap-6">
+          <div className="rounded-3xl overflow-hidden shadow-playful border-primary aspect-[16/9] border-0">
+            <img
+              src={sonsolesBuilding}
+              alt="Edificio Preescolar Sonsoles"
+              className="w-full h-full object-cover bg-primary border-0 border-primary-foreground"
+            />
+          </div>
+          <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0">
+            <iframe
+              title="Ubicación Preescolar Sonsoles"
+              src="https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-ink text-ink-foreground py-12">
+        <div className="container grid md:grid-cols-3 gap-8 items-start">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt="" className="h-12 w-12" />
+              <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar Sonsoles</span>
+            </div>
+            <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3 text-base">Contacto</h4>
+            <p className="text-sm opacity-80 flex items-center gap-2"><Phone className="h-4 w-4" /> 787-993-5623</p>
+            <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-80 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3 text-base">Síguenos</h4>
+            <div className="flex gap-3">
+              <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="bg-card/10 hover:bg-primary p-2.5 rounded-full transition-colors"><Instagram className="h-5 w-5" /></a>
+              <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="bg-card/10 hover:bg-secondary p-2.5 rounded-full transition-colors"><Facebook className="h-5 w-5" /></a>
+            </div>
+          </div>
+        </div>
+        <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
+          © {new Date().getFullYear()} Preescolar Sonsoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
+        </div>
+      </footer>
+
+      <WhatsAppChat />
+    </div>
+  );
+};
+
+export default Index;

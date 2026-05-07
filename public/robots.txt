@@ -1,0 +1,19 @@
+User-agent: Googlebot
+Allow: /
+Disallow: /portal-padres
+
+User-agent: Bingbot
+Allow: /
+Disallow: /portal-padres
+
+User-agent: Twitterbot
+Allow: /
+Disallow: /portal-padres
+
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /portal-padres
+
+User-agent: *
+Allow: /
+Disallow: /portal-padres

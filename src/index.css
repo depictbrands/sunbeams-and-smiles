@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap');
+
+@font-face {
+  font-family: 'SoupBone';
+  src: url('/fonts/SoupBone_Bold.woff2') format('woff2'),
+       url('/fonts/SoupBone_Bold.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChildsPlayground';
+  src: url('/fonts/ChildsPlaygroundRegular.woff2') format('woff2'),
+       url('/fonts/ChildsPlaygroundRegular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand palette — Preescolar Sonsoles */
+    --background: 35 60% 97%;
+    --foreground: 270 8% 26%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 270 8% 26%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 8% 26%;
+
+    --primary: 25 100% 56%;            /* Pumpkin Orange #FF7E1D */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 96% 51%;          /* Blue Ribbon #0C6FF9 */
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 49 100% 50%;             /* Supernova Yellow #FFCE00 */
+    --accent-foreground: 270 8% 26%;
+
+    --azure: 199 100% 50%;             /* Azure Radiance #00A4FF */
+    --azure-foreground: 0 0% 100%;
+
+    --leaf: 144 98% 33%;               /* Green Haze #01A652 */
+    --leaf-foreground: 0 0% 100%;
+
+    --ink: 270 8% 26%;                 /* Ship Gray #413D45 */
+    --ink-foreground: 0 0% 100%;
+
+    --muted: 35 40% 92%;
+    --muted-foreground: 270 6% 40%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 30% 88%;
+    --input: 35 30% 88%;
+    --ring: 25 100% 56%;
+
+    --radius: 1.25rem;
+
+    --gradient-warm: linear-gradient(135deg, hsl(25 100% 56%) 0%, hsl(49 100% 50%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(217 96% 51%) 0%, hsl(199 100% 50%) 100%);
+    --shadow-playful: 0 18px 40px -12px hsl(25 100% 56% / 0.35);
+    --shadow-soft: 0 10px 30px -12px hsl(270 8% 26% / 0.18);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Sora', system-ui, sans-serif;
+    font-weight: 600;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Sour Gummy', 'Sora', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  p {
+    font-family: 'Sora', system-ui, sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .bg-gradient-warm { background: var(--gradient-warm); }
+  .bg-gradient-sky { background: var(--gradient-sky); }
+  .shadow-playful { box-shadow: var(--shadow-playful); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+
+  .wave-divider {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'><path d='M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z' fill='black'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'><path d='M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z' fill='black'/></svg>");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+  }
+  .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  .animate-wiggle { animation: wiggle 4s ease-in-out infinite; }
+
+  @keyframes wave-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-wave-slide { animation: wave-slide 12s linear infinite; }
+}
+
+/* Ensure Elfsight form inputs have readable dark text on their light backgrounds */
+[class^="elfsight-app-"] input,
+[class^="elfsight-app-"] textarea,
+[class^="elfsight-app-"] select {
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  caret-color: #1f2937 !important;
+}
+
+[class^="elfsight-app-"] input::placeholder,
+[class^="elfsight-app-"] textarea::placeholder {
+  color: #6b7280 !important;
+  -webkit-text-fill-color: #6b7280 !important;
+  opacity: 1 !important;
+}

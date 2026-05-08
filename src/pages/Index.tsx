@@ -361,10 +361,10 @@ const Index = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Music, title: 'Música & Movimiento', desc: 'Ritmo y expresión corporal desde temprana edad.', color: 'text-primary', bg: 'bg-primary/10' },
-              { icon: Palette, title: 'Arte & Creatividad', desc: 'Clases que despiertan la imaginación y la sensibilidad.', color: 'text-secondary', bg: 'bg-secondary/10' },
-              { icon: BookOpen, title: 'Lectoescritura', desc: 'Bases sólidas para leer, escribir y comunicarse con confianza.', color: 'text-leaf', bg: 'bg-leaf/10' },
-              { icon: Users, title: 'Valores & Familia', desc: 'Cultivamos respeto, empatía y orgullo por nuestras raíces.', color: 'text-azure', bg: 'bg-azure/10' },
+              { icon: Music, title: 'Música y Movimiento', desc: 'Entrenamiento real en voz, oído y ritmo. Bailes y juegos infantiles folklóricos que conectan al niño con sus raíces.', color: 'text-primary', bg: 'bg-primary/10' },
+              { icon: Palette, title: 'Arte y Creatividad', desc: 'Clases que despiertan la imaginación, la sensibilidad estética y el orgullo por crear con sus propias manos.', color: 'text-secondary', bg: 'bg-secondary/10' },
+              { icon: BookOpen, title: 'Lectoescritura', desc: 'Bases sólidas para leer, escribir y comunicarse con confianza en español e inglés.', color: 'text-leaf', bg: 'bg-leaf/10' },
+              { icon: Users, title: 'Virtudes y Familia', desc: 'Cultivamos orden, obediencia, paciencia, respeto y empatía — los cimientos del carácter.', color: 'text-azure', bg: 'bg-azure/10' },
             ].map((f, i) => (
               <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>

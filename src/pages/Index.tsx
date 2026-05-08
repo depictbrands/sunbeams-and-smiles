@@ -433,7 +433,7 @@ const Index = () => {
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Testimonios</span>
             <h2 className="text-4xl sm:text-5xl text-ink mt-3">Deja que nuestros padres te cuenten.</h2>
-            <p className="text-muted-foreground mt-4">Por qué las familias eligen Sonsoles.</p>
+            <p className="text-muted-foreground mt-4">Por qué las familias eligen SonSoles.</p>
           </div>
           <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
         </div>
@@ -448,7 +448,7 @@ const Index = () => {
             <div className="elfsight-app-f6462d1d-0531-4524-91a2-7492f550169d" data-elfsight-app-lazy></div>
           </div>
           <div className="hidden lg:block relative">
-            <img src={contactKids} alt="Niños de Sonsoles en el patio" loading="lazy" width={1280} height={1280} className="rounded-[2rem] shadow-playful w-full object-cover aspect-[4/5]" />
+            <img src={contactKids} alt="Niños de SonSoles en el patio" loading="lazy" width={1280} height={1280} className="rounded-[2rem] shadow-playful w-full object-cover aspect-[4/5]" />
           </div>
         </div>
       </section>

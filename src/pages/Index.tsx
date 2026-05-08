@@ -113,8 +113,8 @@ const Index = () => {
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between py-3">
           <a href="#top" className="flex items-center gap-3">
-            <img src={logo} alt="Preescolar Sonsoles escudo" className="h-12 w-12" />
-            <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar Sonsoles</span>
+            <img src={logo} alt="Preescolar SonSoles escudo" className="h-12 w-12" />
+            <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-ink">
             <a href="#sobre" className="hover:text-primary transition-colors">Sobre Nosotros</a>

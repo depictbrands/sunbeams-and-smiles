@@ -386,7 +386,7 @@ const Index = () => {
             <h2 className="text-4xl sm:text-5xl mt-3 mb-6">Un espacio diseñado para soñar en grande.</h2>
             <p className="text-lg opacity-90 mb-8">Salones luminosos, áreas de juego seguras y rincones pensados para que cada niño explore, aprenda y se sienta como en casa.</p>
             <ul className="grid sm:grid-cols-2 gap-4 mb-8">
-              {['Salones climatizados', 'Patio de juegos', 'Cocina propia', 'Personal certificado', 'Limpieza diarimente'].map((f) => (
+              {['Salones climatizados', 'Patio de juegos', 'Cocina propia con dieta balanceada', 'Personal certificado en primeros auxilios', 'Maestras especializadas, competentes y cariñosas', 'Limpieza diarimente'].map((f) => (
                 <li key={f} className="flex items-center gap-3 text-base">
                   <Apple className="h-5 w-5 text-accent flex-shrink-0" /> {f}
                 </li>

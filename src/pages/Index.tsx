@@ -216,7 +216,7 @@ const Index = () => {
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-leaf/30 rounded-full animate-float-slow" style={{ animationDelay: '1.5s' }} />
             <img
               src={heroKids}
-              alt="Niños felices en Preescolar Sonsoles"
+              alt="Niños felices en Preescolar SonSoles"
               width={1024}
               height={1024}
               className="relative rounded-full shadow-playful w-full max-w-[520px] mx-auto aspect-square object-cover border-8 border-primary"
@@ -275,7 +275,7 @@ const Index = () => {
                   <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
                     <img
                       src={founderPhoto}
-                      alt="Griselle Bou, Directora de Preescolar Sonsoles"
+                      alt="Griselle Bou, Directora de Preescolar SonSoles"
                       loading="lazy"
                       className="w-64 sm:w-80 md:w-96 h-auto object-contain flex-shrink-0 self-center block"
                     />
@@ -404,7 +404,7 @@ const Index = () => {
                   <img
                     key={src}
                     src={src}
-                    alt="Facilidades del Preescolar Sonsoles"
+                    alt="Facilidades del Preescolar SonSoles"
                     loading="lazy"
                     width={1280}
                     height={1280}
@@ -464,7 +464,7 @@ const Index = () => {
           <div className="rounded-3xl overflow-hidden shadow-playful border-primary aspect-[16/9] border-0">
             <img
               src={sonsolesBuilding}
-              alt="Edificio Preescolar Sonsoles"
+              alt="Edificio Preescolar SonSoles"
               className="w-full h-full object-cover bg-primary border-0 border-primary-foreground"
             />
           </div>
@@ -489,7 +489,7 @@ const Index = () => {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img src={logo} alt="" className="h-12 w-12" />
-              <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar Sonsoles</span>
+              <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
             </div>
             <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>
           </div>
@@ -507,7 +507,7 @@ const Index = () => {
           </div>
         </div>
         <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
-          © {new Date().getFullYear()} Preescolar Sonsoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
+          © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
         </div>
       </footer>
 

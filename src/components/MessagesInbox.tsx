@@ -48,7 +48,7 @@ const STAFF_CONTACTS: { name: string; role: string }[] = [
   { name: "Nay", role: "Maestra" },
   { name: "Keisy", role: "Maestra" },
   { name: "Andrea", role: "Maestra" },
-  { name: "Genesis", role: "Maestra" },
+  { name: "Génesis", role: "Maestra" },
   { name: "Esmeralda", role: "Maestra" },
 ];
 

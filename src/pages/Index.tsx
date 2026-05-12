@@ -173,7 +173,7 @@ const Index = () => {
                   </SheetClose>
                   <SheetClose asChild>
                     <Button asChild variant="sun" size="lg" className="w-full rounded-full">
-                      <a href="#contacto">Matricúlate</a>
+                      <a href="#contacto">Visítanos</a>
                     </Button>
                   </SheetClose>
                 </div>

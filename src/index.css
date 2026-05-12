@@ -49,6 +49,12 @@
     --leaf: 144 98% 33%;               /* Green Haze #01A652 */
     --leaf-foreground: 0 0% 100%;
 
+    --pink: 330 78% 60%;
+    --pink-foreground: 0 0% 100%;
+
+    --purple: 270 70% 55%;
+    --purple-foreground: 0 0% 100%;
+
     --ink: 270 8% 26%;                 /* Ship Gray #413D45 */
     --ink-foreground: 0 0% 100%;
 

@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
@@ -400,6 +400,38 @@ const Index = () => {
             <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
             <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Carousel>
+        </div>
+      </section>
+
+      {/* DESARROLLO INTEGRAL */}
+      <section id="desarrollo-integral" className="bg-background py-24">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center mb-14">
+            <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Formación Integral</span>
+            <h2 className="text-3xl sm:text-4xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Cada niño tiene un plan de desarrollo propio. <br />
+              Cada familia tiene un acompañamiento directo con la maestra y el personal.
+            </h2>
+            <p className="text-lg sm:text-xl text-ink font-bold">Áreas de desarrollo que fortalecemos</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { icon: Brain, title: 'Cognitiva', desc: 'Estimulamos  la inteligencia, la curiosidad y el sentido crítico.', color: 'text-pink', bg: 'bg-pink/10', hoverBorder: 'hover:border-pink/50' },
+              { icon: Activity, title: 'Física', desc: 'Desarrollamos el motor grueso y fino, los patrones de movimiento, la lateralidad y el dominio espacial.', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf/50' },
+              { icon: Heart, title: 'Socioemocional', desc: 'Enseñamos a relacionarse, esperar, compartir y manejar emociones.', color: 'text-purple', bg: 'bg-purple/10', hoverBorder: 'hover:border-purple/50' },
+              { icon: MessageCircle, title: 'Lingüística', desc: 'Creamos un ambiente bilingüe donde se aprende con naturalidad.', color: 'text-azure', bg: 'bg-azure/10', hoverBorder: 'hover:border-azure/50' },
+              { icon: Palette, title: 'Creativa', desc: 'Despertamos la imaginación, la expresión, la sensibilidad estética a través del arte, la música y el baile.', color: 'text-accent', bg: 'bg-accent/20', hoverBorder: 'hover:border-accent/60' },
+              { icon: Sparkles, title: 'Formativa', desc: 'Cultivamos las virtudes humanas: orden, obediencia, paciencia, respeto y alegría.', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary/50' },
+            ].map((a, i) => (
+              <Card key={i} className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all`}>
+                <div className={`${a.bg} ${a.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>
+                  <a.icon className="h-7 w-7" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</h3>
+                <p className="text-muted-foreground text-sm">{a.desc}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 

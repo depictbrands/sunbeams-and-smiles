@@ -138,7 +138,7 @@ const Index = () => {
               <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
             </Button>
             <Button asChild variant="sun" size="lg" className="hidden sm:inline-flex rounded-full">
-              <a href="#contacto">Matricúlate</a>
+              <a href="#contacto">Visítanos</a>
             </Button>
 
             {/* Mobile menu */}

@@ -378,7 +378,7 @@ const Index = () => {
               {/* Slide 3 — Green: Family illustration */}
               <CarouselItem>
                 {/* Mobile/Tablet: hug the image */}
-                <div className="md:hidden rounded-3xl shadow-soft overflow-hidden bg-leaf">
+                <div className="md:hidden rounded-3xl overflow-hidden">
                   <div className="flex flex-col">
                     <div className="px-6 pt-8 text-center">
                       <h3 className="text-2xl sm:text-3xl font-bold text-card leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>

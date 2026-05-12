@@ -124,7 +124,7 @@ const Performances = () => {
       <div className="container">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="text-primary font-bold uppercase tracking-wider text-sm">
-            Presentaciones
+            Actividades
           </span>
           <h2
             className="text-4xl sm:text-5xl text-ink mt-3"

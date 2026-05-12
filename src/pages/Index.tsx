@@ -378,21 +378,21 @@ const Index = () => {
               {/* Slide 3 — Green: Family illustration */}
               <CarouselItem>
                 <div className="relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
-                  <div className="w-full overflow-hidden min-h-[560px] h-full flex items-center justify-center">
+                  <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] md:aspect-[16/9]">
                     <img
                       src={kidsDrawing}
                       alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-contain"
                     />
-                  </div>
-                  <div className="absolute top-6 sm:top-10 left-1/2 -translate-x-1/2 z-10 px-6 w-full max-w-3xl text-center">
-                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                      Las familias son las principales protagonistas de nuestro proyecto educativo.
-                    </h3>
-                  </div>
-                  <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10">
-                    <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
+                    <div className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-10 px-4 w-full max-w-3xl text-center">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+                        Las familias son las principales protagonistas de nuestro proyecto educativo.
+                      </h3>
+                    </div>
+                    <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-10">
+                      <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
+                    </div>
                   </div>
                 </div>
               </CarouselItem>

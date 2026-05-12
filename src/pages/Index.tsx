@@ -381,7 +381,7 @@ const Index = () => {
                 <div className="md:hidden rounded-3xl overflow-hidden">
                   <div className="flex flex-col">
                     <div className="px-6 pt-8 text-center">
-                      <h3 className="text-2xl sm:text-3xl font-bold text-card leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+                      <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
                         Las familias son las principales protagonistas de nuestro proyecto educativo.
                       </h3>
                     </div>

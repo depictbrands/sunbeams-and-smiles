@@ -52,19 +52,24 @@ const Galeria = () => {
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-2 sm:gap-3 [column-fill:_balance]">
-          {photoUrls.map((src, i) => (
-            <div
-              key={src}
-              className="mb-2 sm:mb-3 break-inside-avoid overflow-hidden rounded-2xl shadow-playful bg-card group"
-            >
-              <img
-                src={src}
-                alt={`Foto del preescolar ${i + 1}`}
-                loading="lazy"
-                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-          ))}
+          {photoUrls.map((src, i) => {
+            const dirs = ["up", "left", "down", "right"] as const;
+            const dir = dirs[i % dirs.length];
+            return (
+              <div
+                key={src}
+                className={`mb-2 sm:mb-3 break-inside-avoid overflow-hidden rounded-2xl shadow-playful bg-card group gallery-anim gallery-anim-${dir}`}
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                <img
+                  src={src}
+                  alt={`Foto del preescolar ${i + 1}`}
+                  loading="lazy"
+                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
     </div>

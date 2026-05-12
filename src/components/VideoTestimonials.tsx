@@ -151,7 +151,7 @@ const VideoTestimonials = () => {
   const next = () => setActive((i) => (i + 1) % total);
 
   return (
-    <section id="testimonios-video" className="py-24 relative overflow-hidden">
+    <section id="testimonios-video" className="pb-12 relative overflow-hidden">
       <div className="container">
 
         <div className="relative">

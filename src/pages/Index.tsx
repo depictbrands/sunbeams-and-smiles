@@ -471,11 +471,11 @@ const Index = () => {
       <section id="facilidades" className="bg-secondary text-secondary-foreground py-24 relative overflow-hidden">
         <div className="container grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span className="font-bold uppercase tracking-wider text-sm opacity-80">Facilidades</span>
-            <h2 className="text-4xl sm:text-5xl mt-3 mb-6">Un espacio diseñado para soñar en grande.</h2>
-            <p className="text-lg opacity-90 mb-8">Salones luminosos, áreas de juego seguras y rincones pensados para que cada niño explore, aprenda y se sienta como en casa.</p>
+            <span className="font-bold uppercase tracking-wider text-sm opacity-80">nuestro preescolar es</span>
+            <h2 className="text-4xl sm:text-5xl mt-3 mb-6">Un espacio diseñado para soñar en grande</h2>
+            <p className="text-lg opacity-90 mb-8">Salones luminosos, áreas de juego seguras y rincones pensados para que cada niño explore, aprenda y se sienta feliz.</p>
             <ul className="grid sm:grid-cols-2 gap-4 mb-8">
-              {['Salones climatizados', 'Patio de juegos', 'Cocina propia con dieta balanceada', 'Personal certificado en primeros auxilios', 'Maestras especializadas, competentes y cariñosas', 'Limpieza diarimente'].map((f) => (
+              {['Aire acondicionado, planta eléctrica y cisterna de agua', 'Patio de juegos', 'Cocina propia, comida rica "estilo abuelita" balanceada y hecha con amor.', 'Salones limpios'].map((f) => (
                 <li key={f} className="flex items-center gap-3 text-base">
                   <Apple className="h-5 w-5 text-accent flex-shrink-0" /> {f}
                 </li>
@@ -503,8 +503,8 @@ const Index = () => {
               </div>
             </div>
             <div className="absolute -top-5 -right-5 bg-accent text-accent-foreground rounded-2xl p-4 shadow-soft animate-float-slow">
-              <div className="text-3xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 700 }}>+15</div>
-              <div className="text-xs font-bold">Años educando</div>
+              <div className="text-3xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 700 }}>+14</div>
+              <div className="text-xs font-bold">Años educando </div>
             </div>
           </div>
         </div>

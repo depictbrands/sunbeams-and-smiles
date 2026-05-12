@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
@@ -184,27 +184,46 @@ const Index = () => {
         id="top"
         className="relative overflow-hidden isolate pb-16 sm:pb-24"
       >
+        {/* Mobile: full-bleed video shown in its natural aspect above content */}
+        <div className="lg:hidden relative w-full bg-ink">
+          <video
+            key="mobile"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="w-full h-auto block"
+          >
+            <source src="/2ndVersion-hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Desktop: video as background */}
         <video
-          key={typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop"}
+          key="desktop"
           autoPlay
           muted
           loop
           playsInline
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
+          className="hidden lg:block absolute inset-0 w-full h-full object-cover -z-10"
         >
-          <source src="/compressed-herovideo-mobile-fallback.mp4" media="(max-width: 767px)" type="video/mp4" />
-          <source src="/compressed-website-hero.mp4" type="video/mp4" />
+          <source src="/2ndVersion-hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/30 -z-10" />
-        <div className="container grid lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
+        <div className="hidden lg:block absolute inset-0 bg-black/30 -z-10" />
+        <div className="container grid lg:grid-cols-2 gap-12 items-center py-12 lg:py-24 bg-ink lg:bg-transparent">
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold mb-6">
-              <Sparkles className="h-4 w-4 text-primary" /> Maternal · Preescolar • PreKinder
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold">
+                <Sparkles className="h-4 w-4 text-primary" /> Maternal · Preescolar • PreKinder
+              </div>
+              <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold">
+                <MapPin className="h-4 w-4 text-primary" /> Cupey, cerca de Los Paseos
+              </div>
             </div>
             <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-              Sembrando <span className="text-primary-foreground">valores</span>,<br />
-              cultivando <span className="text-primary-foreground">grandeza</span>.
+              Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="#contacto">Agenda un tour</a></Button>

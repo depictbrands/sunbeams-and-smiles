@@ -1,15 +1,24 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
-const images = import.meta.glob("/public/gallery-optimized/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  query: "?url",
-  import: "default",
-}) as Record<string, string>;
-
-const photoUrls = Object.entries(images)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, url]) => url);
+const photoUrls = [
+  "90ddcee5-e4b1-4fcd-be96-c2d10d77698f.jpg",
+  "Foto de Nilda🌷💗.jpg",
+  "Foto de Nilda🌷💗 2.jpg",
+  "Foto de Nilda🌷💗 3.jpg",
+  "Foto de Nilda🌷💗 4.jpg",
+  "Foto de Nilda🌷💗 5.jpg",
+  "Foto de Nilda🌷💗 6.jpg",
+  "Foto de Nilda🌷💗 7.jpg",
+  "Foto de Nilda🌷💗 8.jpg",
+  "Foto de Nilda🌷💗 9.jpg",
+  "Foto de Nilda🌷💗 10.jpg",
+  "Foto de Nilda🌷💗 11.jpg",
+  "Foto de Nilda🌷💗 12.jpg",
+  "Foto de Nilda🌷💗 13.jpg",
+  "IMG_7440.jpg",
+  "PHOTO-2025-10-14-10-32-08.jpg",
+].map((name) => `/gallery-optimized/${encodeURIComponent(name)}`);
 
 const Galeria = () => {
   return (

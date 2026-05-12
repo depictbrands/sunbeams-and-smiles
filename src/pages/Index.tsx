@@ -532,12 +532,12 @@ const Index = () => {
       <section id="contacto" className="bg-accent py-24">
         <div className="container grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-4xl sm:text-5xl text-ink mb-5">¿Listo para matricular a tu hijo(a)?</h2>
-            <p className="text-ink/80 text-lg mb-8">Envíanos un breve mensaje sobre lo que buscas y te orientaremos con los próximos pasos dentro de un día laborable.</p>
+            <h2 className="text-4xl sm:text-5xl text-ink mb-5">¿Listo para conocer nuestra escuelita?</h2>
+            <p className="text-ink/80 text-lg mb-8">Envíanos un breve mensaje y te orientaremos con los próximos pasos dentro de un día laboral.</p>
             <div className="elfsight-app-f6462d1d-0531-4524-91a2-7492f550169d" data-elfsight-app-lazy></div>
           </div>
           <div className="hidden lg:block relative">
-            <img src={contactKids} alt="Niños de SonSoles en el patio" loading="lazy" width={1280} height={1280} className="rounded-[2rem] shadow-playful w-full object-cover aspect-[4/5]" />
+            <img src={contactKids} alt="Niños de Sonsoles en el patio" loading="lazy" width={1280} height={1280} className="rounded-[2rem] shadow-playful w-full object-cover aspect-[4/5]" />
           </div>
         </div>
       </section>

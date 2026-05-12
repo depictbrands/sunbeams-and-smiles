@@ -14,7 +14,7 @@ const performances: Performance[] = [
   {
     title: "Día de Juegos",
     description:
-      "Un día lleno de risas, movimiento y aprendizaje al aire libre.",
+      "Un día familiar, lleno de risas y muuuuucho movimiento.",
     videoUrl: diaDeJuegos,
   },
   {

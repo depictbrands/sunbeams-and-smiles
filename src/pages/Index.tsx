@@ -452,8 +452,8 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10' },
-              { icon: Palette, title: 'Arte y Creatividad', desc: 'Clases que despiertan la imaginación, la sensibilidad estética y el orgullo por crear con sus propias manos.', color: 'text-secondary', bg: 'bg-secondary/10' },
-              { icon: BookOpen, title: 'Lectoescritura', desc: 'Bases sólidas para leer, escribir y comunicarse con confianza en español e inglés.', color: 'text-leaf', bg: 'bg-leaf/10' },
+              { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10' },
+              { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10' },
             ].map((f, i) => (
               <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>

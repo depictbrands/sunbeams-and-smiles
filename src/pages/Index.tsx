@@ -238,7 +238,7 @@ const Index = () => {
               alt="Niños felices en Preescolar SonSoles"
               width={1024}
               height={1024}
-              className="relative rounded-full shadow-playful w-full max-w-[520px] mx-auto aspect-square object-cover border-8 border-primary"
+              className="relative rounded-full shadow-playful w-full max-w-[420px] mx-auto aspect-square object-cover border-8 border-primary"
             />
             <div className="absolute bottom-4 left-0 sm:left-4 bg-card rounded-2xl shadow-soft px-5 py-4 flex items-center gap-3 animate-wiggle">
               <div className="flex -space-x-1">

@@ -143,7 +143,7 @@ const Index = () => {
             </DropdownMenu>
             <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
             <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
-            <a href="#presentaciones" className="hover:text-primary transition-colors">​</a>
+            <a href="/galeria" className="hover:text-primary transition-colors">Galería</a>
           </nav>
           <div className="flex items-center gap-3">
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
@@ -172,7 +172,7 @@ const Index = () => {
                     { href: '#metodologia', label: 'Metodología' },
                     { href: '#facilidades', label: 'Facilidades' },
                     { href: '#testimonios', label: 'Testimonios' },
-                    { href: '#presentaciones', label: '​' },
+                    { href: '/galeria', label: 'Galería' },
                   ].map((item) => (
                     <SheetClose asChild key={item.href}>
                       <a href={item.href} className="py-3 px-2 rounded-lg hover:bg-muted transition-colors">{item.label}</a>

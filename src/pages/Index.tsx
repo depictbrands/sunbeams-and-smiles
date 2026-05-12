@@ -3,7 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock } from "lucide-react";
+import NewsletterForm from "@/components/NewsletterForm";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
@@ -595,7 +596,7 @@ const Index = () => {
 
       {/* FOOTER */}
       <footer className="bg-ink text-ink-foreground py-12">
-        <div className="container grid md:grid-cols-3 gap-8 items-start">
+        <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img src={logo} alt="" className="h-12 w-12" />
@@ -605,7 +606,9 @@ const Index = () => {
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">Contacto</h4>
-            <p className="text-sm opacity-80 flex items-center gap-2"><Phone className="h-4 w-4" /> 787-993-5623</p>
+            <p className="text-sm opacity-80 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
+            <p className="text-sm opacity-80 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
+            <p className="text-sm opacity-80 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>
             <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-80 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
           </div>
           <div>
@@ -615,6 +618,7 @@ const Index = () => {
               <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="bg-card/10 hover:bg-secondary p-2.5 rounded-full transition-colors"><Facebook className="h-5 w-5" /></a>
             </div>
           </div>
+          <NewsletterForm />
         </div>
         <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
           © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>

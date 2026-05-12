@@ -513,18 +513,18 @@ const Index = () => {
       {/* PRESENTACIONES */}
       <Performances />
 
-      {/* VIDEO TESTIMONIOS */}
-      <VideoTestimonials />
-
       {/* TESTIMONIOS */}
-      <section id="testimonios" className="py-24 bg-muted">
+      <section id="testimonios" className="py-24 bg-background">
         <div className="container">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Testimonios</span>
-            <h2 className="text-4xl sm:text-5xl text-ink mt-3">Deja que nuestros padres te cuenten.</h2>
-            <p className="text-muted-foreground mt-4">Por qué las familias eligen SonSoles.</p>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Deja que nuestros padres te cuenten.</h2>
+            
           </div>
-          <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
+          <VideoTestimonials />
+          <div className="mt-16">
+            <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
+          </div>
         </div>
       </section>
 

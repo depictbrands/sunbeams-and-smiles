@@ -134,10 +134,10 @@ const Index = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="rounded-2xl">
                 <DropdownMenuItem asChild>
-                  <a href="#metodologia" className="cursor-pointer font-semibold">Proyecto Educativo</a>
+                  <a href="#desarrollo-integral" className="cursor-pointer font-semibold">Formación Integral</a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a href="#desarrollo-integral" className="cursor-pointer font-semibold">Formación Integral</a>
+                  <a href="#metodologia" className="cursor-pointer font-semibold">Proyecto Educativo</a>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -55,6 +55,14 @@ export default {
           DEFAULT: "hsl(var(--leaf))",
           foreground: "hsl(var(--leaf-foreground))",
         },
+        pink: {
+          DEFAULT: "hsl(var(--pink))",
+          foreground: "hsl(var(--pink-foreground))",
+        },
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          foreground: "hsl(var(--purple-foreground))",
+        },
         ink: {
           DEFAULT: "hsl(var(--ink))",
           foreground: "hsl(var(--ink-foreground))",

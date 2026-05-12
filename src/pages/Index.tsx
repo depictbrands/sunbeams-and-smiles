@@ -143,7 +143,7 @@ const Index = () => {
             </DropdownMenu>
             <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
             <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
-            <a href="#presentaciones" className="hover:text-primary transition-colors">Galería</a>
+            <a href="#presentaciones" className="hover:text-primary transition-colors">​</a>
           </nav>
           <div className="flex items-center gap-3">
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
@@ -172,7 +172,7 @@ const Index = () => {
                     { href: '#metodologia', label: 'Metodología' },
                     { href: '#facilidades', label: 'Facilidades' },
                     { href: '#testimonios', label: 'Testimonios' },
-                    { href: '#presentaciones', label: 'Galería' },
+                    { href: '#presentaciones', label: '​' },
                   ].map((item) => (
                     <SheetClose asChild key={item.href}>
                       <a href={item.href} className="py-3 px-2 rounded-lg hover:bg-muted transition-colors">{item.label}</a>
@@ -618,7 +618,7 @@ const Index = () => {
             <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>
           </div>
           <div>
-            <h4 className="font-bold mb-3 text-base">Galería</h4>
+            <h4 className="font-bold mb-3 text-base">​</h4>
             <p className="text-sm opacity-80 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
             <p className="text-sm opacity-80 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
             <p className="text-sm opacity-80 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>

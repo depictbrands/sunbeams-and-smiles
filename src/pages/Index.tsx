@@ -474,12 +474,11 @@ const Index = () => {
               { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10' },
               { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10' },
             ].map((f, i) => (
-              <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all flex flex-col items-start w-full">
-                <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>
+              <Card key={i} className="p-5 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full">
+                <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
                   <f.icon className="h-7 w-7" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
-                {f.desc && <p className="text-muted-foreground text-sm">{f.desc}</p>}
+                <h3 className="text-2xl sm:text-3xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
               </Card>
             ))}
           </div>

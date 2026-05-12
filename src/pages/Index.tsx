@@ -378,7 +378,7 @@ const Index = () => {
               {/* Slide 3 — Green: Family illustration */}
               <CarouselItem>
                 {/* Mobile/Tablet: hug the image */}
-                <div className="md:hidden rounded-3xl overflow-hidden">
+                <div className="lg:hidden rounded-3xl overflow-hidden">
                   <div className="flex flex-col">
                     <div className="px-6 pt-8 text-center">
                       <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
@@ -397,7 +397,7 @@ const Index = () => {
                   </div>
                 </div>
                 {/* Desktop: image fills the slide */}
-                <div className="hidden md:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
+                <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
                   <img
                     src={kidsDrawing}
                     alt="Dibujo infantil de una familia con la bandera de Puerto Rico"

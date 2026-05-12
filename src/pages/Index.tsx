@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock } from "lucide-react";
 import NewsletterForm from "@/components/NewsletterForm";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
 import VideoTestimonials from "@/components/VideoTestimonials";
@@ -126,7 +128,19 @@ const Index = () => {
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-ink">
             <a href="#sobre" className="hover:text-primary transition-colors">Sobre Nosotros</a>
-            <a href="#metodologia" className="hover:text-primary transition-colors">Metodología</a>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none">
+                Metodología <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="rounded-2xl">
+                <DropdownMenuItem asChild>
+                  <a href="#metodologia" className="cursor-pointer font-semibold">Proyecto Educativo</a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a href="#desarrollo-integral" className="cursor-pointer font-semibold">Formación Integral</a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
             <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
             <a href="#ubicacion" className="hover:text-primary transition-colors">Galería</a>

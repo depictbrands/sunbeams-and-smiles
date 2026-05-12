@@ -172,7 +172,7 @@ const Index = () => {
                     { href: '#metodologia', label: 'Metodología' },
                     { href: '#facilidades', label: 'Facilidades' },
                     { href: '#testimonios', label: 'Testimonios' },
-                    { href: '#presentaciones', label: '​' },
+                    { href: '/galeria', label: 'Galería' },
                   ].map((item) => (
                     <SheetClose asChild key={item.href}>
                       <a href={item.href} className="py-3 px-2 rounded-lg hover:bg-muted transition-colors">{item.label}</a>

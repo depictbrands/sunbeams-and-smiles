@@ -546,7 +546,10 @@ const Index = () => {
       <section id="ubicacion" className="bg-muted py-20">
         <div className="container text-center max-w-3xl mb-10">
           <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Ubicación</span>
-          <h2 className="text-4xl sm:text-5xl text-ink mt-5 mb-4">Visítanos en Puerto Rico</h2>
+          <h2 className="text-4xl text-ink mt-5 mb-4 sm:text-4xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+            Visítanos en San Juan, Puerto Rico.<br />
+            En el área de Cupey cerca de Los Paseos
+          </h2>
           <p className="text-lg text-muted-foreground font-bold">Encuéntranos fácilmente en el mapa.</p>
         </div>
         <div className="container grid md:grid-cols-2 gap-6">

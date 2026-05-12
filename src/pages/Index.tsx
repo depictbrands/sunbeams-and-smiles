@@ -470,11 +470,11 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-6">
             {[
-              { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10' },
-              { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10' },
-              { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10' },
+              { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
+              { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },
+              { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
             ].map((f, i) => (
-              <Card key={i} className="p-5 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full">
+              <Card key={i} className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full`}>
                 <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
                   <f.icon className="h-7 w-7" />
                 </div>

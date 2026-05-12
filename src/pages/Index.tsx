@@ -426,7 +426,7 @@ const Index = () => {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-14">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Formación Integral</span>
-            <h2 className="text-3xl sm:text-4xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Cada niño tiene un plan de desarrollo propio. <br />
               Cada familia tiene un acompañamiento directo con la maestra y el personal.
             </h2>

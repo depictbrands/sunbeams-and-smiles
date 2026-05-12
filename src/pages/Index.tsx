@@ -465,7 +465,7 @@ const Index = () => {
         <div className="relative z-10 container py-24 lg:absolute lg:inset-0 lg:py-24 lg:flex lg:flex-col lg:justify-center">
           <div className="max-w-2xl mx-auto mb-14 text-center">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Proyecto Educativo</span>
-            <h2 className="text-3xl sm:text-4xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             {[

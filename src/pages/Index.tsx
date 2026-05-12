@@ -130,7 +130,7 @@ const Index = () => {
             <a href="#sobre" className="hover:text-primary transition-colors">Sobre Nosotros</a>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none">
-                Metodología <ChevronDown className="h-4 w-4" />
+                Proyecto Educativo <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="rounded-2xl">
                 <DropdownMenuItem asChild>

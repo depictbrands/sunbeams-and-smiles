@@ -297,12 +297,12 @@ const Index = () => {
               {/* Slide 1 — Pink: Founder */}
               <CarouselItem>
                 <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#FF80B0" }}>
-                  <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+                  <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
                     <img
                       src={founderPhoto}
                       alt="Griselle Bou, Directora de Preescolar SonSoles"
                       loading="lazy"
-                      className="w-64 sm:w-80 md:w-96 h-auto object-contain flex-shrink-0 self-center block"
+                      className="w-64 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
                     />
                     <div className="flex flex-col justify-center text-left max-w-2xl">
                       <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4">
@@ -347,8 +347,8 @@ const Index = () => {
               {/* Slide 2 — Purple: Teachers */}
               <CarouselItem>
                 <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
-                  <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
-                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 md:w-96">
+                  <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 lg:w-96">
                       {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
                         <img
                           key={i}
@@ -378,7 +378,7 @@ const Index = () => {
               {/* Slide 3 — Green: Family illustration */}
               <CarouselItem>
                 {/* Mobile/Tablet: hug the image */}
-                <div className="md:hidden rounded-3xl overflow-hidden">
+                <div className="lg:hidden rounded-3xl overflow-hidden">
                   <div className="flex flex-col">
                     <div className="px-6 pt-8 text-center">
                       <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
@@ -397,7 +397,7 @@ const Index = () => {
                   </div>
                 </div>
                 {/* Desktop: image fills the slide */}
-                <div className="hidden md:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
+                <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
                   <img
                     src={kidsDrawing}
                     alt="Dibujo infantil de una familia con la bandera de Puerto Rico"

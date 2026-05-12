@@ -347,8 +347,8 @@ const Index = () => {
               {/* Slide 2 — Purple: Teachers */}
               <CarouselItem>
                 <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
-                  <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
-                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 md:w-96">
+                  <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 lg:w-96">
                       {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
                         <img
                           key={i}

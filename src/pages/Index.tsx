@@ -449,18 +449,18 @@ const Index = () => {
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Proyecto Educativo</span>
             <h2 className="text-3xl sm:text-4xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {[
               { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10' },
               { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10' },
               { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10' },
             ].map((f, i) => (
-              <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all">
+              <Card key={i} className="p-7 rounded-3xl border-2 border-border hover:border-primary/40 hover:-translate-y-1 transition-all inline-flex flex-col items-start w-auto">
                 <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>
                   <f.icon className="h-7 w-7" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
-                <p className="text-muted-foreground text-sm">{f.desc}</p>
+                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2 whitespace-nowrap" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
+                {f.desc && <p className="text-muted-foreground text-sm">{f.desc}</p>}
               </Card>
             ))}
           </div>

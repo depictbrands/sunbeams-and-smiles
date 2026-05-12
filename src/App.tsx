@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import ParentPortal from "./pages/ParentPortal.tsx";
 import TeacherInbox from "./pages/TeacherInbox.tsx";
 import Galeria from "./pages/Galeria.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/portal-padres" element={<ParentPortal />} />
           <Route path="/admin/mensajes" element={<TeacherInbox />} />
           <Route path="/galeria" element={<Galeria />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

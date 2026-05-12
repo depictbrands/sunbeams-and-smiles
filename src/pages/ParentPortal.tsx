@@ -19,6 +19,8 @@ const ParentPortal = () => {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
 
   
   const [portalLoading, setPortalLoading] = useState(false);
@@ -90,6 +92,25 @@ const ParentPortal = () => {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setAuthLoading(false);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Revisa tu correo",
+      description: "Te enviamos un enlace para restablecer tu contraseña.",
+    });
+    setShowForgot(false);
+    setForgotEmail("");
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setTuitionUrl(null);
@@ -141,19 +162,50 @@ const ParentPortal = () => {
                   <TabsTrigger value="signup"><UserPlus className="h-4 w-4 mr-2" />Crear cuenta</TabsTrigger>
                 </TabsList>
                 <TabsContent value="login">
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
-                      <Input type="email" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="h-12 rounded-xl" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
-                      <Input type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="h-12 rounded-xl" />
-                    </div>
-                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
-                      {authLoading ? "Ingresando…" : "Iniciar sesión"}
-                    </Button>
-                  </form>
+                  {!showForgot ? (
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
+                        <Input type="email" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="h-12 rounded-xl" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
+                        <Input type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="h-12 rounded-xl" />
+                      </div>
+                      <div className="text-right">
+                        <button
+                          type="button"
+                          onClick={() => { setShowForgot(true); setForgotEmail(loginEmail); }}
+                          className="text-sm text-primary hover:underline font-medium"
+                        >
+                          ¿Olvidaste tu contraseña?
+                        </button>
+                      </div>
+                      <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                        {authLoading ? "Ingresando…" : "Iniciar sesión"}
+                      </Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleForgotPassword} className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+                      </p>
+                      <div>
+                        <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
+                        <Input type="email" required value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} className="h-12 rounded-xl" />
+                      </div>
+                      <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                        {authLoading ? "Enviando…" : "Enviar enlace"}
+                      </Button>
+                      <button
+                        type="button"
+                        onClick={() => setShowForgot(false)}
+                        className="block w-full text-center text-sm text-muted-foreground hover:text-ink"
+                      >
+                        Volver al inicio de sesión
+                      </button>
+                    </form>
+                  )}
                 </TabsContent>
                 <TabsContent value="signup">
                   <form onSubmit={handleSignup} className="space-y-4">

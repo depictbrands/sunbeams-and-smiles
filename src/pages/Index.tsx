@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
@@ -17,6 +17,13 @@ import heroKids from "/lovable-uploads/hero-kids-new.jpg";
 import founderPhoto from "@/assets/founder-griselle-new.png";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";
+import teacher1 from "@/assets/teacher-1.png";
+import teacher2 from "@/assets/teacher-2.png";
+import teacher3 from "@/assets/teacher-3.png";
+import teacher4 from "@/assets/teacher-4.png";
+import teacher5 from "@/assets/teacher-5.png";
+import teacher6 from "@/assets/teacher-6.png";
+import teacher7 from "@/assets/teacher-7.png";
 import duckAnimation from "@/assets/duck-animation.gif";
 import playground from "@/assets/playground.jpg";
 import contactKids from "@/assets/contact-kids.jpg";
@@ -268,15 +275,14 @@ const Index = () => {
       {/* INTRO */}
       <section id="sobre" className="bg-muted py-20">
         <div className="container text-center max-w-5xl mb-14">
-          <h2 className="text-5xl sm:text-6xl text-ink mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Sembrando excelencia en el corazón de la familia puertorriqueña.</h2>
-          <p className="text-lg text-muted-foreground font-semibold" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>Un programa diseñado para Maternal a PreKinder donde cada niño descubre su mejor versión rodeado de amor y aprendizaje significativo.</p>
+          <h2 className="text-4xl sm:text-5xl text-ink mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>SonSoles es un centro preescolar especializado en estimulación temprana, con una <span className="text-secondary">filosofía humanista</span> y <span className="text-secondary">espíritu cristiano</span>, donde cada niño es tratado como lo que es: <span className="text-secondary">único e irrepetible</span>.</h2>
         </div>
 
         <div className="container grid md:grid-cols-3 gap-6 mb-16">
           {[
-            { color: 'bg-accent text-accent-foreground', text: 'Educación personalizada para los líderes del mañana.', icon: BookOpen },
-            { color: 'bg-secondary text-secondary-foreground', text: 'Un entorno seguro, saludable y lleno de alegría y cariño.', icon: Heart },
-            { color: 'bg-primary text-primary-foreground', text: 'Ofrecemos una dieta balanceada cada día.', icon: Apple },
+            { color: 'bg-accent text-accent-foreground', text: 'Educación personalizada donde atendamos las particularidades de cada niño, aspecto fundamental para el desarrollo de sus facultades y virtudes.', icon: BookOpen },
+            { color: 'bg-secondary text-secondary-foreground', text: 'Un ambiente familiar lleno de alegría y cariño, donde se educa en la adquisición de buenos modales y trato con las demás personas.', icon: Heart },
+            { color: 'bg-primary text-primary-foreground', text: 'Papá y mamá son los primeros educadores de sus hijos y en SonSoles los acompañamos en esa hermosa misión.', icon: PersonStanding },
           ].map((item, i) => (
             <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>
               <item.icon className="h-10 w-10 mb-4 opacity-90" />
@@ -306,17 +312,14 @@ const Index = () => {
                         Griselle Bou de Blanco
                       </h3>
                       <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
-                        Más de 30 años formando voces y amando la música
+                        Educadora • Autora • Pianista
                       </p>
                       <p className="text-base sm:text-lg leading-relaxed text-ink/90 mb-8">
-                        Pianista formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff y Kindermusik, y directora coral con décadas al servicio de la infancia puertorriqueña.
+                        Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
                       </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5">
+                      <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">
                         <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
-                          Bachillerato y Maestría en Educación del Niño — UPR
-                        </div>
-                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
-                          30 años en el Coro de Niños de San Juan
+                          Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
                         </div>
                       </div>
                       <div className="rounded-2xl bg-ink px-6 py-5 mb-8">
@@ -341,7 +344,38 @@ const Index = () => {
                 </div>
               </CarouselItem>
 
-              {/* Slide 2 — Green: Family illustration */}
+              {/* Slide 2 — Purple: Teachers */}
+              <CarouselItem>
+                <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
+                  <div className="p-8 sm:p-14 md:p-16 flex flex-col md:flex-row gap-10 md:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 md:w-96">
+                      {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
+                        <img
+                          key={i}
+                          src={src}
+                          alt={`Maestra ${i + 1}`}
+                          loading="lazy"
+                          className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                          style={{ borderColor: "#D4B5F0" }}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col justify-center text-left max-w-2xl">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4 text-slate-100">
+                        NUESTRAS MAESTRAS
+                      </span>
+                      <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                        Maestras que enseñan con el corazón
+                      </h3>
+                      <p className="text-base sm:text-lg leading-relaxed text-slate-100">
+                        En SonSoles cada maestra es elegida con cuidado: por su preparación, por su vocación y por su capacidad de amar a cada niño como único. Son especializadas en estimulación temprana, expertas en cada etapa del desarrollo, y cariñosas en cada gesto del día.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+
+              {/* Slide 3 — Green: Family illustration */}
               <CarouselItem>
                 <div className="relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
                   <div className="w-full overflow-hidden min-h-[560px] h-full flex items-center justify-center">
@@ -351,6 +385,11 @@ const Index = () => {
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
+                  </div>
+                  <div className="absolute top-6 sm:top-10 left-1/2 -translate-x-1/2 z-10 px-6 w-full max-w-3xl text-center">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+                      Las familias son las principales protagonistas de nuestro proyecto educativo.
+                    </h3>
                   </div>
                   <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10">
                     <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>

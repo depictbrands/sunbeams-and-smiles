@@ -53,11 +53,11 @@ const Galeria = () => {
           </p>
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-6 [column-fill:_balance]">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-2 sm:gap-3 [column-fill:_balance]">
           {photoUrls.map((src, i) => (
             <div
               key={src}
-              className="mb-4 sm:mb-6 break-inside-avoid overflow-hidden rounded-2xl shadow-playful bg-card group"
+              className="mb-2 sm:mb-3 break-inside-avoid overflow-hidden rounded-2xl shadow-playful bg-card group"
             >
               <img
                 src={src}

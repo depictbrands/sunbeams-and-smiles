@@ -143,7 +143,7 @@ const Index = () => {
             </DropdownMenu>
             <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
             <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
-            <a href="#presentaciones" className="hover:text-primary transition-colors">​</a>
+            <a href="/galeria" className="hover:text-primary transition-colors">Galería</a>
           </nav>
           <div className="flex items-center gap-3">
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>

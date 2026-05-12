@@ -137,7 +137,7 @@ const Index = () => {
             <Button asChild variant="outlineWarm" size="lg" className="hidden lg:inline-flex">
               <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
             </Button>
-            <Button asChild variant="hero" size="lg" className="hidden sm:inline-flex">
+            <Button asChild variant="sun" size="lg" className="hidden sm:inline-flex rounded-full">
               <a href="#contacto">Matricúlate</a>
             </Button>
 
@@ -172,7 +172,7 @@ const Index = () => {
                     </Button>
                   </SheetClose>
                   <SheetClose asChild>
-                    <Button asChild variant="hero" size="lg" className="w-full">
+                    <Button asChild variant="sun" size="lg" className="w-full rounded-full">
                       <a href="#contacto">Matricúlate</a>
                     </Button>
                   </SheetClose>

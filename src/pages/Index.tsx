@@ -26,7 +26,7 @@ import teacher3 from "@/assets/teacher-3.png";
 import teacher4 from "@/assets/teacher-4.png";
 import teacher5 from "@/assets/teacher-5.png";
 import teacher6 from "@/assets/teacher-6.png";
-import teacher7 from "@/assets/teacher-7.png";
+import teacher7 from "@/assets/teacher-7-updated.jpg";
 import duckAnimation from "@/assets/duck-animation.gif";
 import playground from "@/assets/playground.jpg";
 import contactKids from "@/assets/contact-kids.jpg";

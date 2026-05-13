@@ -132,16 +132,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Announcement bar */}
-      <div className="bg-accent text-accent-foreground text-center text-sm font-bold py-2.5 px-4">
+      <div className="bg-accent text-accent-foreground text-center text-[11px] sm:text-sm font-bold py-2 px-3">
         <a
           href="https://wa.me/17879935623"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Comunícate por WhatsApp al 787-993-5623"
-          className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+          className="inline-flex flex-nowrap items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap hover:opacity-80 transition-opacity"
         >
-          MATRÍCULA ABIERTA — Comunícate por{"\n"}
-          <WhatsAppIcon className="h-5 w-5" />
+          <span>MATRÍCULA ABIERTA — Comunícate por</span>
+          <WhatsAppIcon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
           <span className="underline">787-993-5623</span>
         </a>
       </div>

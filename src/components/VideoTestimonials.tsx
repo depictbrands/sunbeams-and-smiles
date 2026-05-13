@@ -56,19 +56,12 @@ const VideoTestimonials = () => {
   };
 
   // On mobile: scroll the active slide into view (centered) when active changes.
-  // Wait for the width transition (duration-500) to finish so offsets are correct.
+  // Single pass after the slide-width transition (duration-500) completes to
+  // avoid multiple forced layouts per change.
   useEffect(() => {
     if (!isMobile) return;
-    // Initial pass on next frame (handles first render)
-    const raf = requestAnimationFrame(() => centerSlide(active, "auto"));
-    // Final pass after the slide-width transition completes
-    const t1 = window.setTimeout(() => centerSlide(active, "smooth"), 80);
-    const t2 = window.setTimeout(() => centerSlide(active, "smooth"), 550);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    const t = window.setTimeout(() => centerSlide(active, "smooth"), 520);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, isMobile]);
 
@@ -82,12 +75,15 @@ const VideoTestimonials = () => {
     let touchStartScrollLeft = 0;
     let activeAtTouchStart = 0;
     let gestureLocked = false;
+    let maxTravel = 0; // cached on touchstart to avoid layout reads per touchmove
 
     const onTouchStart = (e: TouchEvent) => {
       touchStartX = e.touches[0].clientX;
       touchStartScrollLeft = scroller.scrollLeft;
       activeAtTouchStart = active;
       gestureLocked = false;
+      const w = slideRefs.current[activeAtTouchStart]?.clientWidth ?? 0;
+      maxTravel = w * 0.9 + 16;
     };
 
     const onTouchMove = (e: TouchEvent) => {
@@ -96,7 +92,6 @@ const VideoTestimonials = () => {
         return;
       }
       const dx = e.touches[0].clientX - touchStartX;
-      const maxTravel = (slideRefs.current[activeAtTouchStart]?.clientWidth ?? 0) * 0.9 + 16;
       if (Math.abs(dx) > maxTravel) {
         gestureLocked = true;
       }

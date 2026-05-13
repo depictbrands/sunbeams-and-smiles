@@ -4,18 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock } from "lucide-react";
-import NewsletterForm from "@/components/NewsletterForm";
+import { lazy, Suspense, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import logo from "@/assets/logo.gif";
-import VideoTestimonials from "@/components/VideoTestimonials";
-import Performances from "@/components/Performances";
-import WhatsAppChat from "@/components/WhatsAppChat";
+const NewsletterForm = lazy(() => import("@/components/NewsletterForm"));
+const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
+const Performances = lazy(() => import("@/components/Performances"));
+const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
 import heroKids from "/lovable-uploads/hero-kids-new.jpg";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 
@@ -554,7 +554,7 @@ const Index = () => {
       </section>
 
       {/* PRESENTACIONES */}
-      <Performances />
+      <Suspense fallback={null}><Performances /></Suspense>
 
       {/* TESTIMONIOS */}
       <section id="testimonios" className="py-24 bg-background">
@@ -564,7 +564,7 @@ const Index = () => {
             <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Deja que nuestros padres te cuenten.</h2>
             
           </div>
-          <VideoTestimonials />
+          <Suspense fallback={null}><VideoTestimonials /></Suspense>
           <div className="mt-16">
             <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
           </div>
@@ -645,14 +645,14 @@ const Index = () => {
               <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="bg-card/10 hover:bg-secondary p-2.5 rounded-full transition-colors"><Facebook className="h-5 w-5" /></a>
             </div>
           </div>
-          <NewsletterForm />
+          <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>
         <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
           © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
         </div>
       </footer>
 
-      <WhatsAppChat />
+      <Suspense fallback={null}><WhatsAppChat /></Suspense>
     </div>
   );
 };

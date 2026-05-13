@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock, Navigation } from "lucide-react";
-import { lazy, Suspense, useRef } from "react";
+import { lazy, Suspense } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
@@ -14,21 +14,11 @@ const NewsletterForm = lazy(() => import("@/components/NewsletterForm"));
 const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
 const Performances = lazy(() => import("@/components/Performances"));
 const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
+const SobreCarousel = lazy(() => import("@/components/SobreCarousel"));
 const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed";
 const MAP_FACADE_IMAGE = "/map-facade.svg";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 const heroKids = "/lovable-uploads/hero-kids-new.webp";
-import founderPhoto from "@/assets/founder-griselle-new.webp";
 
-import kidsDrawing from "@/assets/kids-drawing.gif";
-import teacher1 from "@/assets/teacher-1.webp";
-import teacher2 from "@/assets/teacher-2.webp";
-import teacher3 from "@/assets/teacher-3.webp";
-import teacher4 from "@/assets/teacher-4.webp";
-import teacher5 from "@/assets/teacher-5.webp";
-import teacher6 from "@/assets/teacher-6.webp";
-import teacher7 from "@/assets/teacher-7-updated.webp";
 import duckAnimation from "@/assets/duck-animation.gif";
 import playground from "@/assets/playground.webp";
 import contactKids from "@/assets/contact-kids.webp";
@@ -43,7 +33,6 @@ import sonsolesBuilding from "@/assets/sonsoles-building.webp";
 import { useEffect, useState } from "react";
 
 const Index = () => {
-  const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
   const facilityImages = [facility1, facility2, facility3, facility4, facility5, facility6, facility7];
   const [facilityIndex, setFacilityIndex] = useState(0);
   const [deferredWidgetsReady, setDeferredWidgetsReady] = useState(false);
@@ -354,140 +343,9 @@ const Index = () => {
         </div>
 
         <div className="container relative pb-16">
-          <Carousel opts={{ loop: true }} plugins={[sobreAutoplay.current]} className="group">
-            <CarouselContent>
-              {/* Slide 1 — Pink: Founder */}
-              <CarouselItem>
-                <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#FF80B0" }}>
-                  <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
-                    <img
-                      src={founderPhoto}
-                      alt="Griselle Bou, Directora de Preescolar SonSoles"
-                      loading="lazy"
-                      width={1797}
-                      height={1920}
-                      className="w-64 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
-                    />
-                    <div className="flex flex-col justify-center text-left max-w-2xl">
-                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink mb-4">
-                        FUNDADORA Y DIRECTORA
-                      </span>
-                      <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
-                        Griselle Bou de Blanco
-                      </h3>
-                      <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
-                        Educadora • Autora • Pianista
-                      </p>
-                      <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
-                        Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
-                      </p>
-                      <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">
-                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
-                          Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-ink px-6 py-5 mb-8">
-                        <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-2" style={{ color: "#FF80B0" }}>
-                          Reconocimiento Internacional
-                        </span>
-                        <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#fadfef" }}>
-                          Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
-                        </p>
-                      </div>
-
-                      <div>
-                        <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
-                          <a href="mailto:grisellebou@gmail.com">
-                            <Mail className="h-4 w-4" /> Escríbele a Griselle
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </CarouselItem>
-
-              {/* Slide 2 — Purple: Teachers */}
-              <CarouselItem>
-                <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
-                  <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
-                    <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-64 sm:w-80 lg:w-96">
-                      {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
-                        <img
-                          key={i}
-                          src={src}
-                          alt={`Maestra ${i + 1}`}
-                          loading="lazy"
-                          width={400}
-                          height={400}
-                          className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
-                          style={{ borderColor: "#D4B5F0" }}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex flex-col justify-center text-left max-w-2xl">
-                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
-                        NUESTRAS MAESTRAS
-                      </span>
-                      <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
-                        Maestras que enseñan con el corazón
-                      </h3>
-                      <p className="text-base sm:text-lg leading-relaxed text-slate-100">
-                        En SonSoles cada maestra es elegida con cuidado: por su preparación, por su vocación y por su capacidad de amar a cada niño como único. Son especializadas en estimulación temprana, expertas en cada etapa del desarrollo, y cariñosas en cada gesto del día.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CarouselItem>
-
-              {/* Slide 3 — Green: Family illustration */}
-              <CarouselItem>
-                {/* Mobile/Tablet: hug the image */}
-                <div className="lg:hidden rounded-3xl overflow-hidden">
-                  <div className="flex flex-col">
-                    <div className="px-6 pt-8 text-center">
-                      <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                        Las familias son las principales protagonistas de nuestro proyecto educativo.
-                      </h3>
-                    </div>
-                    <img
-                      src={kidsDrawing}
-                      alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
-                      loading="lazy"
-                      width={1280}
-                      height={896}
-                      className="block w-full h-auto my-6"
-                    />
-                    <div className="px-6 pb-8 flex justify-center">
-                      <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
-                    </div>
-                  </div>
-                </div>
-                {/* Desktop: image fills the slide */}
-                <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
-                  <img
-                    src={kidsDrawing}
-                    alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
-                    loading="lazy"
-                    width={1280}
-                    height={896}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 px-4 w-full max-w-3xl text-center">
-                    <h3 className="text-3xl lg:text-4xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                      Las familias son las principales protagonistas de nuestro proyecto educativo.
-                    </h3>
-                  </div>
-                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-                    <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
-                  </div>
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Carousel>
+          <Suspense fallback={<div className="min-h-[560px] rounded-3xl bg-muted/30" aria-hidden="true" />}>
+            <SobreCarousel />
+          </Suspense>
         </div>
       </section>
 

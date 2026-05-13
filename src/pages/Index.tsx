@@ -227,28 +227,29 @@ const Index = () => {
         id="top"
         className="relative overflow-hidden isolate pb-16 sm:pb-24"
       >
-        {/* Mobile: full-bleed video shown in its natural aspect above content */}
+        {/* Mobile: static poster image instead of video to protect LCP/TBT */}
         <div className="lg:hidden relative w-full bg-ink">
-          <video
-            key="mobile"
-            autoPlay
-            muted
-            loop
-            playsInline
+          <img
+            src="/hero-poster-mobile.webp"
+            alt=""
             aria-hidden="true"
+            width={720}
+            height={405}
+            fetchPriority="high"
+            decoding="async"
             className="w-full h-auto block"
-          >
-            <source src="/2ndVersion-hero.mp4" type="video/mp4" />
-          </video>
+          />
         </div>
 
-        {/* Desktop: video as background */}
+        {/* Desktop: video as background, deferred to avoid competing with LCP */}
         <video
           key="desktop"
           autoPlay
           muted
           loop
           playsInline
+          preload="none"
+          poster="/hero-poster-mobile.webp"
           aria-hidden="true"
           className="hidden lg:block absolute inset-0 w-full h-full object-cover -z-10"
         >

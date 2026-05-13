@@ -367,12 +367,13 @@ const Index = () => {
 
         <div className="container grid md:grid-cols-3 gap-6 mb-16">
           {[
-            { color: 'bg-accent text-accent-foreground', text: 'Educación personalizada donde atendamos las particularidades de cada niño, aspecto fundamental para el desarrollo de sus facultades y virtudes.', icon: BookOpen },
-            { color: 'bg-secondary text-secondary-foreground', text: 'Un ambiente familiar lleno de alegría y cariño, donde se educa en la adquisición de buenos modales y trato con las demás personas.', icon: Heart },
-            { color: 'bg-leaf text-leaf-foreground', text: 'Papá y mamá son los primeros educadores de sus hijos y en SonSoles los acompañamos en esa hermosa misión.', icon: PersonStanding },
+            { color: 'bg-accent text-accent-foreground', title: 'Educación personalizada', text: 'donde atendamos las particularidades de cada niño, aspecto fundamental para el desarrollo de sus facultades y virtudes.', icon: BookOpen },
+            { color: 'bg-secondary text-secondary-foreground', title: 'Un ambiente familiar', text: 'lleno de alegría y cariño, donde se educa en la adquisición de buenos modales y trato con las demás personas.', icon: Heart },
+            { color: 'bg-leaf text-leaf-foreground', title: 'Papá y mamá', text: 'son los primeros educadores de sus hijos y en SonSoles los acompañamos en esa hermosa misión.', icon: PersonStanding },
           ].map((item, i) => (
             <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>
               <item.icon className="h-10 w-10 mb-4 opacity-90" />
+              <h3 className="text-xl md:text-2xl font-bold mb-2" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.title}</h3>
               <p className="text-base md:text-lg leading-snug" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.text}</p>
             </div>
           ))}

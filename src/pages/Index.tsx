@@ -564,7 +564,7 @@ const Index = () => {
             <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Deja que nuestros padres te cuenten.</h2>
             
           </div>
-          <VideoTestimonials />
+          <Suspense fallback={null}><VideoTestimonials /></Suspense>
           <div className="mt-16">
             <div className="elfsight-app-dea559c3-1a4d-4c55-b74d-28a786aa1094" data-elfsight-app-lazy></div>
           </div>

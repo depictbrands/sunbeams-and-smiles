@@ -15,6 +15,7 @@ import teacher7 from "@/assets/teacher-7-updated.webp";
 
 const SobreCarousel = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const teachersAutoplay = useRef(Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true }));
   const [bioOpen, setBioOpen] = useState(false);
   const [credsOpen, setCredsOpen] = useState(false);
   const [recogOpen, setRecogOpen] = useState(false);

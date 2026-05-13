@@ -123,7 +123,7 @@ const Index = () => {
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between py-3">
           <a href="#top" className="flex items-center gap-3">
-            <img src={logo} alt="Preescolar SonSoles escudo" className="h-12 w-12" />
+            <img src={logo} alt="Preescolar SonSoles escudo" width={48} height={48} className="h-12 w-12" />
             <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-ink">

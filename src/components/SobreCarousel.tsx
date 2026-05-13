@@ -198,7 +198,7 @@ const SobreCarousel = () => {
               </div>
             </div>
           </div>
-          <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden bg-leaf h-full">
+          <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden h-full">
             <img
               src={kidsDrawing}
               alt="Dibujo infantil de una familia con la bandera de Puerto Rico"

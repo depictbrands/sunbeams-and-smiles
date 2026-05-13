@@ -252,7 +252,9 @@ const Index = () => {
             aria-hidden="true"
             width={720}
             height={405}
-            decoding="async"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
             className="w-full h-auto block"
           />
         </div>

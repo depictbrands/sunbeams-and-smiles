@@ -7,31 +7,49 @@
     <meta name="description" content="Preescolar Sonsoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta.">
     <meta name="author" content="Preescolar Sonsoles" />
 
-    
-    
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/AFrwXipZM9auxyChYhclNMZotOx2/social-images/social-1778623740901-Foto_de_Nilda🌷💗_6.webp">
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/AFrwXipZM9auxyChYhclNMZotOx2/social-images/social-1778623740901-Foto_de_Nilda🌷💗_6.webp">
-    
-  
-  
-  
+    <meta property="og:title" content="Preescolar Sonsoles | Sembrando valores en Puerto Rico">
+    <meta name="twitter:title" content="Preescolar Sonsoles | Sembrando valores en Puerto Rico">
+    <meta property="og:description" content="Preescolar Sonsoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta.">
+    <meta name="twitter:description" content="Preescolar Sonsoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta.">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V0Z1WEL7TY"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-V0Z1WEL7TY');
-  </script>
-  <meta property="og:title" content="Preescolar Sonsoles | Sembrando valores en Puerto Rico">
-  <meta name="twitter:title" content="Preescolar Sonsoles | Sembrando valores en Puerto Rico">
-  <meta property="og:description" content="Preescolar Sonsoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta.">
-  <meta name="twitter:description" content="Preescolar Sonsoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta.">
-</head>
+    <!-- Preconnect to third parties used after interactive -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://elfsightcdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+    <!-- Preload LCP hero image -->
+    <link rel="preload" as="image" href="/lovable-uploads/hero-kids-new.jpg" fetchpriority="high">
+
+    <!-- Defer Google Analytics until the page is interactive (load + idle) -->
+    <script>
+      (function () {
+        function loadGA() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-V0Z1WEL7TY';
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-V0Z1WEL7TY');
+        }
+        function schedule() {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadGA, { timeout: 4000 });
+          } else {
+            setTimeout(loadGA, 2500);
+          }
+        }
+        if (document.readyState === 'complete') schedule();
+        else window.addEventListener('load', schedule, { once: true });
+      })();
+    </script>
+  </head>
 
   <body>
     <div id="root"></div>

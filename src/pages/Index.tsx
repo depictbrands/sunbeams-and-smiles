@@ -372,6 +372,8 @@ const Index = () => {
                           src={src}
                           alt={`Maestra ${i + 1}`}
                           loading="lazy"
+                          width={400}
+                          height={400}
                           className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
                           style={{ borderColor: "#D4B5F0" }}
                         />

@@ -267,7 +267,7 @@ const Index = () => {
             <h1 className="text-4xl sm:text-5xl leading-[1.05] text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
-            <div className="relative w-full">
+            <div className="relative w-full max-w-[320px] mx-auto pb-6">
               <img
                 src={heroKids}
                 alt="Niños felices en Preescolar SonSoles"
@@ -276,22 +276,25 @@ const Index = () => {
                 loading="eager"
                 fetchPriority="high"
                 decoding="sync"
-                className="rounded-[1.5rem] shadow-soft w-full max-w-[360px] mx-auto aspect-square object-cover border-4 border-primary"
+                className="relative rounded-full shadow-playful w-full aspect-square object-cover border-8 border-primary"
               />
+              <a
+                href="#testimonios"
+                aria-label="Ver testimonios — 5.0 en Google"
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-card rounded-2xl shadow-soft px-4 py-2.5 flex items-center gap-2 hover:shadow-playful transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary whitespace-nowrap"
+              >
+                <div className="flex -space-x-0.5">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-accent text-accent" />)}
+                </div>
+                <div className="text-xs text-left">
+                  <div className="font-bold text-ink leading-tight">5.0 en Google</div>
+                  <div className="text-muted-foreground leading-tight">Familias felices</div>
+                </div>
+              </a>
             </div>
             <Button asChild variant="hero" size="xl" className="rounded-full w-full max-w-xs">
               <a href="#contacto">Agenda un tour</a>
             </Button>
-            <a
-              href="#testimonios"
-              aria-label="Ver testimonios — 5.0 en Google"
-              className="inline-flex items-center gap-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full px-3 py-1"
-            >
-              <div className="flex">
-                {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-accent text-accent" />)}
-              </div>
-              <span className="font-bold text-ink">5.0 en Google</span>
-            </a>
           </div>
         </div>
 

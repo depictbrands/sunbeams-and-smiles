@@ -676,15 +676,15 @@ const Index = () => {
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute inset-0 bg-ink/45" aria-hidden="true" />
-                <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-white">
+                <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-ink-foreground">
                   <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-playful transition-transform duration-300 group-hover:scale-110">
                     <Navigation className="h-7 w-7" />
                   </span>
                   <span className="text-2xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 800 }}>
-                    {mapActive ? "Preparando mapa" : "Ver mapa"}
+                    {mapActive ? "Preparando mapa" : "Abrir ubicación"}
                   </span>
                   <span className="max-w-xs text-sm font-bold opacity-95">
-                    {mapActive ? "Cargará después de que la página esté interactiva" : "Cargar Google Maps solo al hacer clic"}
+                    Carretera 176 Km 4.2, Cupey Alto
                   </span>
                 </span>
               </button>

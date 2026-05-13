@@ -178,7 +178,7 @@ const Index = () => {
             <Button asChild variant="outlineWarm" size="lg" className="hidden lg:inline-flex">
               <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
             </Button>
-            <Button asChild variant="hero" size="lg" className="hidden sm:inline-flex rounded-full">
+            <Button asChild variant="hero" size="lg" className="hidden sm:inline-flex rounded-full max-lg:bg-accent max-lg:text-accent-foreground max-lg:hover:bg-accent/90 max-lg:h-9 max-lg:px-4 max-lg:text-sm">
               <a href="#contacto">Visítanos</a>
             </Button>
 

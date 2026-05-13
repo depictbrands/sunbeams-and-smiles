@@ -600,6 +600,9 @@ const Index = () => {
             <img
               src={sonsolesBuilding}
               alt="Edificio Preescolar SonSoles"
+              loading="lazy"
+              width={1920}
+              height={1233}
               className="w-full h-full object-cover bg-primary border-0 border-primary-foreground"
             />
           </div>

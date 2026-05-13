@@ -124,7 +124,7 @@ const SobreCarousel = () => {
         {/* Slide 2 — Purple: Teachers */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
-            <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[440px] lg:min-h-[560px] h-full max-w-5xl mx-auto">
+            <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[360px] lg:min-h-[560px] h-full max-w-5xl mx-auto">
               <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-full max-w-md sm:w-80 lg:w-96 mx-auto">
                 {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
                   <img
@@ -157,7 +157,7 @@ const SobreCarousel = () => {
         {/* Slide 3 — Green: Family illustration */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="lg:hidden rounded-3xl overflow-hidden bg-leaf h-full">
-            <div className="flex flex-col h-full justify-between min-h-[440px] lg:min-h-[560px]">
+            <div className="flex flex-col h-full justify-between min-h-[360px] lg:min-h-[560px]">
               <div className="px-6 pt-8 text-center">
                 <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
                   Las familias son las principales protagonistas de nuestro proyecto educativo.

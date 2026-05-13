@@ -32,7 +32,7 @@ const SobreCarousel = () => {
   );
 
   return (
-    <Carousel opts={{ loop: true }} plugins={[sobreAutoplay.current]} className="group">
+    <Carousel opts={{ loop: true, align: "start" }} plugins={[sobreAutoplay.current]} className="group">
       <CarouselContent className="-ml-4">
         {/* Slide 1 — Pink: Founder */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">

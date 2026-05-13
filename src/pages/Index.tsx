@@ -408,6 +408,8 @@ const Index = () => {
                       src={kidsDrawing}
                       alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
                       loading="lazy"
+                      width={1280}
+                      height={896}
                       className="block w-full h-auto my-6"
                     />
                     <div className="px-6 pb-8 flex justify-center">

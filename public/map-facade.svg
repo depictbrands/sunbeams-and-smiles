@@ -1,0 +1,19 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa estático de la ubicación de Preescolar SonSoles</title>
+  <desc id="desc">Ilustración de mapa con marcador en Cupey, San Juan, Puerto Rico.</desc>
+  <rect width="1280" height="720" fill="#F7F1E7"/>
+  <path d="M-40 178C154 108 286 125 462 181C649 240 789 227 938 144C1093 57 1249 58 1325 78V238C1190 206 1048 213 917 286C764 371 600 375 417 317C255 265 111 252 -40 310V178Z" fill="#DDECCF"/>
+  <path d="M-38 529C110 478 275 456 438 498C608 541 755 604 943 556C1089 519 1209 468 1320 482V730H-38V529Z" fill="#CFE7F4"/>
+  <path d="M0 394C178 362 328 384 474 427C646 478 799 488 976 434C1085 401 1190 394 1280 410" stroke="#FFFFFF" stroke-width="64" stroke-linecap="round"/>
+  <path d="M0 394C178 362 328 384 474 427C646 478 799 488 976 434C1085 401 1190 394 1280 410" stroke="#F2B047" stroke-width="28" stroke-linecap="round" stroke-dasharray="18 24"/>
+  <path d="M240 -36C269 105 320 223 390 317C484 444 522 573 528 754" stroke="#FFFFFF" stroke-width="52" stroke-linecap="round"/>
+  <path d="M240 -36C269 105 320 223 390 317C484 444 522 573 528 754" stroke="#58A7D9" stroke-width="22" stroke-linecap="round"/>
+  <path d="M1010 -30C931 104 862 191 748 257C615 334 536 450 497 731" stroke="#FFFFFF" stroke-width="52" stroke-linecap="round"/>
+  <path d="M1010 -30C931 104 862 191 748 257C615 334 536 450 497 731" stroke="#7ABF75" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="641" cy="344" r="110" fill="#413D45" opacity="0.16"/>
+  <path d="M640 142C564 142 502 204 502 280C502 383 640 556 640 556C640 556 778 383 778 280C778 204 716 142 640 142Z" fill="#FF7E1D"/>
+  <path d="M640 142C564 142 502 204 502 280C502 383 640 556 640 556C640 556 778 383 778 280C778 204 716 142 640 142Z" stroke="#FFFFFF" stroke-width="18"/>
+  <circle cx="640" cy="280" r="52" fill="#FFCE00" stroke="#FFFFFF" stroke-width="14"/>
+  <rect x="430" y="580" width="420" height="74" rx="37" fill="#413D45" opacity="0.94"/>
+  <text x="640" y="627" text-anchor="middle" font-family="Sora, Arial, sans-serif" font-size="30" font-weight="800" fill="#FFFFFF">Preescolar SonSoles</text>
+</svg>

@@ -19,7 +19,7 @@ const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jor
 const MAP_FACADE_IMAGE = "/map-facade.svg";
 const heroKids = "/lovable-uploads/hero-kids-new.webp";
 
-import duckAnimation from "@/assets/duck-animation.gif";
+
 import playground from "@/assets/playground.webp";
 import contactKids from "@/assets/contact-kids.webp";
 import facility1 from "@/assets/facility-1.webp";
@@ -382,18 +382,8 @@ const Index = () => {
       </section>
 
       {/* METODOLOGÍA */}
-      <section id="metodologia" className="relative w-full overflow-hidden lg:aspect-[2241/1600]">
-        <img
-          src={duckAnimation}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          width={2241}
-          height={1600}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-background/40" aria-hidden="true" />
-        <div className="relative z-10 container py-24 lg:absolute lg:inset-0 lg:py-24 lg:flex lg:flex-col lg:justify-center">
+      <section id="metodologia" className="relative w-full overflow-hidden bg-background">
+        <div className="relative z-10 container py-24">
           <div className="max-w-3xl mx-auto mb-64 text-center">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Proyecto Educativo</span>
             <h2 className="text-4xl sm:text-5xl text-ink mt-3 pb-10" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>

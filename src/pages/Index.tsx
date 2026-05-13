@@ -53,13 +53,20 @@ const Index = () => {
 
   useEffect(() => {
     const scriptId = "elfsight-platform-script";
-    if (!document.getElementById(scriptId)) {
+    const inject = () => {
+      if (document.getElementById(scriptId)) return;
       const script = document.createElement("script");
       script.id = scriptId;
       script.src = "https://elfsightcdn.com/platform.js";
       script.async = true;
       document.body.appendChild(script);
-    }
+    };
+    const ric = (window as any).requestIdleCallback as
+      | ((cb: () => void, opts?: { timeout: number }) => number)
+      | undefined;
+    const handle = ric
+      ? ric(inject, { timeout: 4000 })
+      : window.setTimeout(inject, 2500);
 
     // Elfsight widgets render inside Shadow DOM, so external CSS can't style
     // their inputs. Inject a stylesheet into each shadow root so form fields

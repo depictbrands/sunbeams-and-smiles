@@ -126,7 +126,28 @@ const SobreCarousel = () => {
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#9B6BD1" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-full max-w-md sm:w-80 lg:w-96 mx-auto">
+              {/* Mobile: nested carousel, one circle at a time */}
+              <div className="sm:hidden w-full max-w-xs mx-auto flex-shrink-0">
+                <Carousel opts={{ loop: true, align: "center" }} plugins={[teachersAutoplay.current]}>
+                  <CarouselContent>
+                    {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
+                      <CarouselItem key={i} className="flex justify-center">
+                        <img
+                          src={src}
+                          alt={`Maestra ${i + 1}`}
+                          loading="lazy"
+                          width={400}
+                          height={400}
+                          className="w-56 h-56 rounded-full object-cover border-4 shadow-md"
+                          style={{ borderColor: "#D4B5F0" }}
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </div>
+              {/* Tablet/Desktop: grid */}
+              <div className="hidden sm:grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-full max-w-md sm:w-80 lg:w-96 mx-auto">
                 {[teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7].map((src, i) => (
                   <img
                     key={i}

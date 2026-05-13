@@ -482,6 +482,9 @@ const Index = () => {
           src={duckAnimation}
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          width={2241}
+          height={1600}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-background/40" aria-hidden="true" />

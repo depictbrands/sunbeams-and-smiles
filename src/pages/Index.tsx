@@ -652,7 +652,7 @@ const Index = () => {
         </div>
       </footer>
 
-      <WhatsAppChat />
+      <Suspense fallback={null}><WhatsAppChat /></Suspense>
     </div>
   );
 };

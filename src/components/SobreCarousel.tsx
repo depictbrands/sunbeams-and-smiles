@@ -104,8 +104,8 @@ const SobreCarousel = () => {
 
         {/* Slide 3 — Green: Family illustration */}
         <CarouselItem>
-          <div className="lg:hidden rounded-3xl overflow-hidden">
-            <div className="flex flex-col">
+          <div className="lg:hidden rounded-3xl overflow-hidden bg-leaf h-full">
+            <div className="flex flex-col h-full justify-between min-h-[560px]">
               <div className="px-6 pt-8 text-center">
                 <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
                   Las familias son las principales protagonistas de nuestro proyecto educativo.
@@ -117,7 +117,7 @@ const SobreCarousel = () => {
                 loading="lazy"
                 width={1280}
                 height={896}
-                className="block w-full h-auto my-6"
+                className="block w-full h-auto flex-1 object-contain my-4"
               />
               <div className="px-6 pb-8 flex justify-center">
                 <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>

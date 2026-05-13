@@ -433,7 +433,7 @@ const Index = () => {
             {[
               { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
               { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary', popupBg: '#E9F0FF', closeRing: '[&>button]:focus:ring-[#0967FA] [&>button]:focus-visible:ring-[#0967FA]' },
-              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
+              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', closeRing: '[&>button]:focus:ring-[#01A744] [&>button]:focus-visible:ring-[#01A744]' },
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>

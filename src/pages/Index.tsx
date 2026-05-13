@@ -182,6 +182,11 @@ const Index = () => {
               <a href="#contacto">Visítanos</a>
             </Button>
 
+            {/* Mobile: quick CTA */}
+            <Button asChild variant="hero" size="sm" className="lg:hidden rounded-full px-4">
+              <a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda cita</a>
+            </Button>
+
             {/* Mobile menu */}
             <Sheet>
               <SheetTrigger asChild className="lg:hidden">

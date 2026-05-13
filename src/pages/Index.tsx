@@ -431,7 +431,7 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
+              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
               { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },
               { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
             ].map((f, i) => (
@@ -447,8 +447,8 @@ const Index = () => {
                     </Card>
                   </button>
                 </DialogTrigger>
-                <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0">
-                  <div className="bg-card p-6 flex flex-col items-center text-center gap-5">
+                <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
+                  <div className="p-6 flex flex-col items-center text-center gap-5" style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
                     <div className="w-full aspect-square rounded-2xl overflow-hidden">
                       <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />
                     </div>

@@ -14,22 +14,12 @@ const NewsletterForm = lazy(() => import("@/components/NewsletterForm"));
 const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
 const Performances = lazy(() => import("@/components/Performances"));
 const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
+const SobreCarousel = lazy(() => import("@/components/SobreCarousel"));
 const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed";
 const MAP_FACADE_IMAGE = "/map-facade.svg";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 const heroKids = "/lovable-uploads/hero-kids-new.webp";
-import founderPhoto from "@/assets/founder-griselle-new.webp";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";
-import teacher1 from "@/assets/teacher-1.webp";
-import teacher2 from "@/assets/teacher-2.webp";
-import teacher3 from "@/assets/teacher-3.webp";
-import teacher4 from "@/assets/teacher-4.webp";
-import teacher5 from "@/assets/teacher-5.webp";
-import teacher6 from "@/assets/teacher-6.webp";
-import teacher7 from "@/assets/teacher-7-updated.webp";
-import duckAnimation from "@/assets/duck-animation.gif";
 import playground from "@/assets/playground.webp";
 import contactKids from "@/assets/contact-kids.webp";
 import facility1 from "@/assets/facility-1.webp";
@@ -43,7 +33,6 @@ import sonsolesBuilding from "@/assets/sonsoles-building.webp";
 import { useEffect, useState } from "react";
 
 const Index = () => {
-  const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
   const facilityImages = [facility1, facility2, facility3, facility4, facility5, facility6, facility7];
   const [facilityIndex, setFacilityIndex] = useState(0);
   const [deferredWidgetsReady, setDeferredWidgetsReady] = useState(false);

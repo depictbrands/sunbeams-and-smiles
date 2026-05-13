@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock, Navigation } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -14,6 +14,8 @@ const NewsletterForm = lazy(() => import("@/components/NewsletterForm"));
 const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
 const Performances = lazy(() => import("@/components/Performances"));
 const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
+const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed";
+const MAP_FACADE_IMAGE = "/map-facade.svg";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import heroKids from "/lovable-uploads/hero-kids-new.jpg";
@@ -44,6 +46,8 @@ const Index = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
   const facilityImages = [facility1, facility2, facility3, facility4, facility5, facility6, facility7];
   const [facilityIndex, setFacilityIndex] = useState(0);
+  const [deferredWidgetsReady, setDeferredWidgetsReady] = useState(false);
+  const [mapActive, setMapActive] = useState(false);
   useEffect(() => {
     const id = setInterval(() => {
       setFacilityIndex((i) => (i + 1) % facilityImages.length);
@@ -52,6 +56,29 @@ const Index = () => {
   }, [facilityImages.length]);
 
   useEffect(() => {
+    if (deferredWidgetsReady) return;
+
+    let timeoutId = window.setTimeout(() => setDeferredWidgetsReady(true), 5000);
+
+    const onScroll = () => {
+      if (window.scrollY >= 200) {
+        window.clearTimeout(timeoutId);
+        setDeferredWidgetsReady(true);
+      }
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [deferredWidgetsReady]);
+
+  useEffect(() => {
+    if (!deferredWidgetsReady) return;
+
     const scriptId = "elfsight-platform-script";
     const FORM_STYLES = `
       input, textarea, select {
@@ -90,7 +117,7 @@ const Index = () => {
 
     const start = () => {
       if (cancelled) return;
-      // Inject the Elfsight script only after window has loaded + browser is idle
+      // Inject Elfsight only after the user scrolls or the page has had time to become interactive.
       if (!document.getElementById(scriptId)) {
         const script = document.createElement("script");
         script.id = scriptId;
@@ -105,23 +132,13 @@ const Index = () => {
       observer.observe(document.body, { childList: true, subtree: true });
     };
 
-    const schedule = () => {
-      const ric = (window as unknown as {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      }).requestIdleCallback;
-      if (ric) ric(start, { timeout: 4000 });
-      else window.setTimeout(start, 2500);
-    };
-
-    if (document.readyState === "complete") schedule();
-    else window.addEventListener("load", schedule, { once: true });
+    start();
 
     return () => {
       cancelled = true;
       observer?.disconnect();
-      window.removeEventListener("load", schedule);
     };
-  }, []);
+  }, [deferredWidgetsReady]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -235,7 +252,6 @@ const Index = () => {
             aria-hidden="true"
             width={720}
             height={405}
-            fetchPriority="high"
             decoding="async"
             className="w-full h-auto block"
           />
@@ -632,17 +648,47 @@ const Index = () => {
               className="w-full h-full object-cover bg-primary border-0 border-primary-foreground"
             />
           </div>
-          <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0">
-            <iframe
-              title="Ubicación Preescolar Sonsoles"
-              src="https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
+          <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0 bg-card">
+            {mapActive && deferredWidgetsReady ? (
+              <iframe
+                title="Ubicación Preescolar Sonsoles"
+                src={GOOGLE_MAPS_EMBED_URL}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setMapActive(true)}
+                className="group relative h-full w-full overflow-hidden text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                aria-label="Cargar mapa interactivo de Google Maps"
+              >
+                <img
+                  src={MAP_FACADE_IMAGE}
+                  alt="Mapa estático de la ubicación de Preescolar SonSoles"
+                  loading="lazy"
+                  width={1280}
+                  height={720}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-ink/45" aria-hidden="true" />
+                <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-ink-foreground">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-playful transition-transform duration-300 group-hover:scale-110">
+                    <Navigation className="h-7 w-7" />
+                  </span>
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 800 }}>
+                    {mapActive ? "Preparando mapa" : "Abrir ubicación"}
+                  </span>
+                  <span className="max-w-xs text-sm font-bold opacity-95">
+                    Carretera 176 Km 4.2, Cupey Alto
+                  </span>
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -678,7 +724,7 @@ const Index = () => {
         </div>
       </footer>
 
-      <Suspense fallback={null}><WhatsAppChat /></Suspense>
+      {deferredWidgetsReady && <Suspense fallback={null}><WhatsAppChat /></Suspense>}
     </div>
   );
 };

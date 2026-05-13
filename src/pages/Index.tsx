@@ -18,7 +18,7 @@ const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jor
 const MAP_FACADE_IMAGE = "/map-facade.svg";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import heroKids from "/lovable-uploads/hero-kids-new.jpg";
+const heroKids = "/lovable-uploads/hero-kids-new.webp";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";
@@ -252,7 +252,9 @@ const Index = () => {
             aria-hidden="true"
             width={720}
             height={405}
-            decoding="async"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
             className="w-full h-auto block"
           />
         </div>
@@ -296,8 +298,11 @@ const Index = () => {
             <img
               src={heroKids}
               alt="Niños felices en Preescolar SonSoles"
-              width={1024}
-              height={1024}
+              width={800}
+              height={800}
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
               className="relative rounded-full shadow-playful w-full max-w-[420px] mx-auto aspect-square object-cover border-8 border-primary"
             />
             <a

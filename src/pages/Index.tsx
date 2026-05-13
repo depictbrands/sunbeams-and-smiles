@@ -422,8 +422,8 @@ const Index = () => {
       <section id="metodologia" className="relative w-full overflow-hidden bg-background">
         <div className="relative z-10 container py-16">
           <div className="max-w-3xl mx-auto mb-10 text-center">
-            <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Proyecto Educativo</span>
-            <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
+            <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Proyecto Educativo</span>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[

@@ -649,7 +649,7 @@ const Index = () => {
             />
           </div>
           <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0 bg-card">
-            {mapActive ? (
+            {mapActive && deferredWidgetsReady ? (
               <iframe
                 title="Ubicación Preescolar Sonsoles"
                 src={GOOGLE_MAPS_EMBED_URL}
@@ -680,8 +680,12 @@ const Index = () => {
                   <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-playful transition-transform duration-300 group-hover:scale-110">
                     <Navigation className="h-7 w-7" />
                   </span>
-                  <span className="text-2xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 800 }}>Ver mapa</span>
-                  <span className="max-w-xs text-sm font-bold opacity-95">Cargar Google Maps solo al hacer clic</span>
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 800 }}>
+                    {mapActive ? "Preparando mapa" : "Ver mapa"}
+                  </span>
+                  <span className="max-w-xs text-sm font-bold opacity-95">
+                    {mapActive ? "Cargará después de que la página esté interactiva" : "Cargar Google Maps solo al hacer clic"}
+                  </span>
                 </span>
               </button>
             )}

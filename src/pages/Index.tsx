@@ -269,7 +269,11 @@ const Index = () => {
               height={1024}
               className="relative rounded-full shadow-playful w-full max-w-[420px] mx-auto aspect-square object-cover border-8 border-primary"
             />
-            <div className="absolute bottom-4 left-0 sm:left-4 bg-card rounded-2xl shadow-soft px-5 py-4 flex items-center gap-3 animate-wiggle">
+            <a
+              href="#testimonios"
+              aria-label="Ver testimonios — 5.0 en Google"
+              className="absolute bottom-4 left-0 sm:left-4 bg-card rounded-2xl shadow-soft px-5 py-4 flex items-center gap-3 animate-wiggle hover:shadow-playful hover:-translate-y-0.5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
               <div className="flex -space-x-1">
                 {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-accent text-accent" />)}
               </div>
@@ -277,7 +281,7 @@ const Index = () => {
                 <div className="font-bold text-ink">5.0 en Google</div>
                 <div className="text-muted-foreground text-xs">Familias felices</div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-16 overflow-hidden pointer-events-none" aria-hidden="true">

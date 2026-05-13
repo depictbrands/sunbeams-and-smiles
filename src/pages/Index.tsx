@@ -3,7 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock, Navigation } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock, Navigation, ChevronRight } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import metodologiaMusic from "@/assets/metodologia-music.jpg";
+import metodologiaArt from "@/assets/metodologia-art.jpg";
+import metodologiaRead from "@/assets/metodologia-read.jpg";
 import { lazy, Suspense } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -427,16 +431,32 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
-              { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },
-              { icon: BookOpen, title: 'Lectoescritura', desc: '', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
+              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
+              { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },
+              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
             ].map((f, i) => (
-              <Card key={i} className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full`}>
-                <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
-                  <f.icon className="h-7 w-7" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
-              </Card>
+              <Dialog key={i}>
+                <DialogTrigger asChild>
+                  <button type="button" className="text-left">
+                    <Card className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full cursor-pointer`}>
+                      <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
+                        <f.icon className="h-7 w-7" />
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-bold text-ink flex-1" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
+                      <ChevronRight className={`h-6 w-6 ${f.color} shrink-0`} />
+                    </Card>
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md p-0 overflow-hidden rounded-3xl border-0">
+                  <div className="bg-card p-6 flex flex-col items-center text-center gap-5">
+                    <div className="w-full aspect-square rounded-2xl overflow-hidden">
+                      <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                    <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</DialogTitle>
+                    <DialogDescription className="sr-only">{f.title}</DialogDescription>
+                  </div>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         </div>

@@ -645,7 +645,7 @@ const Index = () => {
               <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="bg-card/10 hover:bg-secondary p-2.5 rounded-full transition-colors"><Facebook className="h-5 w-5" /></a>
             </div>
           </div>
-          <NewsletterForm />
+          <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>
         <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
           © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>

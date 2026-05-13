@@ -70,7 +70,7 @@ const PerformanceCard = ({ item }: { item: Performance }) => {
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-ink/80 text-card/70 text-sm">
+          <div className="absolute inset-0 flex items-center justify-center bg-ink text-card text-sm">
             Video pendiente de subir
           </div>
         )}

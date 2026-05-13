@@ -130,7 +130,7 @@ const Performances = () => {
             className="text-4xl sm:text-5xl text-ink mt-3"
             style={{ fontFamily: "'ChildsPlayground', cursive" }}
           >
-            Nuestros pequeños en escena
+            Nuestros pequeños <br /> en acción
           </h2>
           <p className="text-muted-foreground mt-4">
             Momentos especiales donde nuestros niños brillan, aprenden y se divierten juntos.

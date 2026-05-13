@@ -252,7 +252,6 @@ const Index = () => {
             aria-hidden="true"
             width={720}
             height={405}
-            fetchPriority="high"
             decoding="async"
             className="w-full h-auto block"
           />

@@ -63,7 +63,7 @@ const NewsletterForm = () => {
   return (
     <div>
       <h4 className="font-bold mb-1 text-base">¡Mantente en contacto!</h4>
-      <p className="text-sm opacity-70 mb-3">
+      <p className="text-sm opacity-90 mb-3">
         Suscríbete y recibe novedades de Sonsoles.
       </p>
       <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-2">
@@ -71,7 +71,7 @@ const NewsletterForm = () => {
           Correo electrónico
         </label>
         <div className="relative flex-1">
-          <Mail className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-60" />
+          <Mail className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-90" />
           <input
             id="newsletter-email"
             type="email"
@@ -83,7 +83,7 @@ const NewsletterForm = () => {
               if (done) setDone(false);
             }}
             placeholder="tu@correo.com"
-            className="w-full pl-9 pr-3 py-2 rounded-full bg-card/10 border border-white/15 text-sm text-ink-foreground placeholder:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/60"
+            className="w-full pl-9 pr-3 py-2 rounded-full bg-card/10 border border-white/30 text-sm text-ink-foreground placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-primary/60"
           />
         </div>
         <Button

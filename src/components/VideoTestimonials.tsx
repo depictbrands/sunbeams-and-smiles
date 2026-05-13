@@ -56,19 +56,12 @@ const VideoTestimonials = () => {
   };
 
   // On mobile: scroll the active slide into view (centered) when active changes.
-  // Wait for the width transition (duration-500) to finish so offsets are correct.
+  // Single pass after the slide-width transition (duration-500) completes to
+  // avoid multiple forced layouts per change.
   useEffect(() => {
     if (!isMobile) return;
-    // Initial pass on next frame (handles first render)
-    const raf = requestAnimationFrame(() => centerSlide(active, "auto"));
-    // Final pass after the slide-width transition completes
-    const t1 = window.setTimeout(() => centerSlide(active, "smooth"), 80);
-    const t2 = window.setTimeout(() => centerSlide(active, "smooth"), 550);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    const t = window.setTimeout(() => centerSlide(active, "smooth"), 520);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, isMobile]);
 

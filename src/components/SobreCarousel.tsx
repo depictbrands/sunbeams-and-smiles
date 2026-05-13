@@ -33,10 +33,10 @@ const SobreCarousel = () => {
 
   return (
     <Carousel opts={{ loop: true, align: "start" }} plugins={[sobreAutoplay.current]} className="group">
-      <CarouselContent className="-ml-4">
+      <CarouselContent className="-ml-4 h-[80vh] sm:h-auto">
         {/* Slide 1 — Pink: Founder */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
-          <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#FF80B0" }}>
+          <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#FF80B0" }}>
             <div className="p-6 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center text-ink lg:min-h-[560px] h-full max-w-5xl mx-auto">
               <img
                 src={founderPhoto}

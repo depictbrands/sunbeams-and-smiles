@@ -75,12 +75,15 @@ const VideoTestimonials = () => {
     let touchStartScrollLeft = 0;
     let activeAtTouchStart = 0;
     let gestureLocked = false;
+    let maxTravel = 0; // cached on touchstart to avoid layout reads per touchmove
 
     const onTouchStart = (e: TouchEvent) => {
       touchStartX = e.touches[0].clientX;
       touchStartScrollLeft = scroller.scrollLeft;
       activeAtTouchStart = active;
       gestureLocked = false;
+      const w = slideRefs.current[activeAtTouchStart]?.clientWidth ?? 0;
+      maxTravel = w * 0.9 + 16;
     };
 
     const onTouchMove = (e: TouchEvent) => {
@@ -89,7 +92,6 @@ const VideoTestimonials = () => {
         return;
       }
       const dx = e.touches[0].clientX - touchStartX;
-      const maxTravel = (slideRefs.current[activeAtTouchStart]?.clientWidth ?? 0) * 0.9 + 16;
       if (Math.abs(dx) > maxTravel) {
         gestureLocked = true;
       }

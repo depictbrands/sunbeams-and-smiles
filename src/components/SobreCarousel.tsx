@@ -15,7 +15,21 @@ import teacher7 from "@/assets/teacher-7-updated.webp";
 
 const SobreCarousel = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
-  const [founderExpanded, setFounderExpanded] = useState(false);
+  const [bioOpen, setBioOpen] = useState(false);
+  const [credsOpen, setCredsOpen] = useState(false);
+  const [recogOpen, setRecogOpen] = useState(false);
+
+  const toggleBtn = (open: boolean, onClick: () => void, label: string) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mb-3"
+      aria-expanded={open}
+    >
+      {open ? "Mostrar menos" : label}
+      <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
+    </button>
+  );
 
   return (
     <Carousel opts={{ loop: true }} plugins={[sobreAutoplay.current]} className="group">

@@ -231,7 +231,7 @@ const Index = () => {
       {/* HERO */}
       <section
         id="top"
-        className="relative overflow-hidden isolate pb-16 sm:pb-24"
+        className="relative overflow-hidden isolate pb-16 sm:pb-24 bg-ink lg:bg-transparent"
       >
         {/* Mobile: static poster image instead of video to protect LCP/TBT */}
         <div className="lg:hidden relative w-full bg-ink">

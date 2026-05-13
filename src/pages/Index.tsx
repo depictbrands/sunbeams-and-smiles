@@ -626,7 +626,7 @@ const Index = () => {
         <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="" className="h-12 w-12" />
+              <img src={logo} alt="" loading="lazy" width={48} height={48} className="h-12 w-12" />
               <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
             </div>
             <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>

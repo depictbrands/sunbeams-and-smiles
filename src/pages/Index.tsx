@@ -55,6 +55,29 @@ const Index = () => {
   }, [facilityImages.length]);
 
   useEffect(() => {
+    if (deferredWidgetsReady) return;
+
+    let timeoutId = window.setTimeout(() => setDeferredWidgetsReady(true), 5000);
+
+    const onScroll = () => {
+      if (window.scrollY >= 200) {
+        window.clearTimeout(timeoutId);
+        setDeferredWidgetsReady(true);
+      }
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [deferredWidgetsReady]);
+
+  useEffect(() => {
+    if (!deferredWidgetsReady) return;
+
     const scriptId = "elfsight-platform-script";
     const FORM_STYLES = `
       input, textarea, select {
@@ -93,7 +116,7 @@ const Index = () => {
 
     const start = () => {
       if (cancelled) return;
-      // Inject the Elfsight script only after window has loaded + browser is idle
+      // Inject Elfsight only after the user scrolls or the page has had time to become interactive.
       if (!document.getElementById(scriptId)) {
         const script = document.createElement("script");
         script.id = scriptId;
@@ -108,23 +131,13 @@ const Index = () => {
       observer.observe(document.body, { childList: true, subtree: true });
     };
 
-    const schedule = () => {
-      const ric = (window as unknown as {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      }).requestIdleCallback;
-      if (ric) ric(start, { timeout: 4000 });
-      else window.setTimeout(start, 2500);
-    };
-
-    if (document.readyState === "complete") schedule();
-    else window.addEventListener("load", schedule, { once: true });
+    start();
 
     return () => {
       cancelled = true;
       observer?.disconnect();
-      window.removeEventListener("load", schedule);
     };
-  }, []);
+  }, [deferredWidgetsReady]);
 
   return (
     <div className="min-h-screen bg-background">

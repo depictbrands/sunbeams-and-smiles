@@ -15,6 +15,7 @@ const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
 const Performances = lazy(() => import("@/components/Performances"));
 const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
 const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed";
+const MAP_FACADE_IMAGE = "/map-facade.svg";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import heroKids from "/lovable-uploads/hero-kids-new.jpg";
@@ -668,11 +669,11 @@ const Index = () => {
                 aria-label="Cargar mapa interactivo de Google Maps"
               >
                 <img
-                  src={sonsolesBuilding}
-                  alt="Fachada de Preescolar SonSoles en Cupey"
+                  src={MAP_FACADE_IMAGE}
+                  alt="Mapa estático de la ubicación de Preescolar SonSoles"
                   loading="lazy"
-                  width={1920}
-                  height={1233}
+                  width={1280}
+                  height={720}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute inset-0 bg-ink/45" aria-hidden="true" />

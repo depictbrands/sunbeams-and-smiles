@@ -20,17 +20,23 @@ const SobreCarousel = () => {
   const [credsOpen, setCredsOpen] = useState(false);
   const [recogOpen, setRecogOpen] = useState(false);
 
-  const toggleBtn = (open: boolean, onClick: () => void, label: string) => (
+  const moreBtn = (open: boolean, onClick: () => void) => (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mb-3"
+      className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mt-2 mb-4"
       aria-expanded={open}
     >
-      {open ? "Mostrar menos" : label}
+      {open ? "Menos detalle" : "Más detalle"}
       <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
   );
+
+  const bioFull = "Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.";
+  const credsFull = "Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico";
+  const recogFull = "Autora del libro Canciones y cantos-juegos infantiles del folklore puertorriqueño y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.";
+
+  const peek = (text: string, n = 90) => (text.length > n ? text.slice(0, n).trimEnd() + "…" : text);
 
   return (
     <Carousel opts={{ loop: true, align: "start" }} plugins={[sobreAutoplay.current]} className="group">
@@ -58,30 +64,32 @@ const SobreCarousel = () => {
                   Educadora • Autora • Pianista
                 </p>
 
-                {/* Mobile: per-block collapsibles */}
+                {/* Mobile: peek + "Más detalle" per block */}
                 <div className="lg:hidden">
-                  {toggleBtn(bioOpen, () => setBioOpen((v) => !v), "Sobre Griselle")}
-                  {bioOpen && (
-                    <p className="text-sm leading-relaxed text-ink mb-5">
-                      Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
+                  <p className="text-sm leading-relaxed text-ink">
+                    {bioOpen ? bioFull : peek(bioFull)}
+                  </p>
+                  {moreBtn(bioOpen, () => setBioOpen((v) => !v))}
+
+                  <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
+                    {credsOpen ? credsFull : peek(credsFull, 60)}
+                  </div>
+                  {moreBtn(credsOpen, () => setCredsOpen((v) => !v))}
+
+                  <div className="rounded-2xl bg-ink px-5 py-4">
+                    <span className="block font-bold uppercase tracking-[0.18em] text-[11px] mb-2" style={{ color: "#FF80B0" }}>
+                      Reconocimiento Internacional
+                    </span>
+                    <p className="text-sm leading-relaxed" style={{ color: "#fadfef" }}>
+                      {recogOpen ? (
+                        <>Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.</>
+                      ) : (
+                        peek(recogFull, 90)
+                      )}
                     </p>
-                  )}
+                  </div>
+                  {moreBtn(recogOpen, () => setRecogOpen((v) => !v))}
 
-                  {toggleBtn(credsOpen, () => setCredsOpen((v) => !v), "Formación académica")}
-                  {credsOpen && (
-                    <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug mb-5">
-                      Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
-                    </div>
-                  )}
-
-                  {toggleBtn(recogOpen, () => setRecogOpen((v) => !v), "Reconocimiento internacional")}
-                  {recogOpen && (
-                    <div className="rounded-2xl bg-ink px-5 py-4 mb-5">
-                      <p className="text-sm leading-relaxed" style={{ color: "#fadfef" }}>
-                        Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
-                      </p>
-                    </div>
-                  )}
 
                   <div className="mt-2">
                     <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">

@@ -253,7 +253,50 @@ const Index = () => {
           <source src="/2ndVersion-hero.mp4" type="video/mp4" />
         </video>
         <div className="hidden lg:block absolute inset-0 bg-black/30 -z-10" />
-        <div className="container grid lg:grid-cols-2 gap-12 items-center py-12 lg:py-24 bg-ink lg:bg-transparent">
+        {/* Mobile hero: centered content inside a rounded card */}
+        <div className="lg:hidden px-4 pt-6 pb-10">
+          <div className="bg-card text-ink rounded-[2rem] shadow-playful overflow-hidden p-6 flex flex-col items-center text-center gap-5">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className="inline-flex items-center gap-1.5 bg-ink/90 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <Sparkles className="h-3.5 w-3.5 text-primary" /> Maternal · Preescolar · PreKinder
+              </div>
+              <div className="inline-flex items-center gap-1.5 bg-ink/90 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <MapPin className="h-3.5 w-3.5 text-primary" /> Cupey, cerca de Los Paseos
+              </div>
+            </div>
+            <h1 className="text-4xl sm:text-5xl leading-[1.05] text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Sembrando excelencia en el corazón de la familia puertorriqueña.
+            </h1>
+            <div className="relative w-full">
+              <img
+                src={heroKids}
+                alt="Niños felices en Preescolar SonSoles"
+                width={800}
+                height={800}
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                className="rounded-[1.5rem] shadow-soft w-full max-w-[360px] mx-auto aspect-square object-cover border-4 border-primary"
+              />
+            </div>
+            <Button asChild variant="hero" size="xl" className="rounded-full w-full max-w-xs">
+              <a href="#contacto">Agenda un tour</a>
+            </Button>
+            <a
+              href="#testimonios"
+              aria-label="Ver testimonios — 5.0 en Google"
+              className="inline-flex items-center gap-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full px-3 py-1"
+            >
+              <div className="flex">
+                {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-accent text-accent" />)}
+              </div>
+              <span className="font-bold text-ink">5.0 en Google</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Desktop hero (unchanged) */}
+        <div className="hidden lg:grid container lg:grid-cols-2 gap-12 items-center py-12 lg:py-24 bg-ink lg:bg-transparent">
           <div className="relative z-10">
             <div className="flex flex-wrap items-center gap-2 mb-6">
               <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold">

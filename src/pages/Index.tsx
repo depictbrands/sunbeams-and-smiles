@@ -53,24 +53,6 @@ const Index = () => {
 
   useEffect(() => {
     const scriptId = "elfsight-platform-script";
-    const inject = () => {
-      if (document.getElementById(scriptId)) return;
-      const script = document.createElement("script");
-      script.id = scriptId;
-      script.src = "https://elfsightcdn.com/platform.js";
-      script.async = true;
-      document.body.appendChild(script);
-    };
-    const ric = (window as any).requestIdleCallback as
-      | ((cb: () => void, opts?: { timeout: number }) => number)
-      | undefined;
-    const handle = ric
-      ? ric(inject, { timeout: 4000 })
-      : window.setTimeout(inject, 2500);
-
-    // Elfsight widgets render inside Shadow DOM, so external CSS can't style
-    // their inputs. Inject a stylesheet into each shadow root so form fields
-    // have readable dark text on their light backgrounds.
     const FORM_STYLES = `
       input, textarea, select {
         color: #1f2937 !important;
@@ -83,7 +65,6 @@ const Index = () => {
         opacity: 1 !important;
       }
     `;
-
     const styledRoots = new WeakSet<ShadowRoot>();
     const injectStyles = (root: ShadowRoot) => {
       if (styledRoots.has(root)) return;
@@ -93,20 +74,53 @@ const Index = () => {
       style.textContent = FORM_STYLES;
       root.appendChild(style);
     };
-
-    const scanForShadowRoots = (node: Element | Document) => {
-      const elements = node.querySelectorAll('[class*="elfsight-app-"], [class*="elfsight-app-"] *');
+    const scanForShadowRoots = (node: ParentNode) => {
+      const elements = node.querySelectorAll('[class*="elfsight-app-"]');
       elements.forEach((el) => {
         const sr = (el as Element & { shadowRoot?: ShadowRoot }).shadowRoot;
         if (sr) {
           injectStyles(sr);
-          scanForShadowRoots(sr as unknown as Document);
+          scanForShadowRoots(sr);
         }
       });
     };
 
-    const interval = setInterval(() => scanForShadowRoots(document), 800);
-    return () => clearInterval(interval);
+    let observer: MutationObserver | null = null;
+    let cancelled = false;
+
+    const start = () => {
+      if (cancelled) return;
+      // Inject the Elfsight script only after window has loaded + browser is idle
+      if (!document.getElementById(scriptId)) {
+        const script = document.createElement("script");
+        script.id = scriptId;
+        script.src = "https://elfsightcdn.com/platform.js";
+        script.async = true;
+        document.body.appendChild(script);
+      }
+      // Replace the polling interval with a MutationObserver to keep the
+      // main thread idle until Elfsight actually mounts new shadow roots.
+      scanForShadowRoots(document);
+      observer = new MutationObserver(() => scanForShadowRoots(document));
+      observer.observe(document.body, { childList: true, subtree: true });
+    };
+
+    const schedule = () => {
+      const ric = (window as unknown as {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      }).requestIdleCallback;
+      if (ric) ric(start, { timeout: 4000 });
+      else window.setTimeout(start, 2500);
+    };
+
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
+
+    return () => {
+      cancelled = true;
+      observer?.disconnect();
+      window.removeEventListener("load", schedule);
+    };
   }, []);
 
   return (

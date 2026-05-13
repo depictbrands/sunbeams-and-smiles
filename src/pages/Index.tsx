@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, Star, Heart, Sparkles, Apple, Shield, BookOpen, Music, Palette, Users, Lock, Menu, MapPin, PersonStanding, Brain, Activity, MessageCircle, Clock, Navigation } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -14,6 +14,7 @@ const NewsletterForm = lazy(() => import("@/components/NewsletterForm"));
 const VideoTestimonials = lazy(() => import("@/components/VideoTestimonials"));
 const Performances = lazy(() => import("@/components/Performances"));
 const WhatsAppChat = lazy(() => import("@/components/WhatsAppChat"));
+const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import heroKids from "/lovable-uploads/hero-kids-new.jpg";
@@ -44,6 +45,8 @@ const Index = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
   const facilityImages = [facility1, facility2, facility3, facility4, facility5, facility6, facility7];
   const [facilityIndex, setFacilityIndex] = useState(0);
+  const [deferredWidgetsReady, setDeferredWidgetsReady] = useState(false);
+  const [mapActive, setMapActive] = useState(false);
   useEffect(() => {
     const id = setInterval(() => {
       setFacilityIndex((i) => (i + 1) % facilityImages.length);

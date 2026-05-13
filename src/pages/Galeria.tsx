@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
-const photoUrls = [
-  "90ddcee5-e4b1-4fcd-be96-c2d10d77698f.jpg",
-  "Foto de Nilda🌷💗.jpg",
-  "Foto de Nilda🌷💗 2.jpg",
-  "Foto de Nilda🌷💗 3.jpg",
-  "Foto de Nilda🌷💗 4.jpg",
-  "Foto de Nilda🌷💗 6.jpg",
-  "Foto de Nilda🌷💗 7.jpg",
-  "Foto de Nilda🌷💗 8.jpg",
-  "Foto de Nilda🌷💗 9.jpg",
-  "Foto de Nilda🌷💗 11.jpg",
-  "Foto de Nilda🌷💗 12.jpg",
-  "Foto de Nilda🌷💗 13.jpg",
-  "IMG_7440.jpg",
-  "PHOTO-2025-10-14-10-32-08.jpg",
-].map((name) => `/gallery-optimized/${encodeURIComponent(name)}`);
+const photos: { name: string; w: number; h: number }[] = [
+  { name: "90ddcee5-e4b1-4fcd-be96-c2d10d77698f.webp", w: 1536, h: 2728 },
+  { name: "Foto de Nilda🌷💗.webp", w: 2480, h: 1536 },
+  { name: "Foto de Nilda🌷💗 2.webp", w: 2048, h: 1536 },
+  { name: "Foto de Nilda🌷💗 3.webp", w: 1536, h: 2048 },
+  { name: "Foto de Nilda🌷💗 4.webp", w: 1567, h: 951 },
+  { name: "Foto de Nilda🌷💗 6.webp", w: 2000, h: 1126 },
+  { name: "Foto de Nilda🌷💗 7.webp", w: 1024, h: 768 },
+  { name: "Foto de Nilda🌷💗 8.webp", w: 1031, h: 1021 },
+  { name: "Foto de Nilda🌷💗 9.webp", w: 1536, h: 2048 },
+  { name: "Foto de Nilda🌷💗 11.webp", w: 1599, h: 899 },
+  { name: "Foto de Nilda🌷💗 12.webp", w: 1599, h: 899 },
+  { name: "Foto de Nilda🌷💗 13.webp", w: 1200, h: 1600 },
+  { name: "IMG_7440.webp", w: 1980, h: 3520 },
+  { name: "PHOTO-2025-10-14-10-32-08.webp", w: 1920, h: 1080 },
+];
 
 const Galeria = () => {
   return (
@@ -52,9 +52,10 @@ const Galeria = () => {
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-2 sm:gap-3 [column-fill:_balance]">
-          {photoUrls.map((src, i) => {
+          {photos.map((p, i) => {
             const dirs = ["up", "left", "down", "right"] as const;
             const dir = dirs[i % dirs.length];
+            const src = `/gallery-optimized/${encodeURIComponent(p.name)}`;
             return (
               <div
                 key={src}
@@ -65,6 +66,9 @@ const Galeria = () => {
                   src={src}
                   alt={`Foto del preescolar ${i + 1}`}
                   loading="lazy"
+                  decoding="async"
+                  width={p.w}
+                  height={p.h}
                   className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>

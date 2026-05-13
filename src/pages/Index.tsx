@@ -431,7 +431,7 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
+              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
               { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },
               { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf' },
             ].map((f, i) => (

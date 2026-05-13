@@ -383,12 +383,12 @@ const Index = () => {
 
       {/* METODOLOGÍA */}
       <section id="metodologia" className="relative w-full overflow-hidden bg-background">
-        <div className="relative z-10 container py-24">
-          <div className="max-w-3xl mx-auto mb-64 text-center">
+        <div className="relative z-10 container py-16">
+          <div className="max-w-3xl mx-auto mb-10 text-center">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground mx-[10px] my-[10px] px-[10px] py-[10px] rounded-sm">Proyecto Educativo</span>
-            <h2 className="text-4xl sm:text-5xl text-ink mt-3 pb-10" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
+            <h2 className="text-4xl sm:text-5xl text-ink mt-3" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { icon: Music, title: 'Música y Movimiento', desc: '', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary' },
               { icon: Palette, title: 'Arte y Creatividad', desc: '', color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary' },

@@ -171,8 +171,8 @@ const SobreCarousel = () => {
                 height={896}
                 className="block w-full h-auto flex-1 object-contain my-4"
               />
-              <div className="px-6 pb-8 flex justify-center">
-                <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
+              <div className="px-8 pb-8 flex justify-center">
+                <Button asChild variant="sun" size="xl" className="px-6 text-base"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
               </div>
             </div>
           </div>

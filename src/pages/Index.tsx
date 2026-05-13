@@ -447,7 +447,7 @@ const Index = () => {
                     </Card>
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-md p-0 overflow-hidden rounded-3xl border-0">
+                <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md p-0 overflow-hidden rounded-3xl border-0 mx-4">
                   <div className="bg-card p-6 flex flex-col items-center text-center gap-5">
                     <div className="w-full aspect-square rounded-2xl overflow-hidden">
                       <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />

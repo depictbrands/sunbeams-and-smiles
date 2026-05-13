@@ -57,46 +57,39 @@ const SobreCarousel = () => {
                   Educadora • Autora • Pianista
                 </p>
 
-                {/* Mobile: collapsible content */}
+                {/* Mobile: per-block collapsibles */}
                 <div className="lg:hidden">
-                  {founderExpanded && (
-                    <>
-                      <p className="text-sm leading-relaxed text-ink mb-6">
-                        Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
-                      </p>
-                      <div className="grid grid-cols-1 gap-3 mb-5">
-                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
-                          Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-ink px-5 py-4 mb-6">
-                        <span className="block font-bold uppercase tracking-[0.18em] text-xs mb-2" style={{ color: "#FF80B0" }}>
-                          Reconocimiento Internacional
-                        </span>
-                        <p className="text-sm leading-relaxed" style={{ color: "#fadfef" }}>
-                          Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
-                        </p>
-                      </div>
-                      <div className="mb-4">
-                        <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
-                          <a href="mailto:grisellebou@gmail.com">
-                            <Mail className="h-4 w-4" /> Escríbele a Griselle
-                          </a>
-                        </Button>
-                      </div>
-                    </>
+                  {toggleBtn(bioOpen, () => setBioOpen((v) => !v), "Sobre Griselle")}
+                  {bioOpen && (
+                    <p className="text-sm leading-relaxed text-ink mb-5">
+                      Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
+                    </p>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => setFounderExpanded((v) => !v)}
-                    className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline"
-                    aria-expanded={founderExpanded}
-                  >
-                    {founderExpanded ? "Mostrar menos" : "Leer más"}
-                    <ChevronDown className={`h-4 w-4 transition-transform ${founderExpanded ? "rotate-180" : ""}`} />
-                  </button>
-                </div>
 
+                  {toggleBtn(credsOpen, () => setCredsOpen((v) => !v), "Formación académica")}
+                  {credsOpen && (
+                    <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug mb-5">
+                      Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
+                    </div>
+                  )}
+
+                  {toggleBtn(recogOpen, () => setRecogOpen((v) => !v), "Reconocimiento internacional")}
+                  {recogOpen && (
+                    <div className="rounded-2xl bg-ink px-5 py-4 mb-5">
+                      <p className="text-sm leading-relaxed" style={{ color: "#fadfef" }}>
+                        Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="mt-2">
+                    <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
+                      <a href="mailto:grisellebou@gmail.com">
+                        <Mail className="h-4 w-4" /> Escríbele a Griselle
+                      </a>
+                    </Button>
+                  </div>
+                </div>
                 {/* Desktop / tablet: full content */}
                 <div className="hidden lg:block">
                   <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">

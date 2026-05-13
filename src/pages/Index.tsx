@@ -636,14 +636,14 @@ const Index = () => {
               <img src={logo} alt="" loading="lazy" width={48} height={48} className="h-12 w-12" />
               <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
             </div>
-            <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>
+            <p className="text-sm opacity-90">¡Nuestros Niños son Soles de Esperanza!</p>
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">​</h4>
-            <p className="text-sm opacity-80 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
-            <p className="text-sm opacity-80 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
-            <p className="text-sm opacity-80 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>
-            <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-80 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
+            <p className="text-sm opacity-95 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
+            <p className="text-sm opacity-95 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
+            <p className="text-sm opacity-95 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>
+            <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-95 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">Síguenos</h4>

@@ -338,7 +338,7 @@ const Index = () => {
                       <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
                         Educadora • Autora • Pianista
                       </p>
-                      <p className="text-base sm:text-lg leading-relaxed text-ink/90 mb-8">
+                      <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
                         Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
                       </p>
                       <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">

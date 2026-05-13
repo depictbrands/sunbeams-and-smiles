@@ -329,7 +329,7 @@ const Index = () => {
                       className="w-64 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
                     />
                     <div className="flex flex-col justify-center text-left max-w-2xl">
-                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink mb-4">
                         FUNDADORA Y DIRECTORA
                       </span>
                       <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
@@ -338,7 +338,7 @@ const Index = () => {
                       <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
                         Educadora • Autora • Pianista
                       </p>
-                      <p className="text-base sm:text-lg leading-relaxed text-ink/90 mb-8">
+                      <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
                         Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
                       </p>
                       <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">
@@ -387,7 +387,7 @@ const Index = () => {
                       ))}
                     </div>
                     <div className="flex flex-col justify-center text-left max-w-2xl">
-                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4 text-slate-100">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
                         NUESTRAS MAESTRAS
                       </span>
                       <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
@@ -636,14 +636,14 @@ const Index = () => {
               <img src={logo} alt="" loading="lazy" width={48} height={48} className="h-12 w-12" />
               <span className="text-lg" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
             </div>
-            <p className="text-sm opacity-70">¡Nuestros Niños son Soles de Esperanza!</p>
+            <p className="text-sm opacity-90">¡Nuestros Niños son Soles de Esperanza!</p>
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">​</h4>
-            <p className="text-sm opacity-80 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
-            <p className="text-sm opacity-80 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
-            <p className="text-sm opacity-80 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>
-            <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-80 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
+            <p className="text-sm opacity-95 flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto, Río Piedras (cerca de Los Paseos)</p>
+            <p className="text-sm opacity-95 flex items-start gap-2 mt-2"><Clock className="h-4 w-4 mt-0.5 shrink-0" /> Horario: 8:00 am – 1:00 pm (extendido hasta 4:00 pm)</p>
+            <p className="text-sm opacity-95 flex items-center gap-2 mt-2"><Phone className="h-4 w-4 shrink-0" /> (787) 993-5623</p>
+            <a href="mailto:preescolarsonsoles@gmail.com" className="text-sm opacity-95 hover:opacity-100 hover:text-primary transition-colors flex items-center gap-2 mt-2 break-all"><Mail className="h-4 w-4 shrink-0" /> preescolarsonsoles@gmail.com</a>
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">Síguenos</h4>
@@ -654,7 +654,7 @@ const Index = () => {
           </div>
           <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>
-        <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
+        <div className="container mt-10 pt-6 border-t border-white/20 text-xs opacity-90 text-center">
           © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
         </div>
       </footer>

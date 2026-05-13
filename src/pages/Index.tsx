@@ -18,7 +18,7 @@ const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps?q=C.+Madre+Teresa+Jor
 const MAP_FACADE_IMAGE = "/map-facade.svg";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import heroKids from "/lovable-uploads/hero-kids-new.jpg";
+const heroKids = "/lovable-uploads/hero-kids-new.webp";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";

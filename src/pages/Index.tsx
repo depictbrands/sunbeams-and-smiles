@@ -20,6 +20,7 @@ const MAP_FACADE_IMAGE = "/map-facade.svg";
 const heroKids = "/lovable-uploads/hero-kids-new.webp";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";
+import duckAnimation from "@/assets/duck-animation.gif";
 import playground from "@/assets/playground.webp";
 import contactKids from "@/assets/contact-kids.webp";
 import facility1 from "@/assets/facility-1.webp";

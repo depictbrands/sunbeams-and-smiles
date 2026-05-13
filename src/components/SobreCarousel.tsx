@@ -20,17 +20,23 @@ const SobreCarousel = () => {
   const [credsOpen, setCredsOpen] = useState(false);
   const [recogOpen, setRecogOpen] = useState(false);
 
-  const toggleBtn = (open: boolean, onClick: () => void, label: string) => (
+  const moreBtn = (open: boolean, onClick: () => void) => (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mb-3"
+      className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mt-2 mb-4"
       aria-expanded={open}
     >
-      {open ? "Mostrar menos" : label}
+      {open ? "Menos detalle" : "Más detalle"}
       <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
   );
+
+  const bioFull = "Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.";
+  const credsFull = "Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico";
+  const recogFull = "Autora del libro Canciones y cantos-juegos infantiles del folklore puertorriqueño y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.";
+
+  const peek = (text: string, n = 90) => (text.length > n ? text.slice(0, n).trimEnd() + "…" : text);
 
   return (
     <Carousel opts={{ loop: true, align: "start" }} plugins={[sobreAutoplay.current]} className="group">

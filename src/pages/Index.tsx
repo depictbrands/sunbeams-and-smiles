@@ -432,8 +432,8 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
-              { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary', popupBg: '#E9F0FF', closeRing: '[&>button]:focus:ring-[#0967FA] [&>button]:focus-visible:ring-[#0967FA]' },
-              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', closeRing: '[&>button]:focus:ring-[#01A744] [&>button]:focus-visible:ring-[#01A744]' },
+              { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary', popupBg: '#E9F0FF', ringHsl: '217 96% 51%' },
+              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>
@@ -447,7 +447,7 @@ const Index = () => {
                     </Card>
                   </button>
                 </DialogTrigger>
-                <DialogContent className={`w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0 ${f.closeRing ?? ''}`} style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
+                <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={{ ...(f.popupBg ? { backgroundColor: f.popupBg } : {}), ...(f.ringHsl ? ({ ['--ring' as any]: f.ringHsl } as React.CSSProperties) : {}) }}>
                   <div className="p-6 flex flex-col items-center text-center gap-5" style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
                     <div className="w-full aspect-square rounded-2xl overflow-hidden">
                       <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />

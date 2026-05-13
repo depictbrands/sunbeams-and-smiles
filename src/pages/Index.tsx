@@ -648,17 +648,43 @@ const Index = () => {
               className="w-full h-full object-cover bg-primary border-0 border-primary-foreground"
             />
           </div>
-          <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0">
-            <iframe
-              title="Ubicación Preescolar Sonsoles"
-              src="https://www.google.com/maps?q=C.+Madre+Teresa+Jornet,+San+Juan,+00926,+Puerto+Rico&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
+          <div className="rounded-3xl overflow-hidden shadow-playful border-card aspect-[16/9] border-0 bg-card">
+            {mapActive ? (
+              <iframe
+                title="Ubicación Preescolar Sonsoles"
+                src={GOOGLE_MAPS_EMBED_URL}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setMapActive(true)}
+                className="group relative h-full w-full overflow-hidden text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                aria-label="Cargar mapa interactivo de Google Maps"
+              >
+                <img
+                  src={sonsolesBuilding}
+                  alt="Fachada de Preescolar SonSoles en Cupey"
+                  loading="lazy"
+                  width={1920}
+                  height={1233}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-ink/45" aria-hidden="true" />
+                <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-white">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-playful transition-transform duration-300 group-hover:scale-110">
+                    <Navigation className="h-7 w-7" />
+                  </span>
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Sour Gummy', sans-serif", fontWeight: 800 }}>Ver mapa</span>
+                  <span className="max-w-xs text-sm font-bold opacity-95">Cargar Google Maps solo al hacer clic</span>
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -694,7 +720,7 @@ const Index = () => {
         </div>
       </footer>
 
-      <Suspense fallback={null}><WhatsAppChat /></Suspense>
+      {deferredWidgetsReady && <Suspense fallback={null}><WhatsAppChat /></Suspense>}
     </div>
   );
 };

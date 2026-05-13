@@ -654,7 +654,7 @@ const Index = () => {
           </div>
           <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>
-        <div className="container mt-10 pt-6 border-t border-white/10 text-xs opacity-60 text-center">
+        <div className="container mt-10 pt-6 border-t border-white/20 text-xs opacity-90 text-center">
           © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
         </div>
       </footer>

@@ -17,27 +17,27 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import heroKids from "/lovable-uploads/hero-kids-new.jpg";
-import founderPhoto from "@/assets/founder-griselle-new.png";
+import founderPhoto from "@/assets/founder-griselle-new.webp";
 
 import kidsDrawing from "@/assets/kids-drawing.gif";
-import teacher1 from "@/assets/teacher-1.png";
-import teacher2 from "@/assets/teacher-2.png";
-import teacher3 from "@/assets/teacher-3.png";
-import teacher4 from "@/assets/teacher-4.png";
-import teacher5 from "@/assets/teacher-5.png";
-import teacher6 from "@/assets/teacher-6.png";
-import teacher7 from "@/assets/teacher-7-updated.jpg";
+import teacher1 from "@/assets/teacher-1.webp";
+import teacher2 from "@/assets/teacher-2.webp";
+import teacher3 from "@/assets/teacher-3.webp";
+import teacher4 from "@/assets/teacher-4.webp";
+import teacher5 from "@/assets/teacher-5.webp";
+import teacher6 from "@/assets/teacher-6.webp";
+import teacher7 from "@/assets/teacher-7-updated.webp";
 import duckAnimation from "@/assets/duck-animation.gif";
-import playground from "@/assets/playground.jpg";
-import contactKids from "@/assets/contact-kids.jpg";
-import facility1 from "@/assets/facility-1.jpg";
-import facility2 from "@/assets/facility-2.jpg";
-import facility3 from "@/assets/facility-classroom.jpg";
+import playground from "@/assets/playground.webp";
+import contactKids from "@/assets/contact-kids.webp";
+import facility1 from "@/assets/facility-1.webp";
+import facility2 from "@/assets/facility-2.webp";
+import facility3 from "@/assets/facility-classroom.webp";
 import facility4 from "/lovable-uploads/facility-play-new.jpg";
 import facility5 from "/lovable-uploads/facility-extra-1.jpeg";
 import facility6 from "/lovable-uploads/facility-extra-2.jpeg";
 import facility7 from "/lovable-uploads/facility-extra-3.jpeg";
-import sonsolesBuilding from "@/assets/sonsoles-building.jpg";
+import sonsolesBuilding from "@/assets/sonsoles-building.webp";
 import { useEffect, useState } from "react";
 
 const Index = () => {

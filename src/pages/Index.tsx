@@ -329,7 +329,7 @@ const Index = () => {
                       className="w-64 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
                     />
                     <div className="flex flex-col justify-center text-left max-w-2xl">
-                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink/70 mb-4">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink mb-4">
                         FUNDADORA Y DIRECTORA
                       </span>
                       <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>

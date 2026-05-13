@@ -233,21 +233,6 @@ const Index = () => {
         id="top"
         className="relative overflow-hidden isolate pb-16 sm:pb-24 bg-ink lg:bg-transparent"
       >
-        {/* Mobile: static poster image instead of video to protect LCP/TBT */}
-        <div className="lg:hidden relative w-full bg-ink">
-          <img
-            src="/hero-poster-mobile.webp"
-            alt=""
-            aria-hidden="true"
-            width={720}
-            height={405}
-            loading="eager"
-            fetchPriority="high"
-            decoding="sync"
-            className="w-full h-auto block"
-          />
-        </div>
-
         {/* Desktop: video as background, deferred to avoid competing with LCP */}
         <video
           key="desktop"

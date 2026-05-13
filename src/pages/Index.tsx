@@ -298,8 +298,11 @@ const Index = () => {
             <img
               src={heroKids}
               alt="Niños felices en Preescolar SonSoles"
-              width={1024}
-              height={1024}
+              width={800}
+              height={800}
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
               className="relative rounded-full shadow-playful w-full max-w-[420px] mx-auto aspect-square object-cover border-8 border-primary"
             />
             <a

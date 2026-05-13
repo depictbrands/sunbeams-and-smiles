@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Mail, ChevronDown } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
@@ -15,54 +15,99 @@ import teacher7 from "@/assets/teacher-7-updated.webp";
 
 const SobreCarousel = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const [founderExpanded, setFounderExpanded] = useState(false);
 
   return (
     <Carousel opts={{ loop: true }} plugins={[sobreAutoplay.current]} className="group">
-      <CarouselContent>
+      <CarouselContent className="-ml-4">
         {/* Slide 1 — Pink: Founder */}
-        <CarouselItem>
+        <CarouselItem className="pl-4 basis-[92%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#FF80B0" }}>
-            <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
+            <div className="p-6 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center text-ink lg:min-h-[560px] h-full max-w-5xl mx-auto">
               <img
                 src={founderPhoto}
                 alt="Griselle Bou, Directora de Preescolar SonSoles"
                 loading="lazy"
                 width={1797}
                 height={1920}
-                className="w-64 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
+                className="w-44 sm:w-80 lg:w-96 h-auto object-contain flex-shrink-0 self-center block"
               />
               <div className="flex flex-col justify-center text-left max-w-2xl">
-                <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink mb-4">
+                <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-ink mb-3 sm:mb-4">
                   FUNDADORA Y DIRECTORA
                 </span>
-                <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-3 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                   Griselle Bou de Blanco
                 </h3>
-                <p className="text-base sm:text-lg leading-relaxed mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
+                <p className="text-sm sm:text-lg leading-relaxed mb-4 sm:mb-6 text-primary-foreground" style={{ color: "#fadfef" }}>
                   Educadora • Autora • Pianista
                 </p>
-                <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
-                  Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
-                </p>
-                <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">
-                  <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
-                    Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
-                  </div>
+
+                {/* Mobile: collapsible content */}
+                <div className="lg:hidden">
+                  {founderExpanded && (
+                    <>
+                      <p className="text-sm leading-relaxed text-ink mb-6">
+                        Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
+                      </p>
+                      <div className="grid grid-cols-1 gap-3 mb-5">
+                        <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
+                          Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-ink px-5 py-4 mb-6">
+                        <span className="block font-bold uppercase tracking-[0.18em] text-xs mb-2" style={{ color: "#FF80B0" }}>
+                          Reconocimiento Internacional
+                        </span>
+                        <p className="text-sm leading-relaxed" style={{ color: "#fadfef" }}>
+                          Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
+                        </p>
+                      </div>
+                      <div className="mb-4">
+                        <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
+                          <a href="mailto:grisellebou@gmail.com">
+                            <Mail className="h-4 w-4" /> Escríbele a Griselle
+                          </a>
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setFounderExpanded((v) => !v)}
+                    className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline"
+                    aria-expanded={founderExpanded}
+                  >
+                    {founderExpanded ? "Mostrar menos" : "Leer más"}
+                    <ChevronDown className={`h-4 w-4 transition-transform ${founderExpanded ? "rotate-180" : ""}`} />
+                  </button>
                 </div>
-                <div className="rounded-2xl bg-ink px-6 py-5 mb-8">
-                  <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-2" style={{ color: "#FF80B0" }}>
-                    Reconocimiento Internacional
-                  </span>
-                  <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#fadfef" }}>
-                    Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
+
+                {/* Desktop / tablet: full content */}
+                <div className="hidden lg:block">
+                  <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
+                    Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
                   </p>
-                </div>
-                <div>
-                  <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
-                    <a href="mailto:grisellebou@gmail.com">
-                      <Mail className="h-4 w-4" /> Escríbele a Griselle
-                    </a>
-                  </Button>
+                  <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-5">
+                    <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm sm:text-base text-ink leading-snug">
+                      Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico
+                    </div>
+                  </div>
+                  <div className="rounded-2xl bg-ink px-6 py-5 mb-8">
+                    <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-2" style={{ color: "#FF80B0" }}>
+                      Reconocimiento Internacional
+                    </span>
+                    <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#fadfef" }}>
+                      Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.
+                    </p>
+                  </div>
+                  <div>
+                    <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
+                      <a href="mailto:grisellebou@gmail.com">
+                        <Mail className="h-4 w-4" /> Escríbele a Griselle
+                      </a>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -70,7 +115,7 @@ const SobreCarousel = () => {
         </CarouselItem>
 
         {/* Slide 2 — Purple: Teachers */}
-        <CarouselItem>
+        <CarouselItem className="pl-4 basis-[92%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full" style={{ background: "#9B6BD1" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink min-h-[560px] h-full max-w-5xl mx-auto">
               <div className="grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-full max-w-md sm:w-80 lg:w-96 mx-auto">
@@ -103,7 +148,7 @@ const SobreCarousel = () => {
         </CarouselItem>
 
         {/* Slide 3 — Green: Family illustration */}
-        <CarouselItem>
+        <CarouselItem className="pl-4 basis-[92%] sm:basis-full">
           <div className="lg:hidden rounded-3xl overflow-hidden bg-leaf h-full">
             <div className="flex flex-col h-full justify-between min-h-[560px]">
               <div className="px-6 pt-8 text-center">

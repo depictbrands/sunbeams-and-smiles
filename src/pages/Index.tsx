@@ -236,7 +236,7 @@ const Index = () => {
       {/* HERO */}
       <section
         id="top"
-        className="relative overflow-hidden isolate pb-16 sm:pb-24 bg-ink lg:bg-transparent"
+        className="relative overflow-hidden isolate pb-16 sm:pb-24 bg-ink lg:bg-transparent bg-yellow-400"
       >
         {/* Desktop: video as background, deferred to avoid competing with LCP */}
         <video
@@ -254,8 +254,8 @@ const Index = () => {
         </video>
         <div className="hidden lg:block absolute inset-0 bg-black/30 -z-10" />
         {/* Mobile hero: centered content inside a rounded card */}
-        <div className="lg:hidden px-4 pt-6 pb-10">
-          <div className="bg-card text-ink rounded-[2rem] shadow-playful overflow-hidden p-6 flex flex-col items-center text-center gap-5">
+        <div className="lg:hidden px-4 pt-6 pb-10 bg-yellow-400">
+          <div className="bg-card text-ink rounded-[2rem] shadow-playful overflow-hidden p-6 flex flex-col items-center text-center gap-5 bg-amber-50">
             <div className="flex flex-wrap items-center justify-center gap-2">
               <div className="inline-flex items-center gap-1.5 bg-ink/90 text-white px-3 py-1 rounded-full text-xs font-bold">
                 <Sparkles className="h-3.5 w-3.5 text-primary" /> Maternal · Preescolar · PreKinder

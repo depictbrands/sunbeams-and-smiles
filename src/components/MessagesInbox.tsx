@@ -47,7 +47,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg" },
   { name: "Nay", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
   { name: "Keisy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
-  { name: "Andrea", role: "Maestra" },
+  { name: "Adriana", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Génesis", role: "Maestra" },
   { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },
 ];

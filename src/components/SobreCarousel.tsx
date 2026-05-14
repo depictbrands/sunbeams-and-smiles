@@ -231,9 +231,6 @@ const SobreCarousel = () => {
                 height={896}
                 className="block w-full max-w-xl h-auto object-contain mb-6"
               />
-              <div className="flex justify-center w-full">
-                <Button asChild size="xl" className="bg-transparent hover:bg-transparent text-ink border-2 border-ink shadow-none"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
-              </div>
             </div>
           </div>
         </CarouselItem>

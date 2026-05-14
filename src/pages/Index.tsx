@@ -373,11 +373,12 @@ const Index = () => {
           <h2 className="text-4xl sm:text-5xl text-ink mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>SonSoles es un centro preescolar especializado en estimulación temprana, con una <span className="text-secondary">filosofía humanista</span> y <span className="text-secondary">espíritu cristiano</span>, donde cada niño es tratado como lo que es: <span className="text-secondary">único e irrepetible</span>.</h2>
         </div>
 
-        <div className="container grid md:grid-cols-3 gap-6 mb-16">
+        <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {[
             { color: 'bg-accent text-accent-foreground', title: 'Educación personalizada', text: 'Cada niño recibe una atención personalizada que fortalece sus facultades, virtudes y desarrollo integral.', icon: BookOpen },
             { color: 'bg-secondary text-secondary-foreground', title: 'Un ambiente familiar', text: 'Fomentamos la alegría, el respeto y los buenos modales en un ambiente de cariño y convivencia.', icon: Heart },
             { color: 'bg-leaf text-leaf-foreground', title: 'Papá y mamá', text: 'Creemos en una estrecha colaboración entre la familia y la escuela para acompañar el desarrollo integral de cada niño.', icon: PersonStanding },
+            { color: 'bg-[#F4842C] text-white', title: 'Estimulación temprana', text: 'Utilizamos técnicas de estimulación temprana de vanguardia que fortalecen el aprendizaje, la creatividad y el desarrollo integral de cada niño.', icon: Sparkles },
           ].map((item, i) => (
             <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>
               <item.icon className="h-10 w-10 mb-4 opacity-90" />

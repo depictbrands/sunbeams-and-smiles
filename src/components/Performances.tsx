@@ -120,23 +120,8 @@ const PerformanceCard = ({ item }: { item: Performance }) => {
 
 const Performances = () => {
   return (
-    <section id="presentaciones" className="py-24 bg-background">
-      <div className="container">
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-primary font-bold uppercase tracking-wider text-sm">
-            ​
-          </span>
-          <h2
-            className="text-4xl sm:text-5xl text-ink mt-3"
-            style={{ fontFamily: "'ChildsPlayground', cursive" }}
-          >
-            {"\n"}
-          </h2>
-          <p className="text-muted-foreground mt-4">
-            {"\n"}
-          </p>
-        </div>
-
+    <section id="presentaciones" className="bg-background">
+      <div>
         <div className="grid md:grid-cols-2 gap-8">
           {performances.map((item) => (
             <PerformanceCard key={item.title} item={item} />

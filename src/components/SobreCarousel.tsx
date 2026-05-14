@@ -169,8 +169,8 @@ const SobreCarousel = () => {
                         </CarouselContent>
                       </Carousel>
                     </div>
-                    {/* Tablet/Desktop: single column stack */}
-                    <div className="hidden sm:flex flex-col gap-4 items-center w-full max-w-xs mx-auto">
+                    {/* Tablet/Desktop: grid 4 per row */}
+                    <div className="hidden sm:grid grid-cols-4 gap-4 items-start w-full max-w-3xl mx-auto">
                       {teachers.map((t, i) => (
                         <div key={i} className="flex flex-col items-center gap-2">
                           <img
@@ -179,7 +179,7 @@ const SobreCarousel = () => {
                             loading="lazy"
                             width={400}
                             height={400}
-                            className="w-40 h-40 lg:w-48 lg:h-48 rounded-full object-cover border-4 shadow-md"
+                            className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
                             style={{ borderColor: "#D4B5F0" }}
                           />
                           <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>

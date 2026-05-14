@@ -161,6 +161,14 @@ const SobreCarousel = () => {
                         </CarouselContent>
                       </Carousel>
                     </div>
+                    <div className="flex flex-col justify-center items-center text-center max-w-3xl mx-auto">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
+                        NUESTRAS MAESTRAS
+                      </span>
+                      <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                        Cada maestra acompaña el desarrollo individual del niño respetando su ritmo, personalidad y proceso de aprendizaje.
+                      </h3>
+                    </div>
                     {/* Tablet/Desktop: grid 4 per row */}
                     <div className="hidden sm:grid grid-cols-4 gap-4 items-start w-full max-w-3xl mx-auto">
                       {teachers.map((t, i) => (

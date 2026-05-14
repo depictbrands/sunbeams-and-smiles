@@ -556,9 +556,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PRESENTACIONES */}
-      <Suspense fallback={null}><Performances /></Suspense>
-
       {/* TESTIMONIOS */}
       <section id="testimonios" className="py-24 bg-background">
         <div className="container">

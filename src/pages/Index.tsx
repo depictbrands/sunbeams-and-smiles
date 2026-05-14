@@ -161,7 +161,7 @@ const Index = () => {
             <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-ink">
-            <a href="#sobre" className="hover:text-primary transition-colors">Sobre Nosotros</a>
+            <a href="#sobre" className="hover:text-primary transition-colors">¿Quiénes somos?</a>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none">
                 Proyecto Educativo <ChevronDown className="h-4 w-4" />

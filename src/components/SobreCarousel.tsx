@@ -181,10 +181,10 @@ const SobreCarousel = () => {
                 );
               })()}
               <div className="flex flex-col justify-center text-left max-w-2xl">
-                <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
+                <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
                   NUESTRAS MAESTRAS
                 </span>
-                <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                   Maestras que enseñan con el corazón
                 </h3>
                 <p className="text-base sm:text-lg leading-relaxed text-slate-100">

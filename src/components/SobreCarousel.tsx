@@ -5,13 +5,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
-import teacher1 from "@/assets/teacher-1.webp";
-import teacher2 from "@/assets/teacher-2.webp";
-import teacher3 from "@/assets/teacher-3.webp";
-import teacher4 from "@/assets/teacher-4.webp";
-import teacher5 from "@/assets/teacher-5.webp";
-import teacher6 from "@/assets/teacher-6.webp";
-import teacher7 from "@/assets/teacher-7-updated.webp";
 
 const SobreCarousel = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));

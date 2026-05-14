@@ -1,22 +1,28 @@
-## Problem
-The first video card in the Performances grid shows a black block on 14" MacBooks because:
-- The `<video>` uses `preload="metadata"`, so the first frame isn't cached and the black `bg-ink` parent shows through while autoplay spins up.
-- Narrower column widths at ~14" make the gap more visible.
+## Hero revisions
 
-## Fix (2-line change)
+Update both the mobile and desktop hero in `src/pages/Index.tsx` to match the new copy structure. Headline and badges stay the same; we add a subtitle and a secondary CTA, and tighten the desktop CTAs.
 
-**File: `src/components/Performances.tsx`**
+### Copy
 
-1. **Change `bg-ink` → `bg-card`** on the card wrapper:
-   ```
-   className="group relative rounded-3xl overflow-hidden shadow-playful bg-card"
-   ```
-   This replaces the near-black fallback with the warm cream card color.
+- **Title** (unchanged): *Sembrando excelencia en el corazón de la familia puertorriqueña.*
+- **Subtitle** (new): *Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.*
+- **Badges** (unchanged): `Maternal · Preescolar · PreKínder` and `Cupey, cerca de Los Paseos` (fix the existing "PreKinder" → "PreKínder" and the stray "•" so both badges read consistently with `·`).
+- **Primary CTA**: *Agenda un tour* → `#contacto`
+- **Secondary CTA** (new): *Conoce nuestro proyecto educativo* → `#sobre`
 
-2. **Change `preload="metadata"` → `preload="auto"`** on each `<video>` element.
-   This tells the browser to buffer enough of the file so the first frame paints immediately.
+### Mobile card (lines ~261–303)
 
-No new assets or layout changes needed. The black block disappears because the background is no longer black and the video starts painting sooner.
+- Insert a subtitle `<p>` between the `<h1>` and the photo block, styled `text-base text-ink/80 leading-relaxed`.
+- Below the existing primary "Agenda un tour" button, add a secondary button using `variant="outlineWarm"` (or `outline`) linking to `#sobre` with the same `rounded-full w-full max-w-xs` width so the two CTAs stack cleanly.
 
-## Verify
-After the change, preview the site at a ~1280–1400px width (14" MacBook range). The first card should show the video frame immediately instead of a black rectangle.
+### Desktop hero (lines ~306–323)
+
+- Add the subtitle `<p>` between the `<h1>` and the CTA row: `text-lg lg:text-xl text-white/90 max-w-xl mb-8 leading-relaxed`.
+- Replace the current second button (Calendly "Agenda una cita") with *Conoce nuestro proyecto educativo* → `#sobre`, keeping `variant="outlineWarm" size="xl"`.
+- Normalize the badge separator from `•` to `·` and `PreKinder` → `PreKínder`.
+
+### Notes
+
+- Subtitles use the existing `Sora` body font (no inline font override) so they contrast with the `ChildsPlayground` headline.
+- No new components or assets; pure presentation edits inside `Index.tsx`.
+- Verify after changes by previewing at desktop (≥1280px) and mobile (≤640px) widths to confirm wrapping and CTA stacking.

@@ -128,13 +128,15 @@ const SobreCarousel = () => {
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#9B6BD1" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col gap-10 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               {(() => {
-                const teachers = [
+                const teachers: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana" },
                   { src: "/teacher-profile-pictures/maestra-Bea.jpeg", name: "Bea" },
                   { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
                   { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
+                  { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
+                  { name: "Génesis" },
                 ];
                 return (
                   <>
@@ -145,15 +147,25 @@ const SobreCarousel = () => {
                           {teachers.map((t, i) => (
                             <CarouselItem key={i} className="flex justify-center">
                               <div className="flex flex-col items-center gap-3">
-                                <img
-                                  src={t.src}
-                                  alt={`Maestra ${t.name}`}
-                                  loading="lazy"
-                                  width={400}
-                                  height={400}
-                                  className="w-56 h-56 rounded-full object-cover border-4 shadow-md"
-                                  style={{ borderColor: "#D4B5F0" }}
-                                />
+                                {t.src ? (
+                                  <img
+                                    src={t.src}
+                                    alt={`Maestra ${t.name}`}
+                                    loading="lazy"
+                                    width={400}
+                                    height={400}
+                                    className="w-56 h-56 rounded-full object-cover border-4 shadow-md"
+                                    style={{ borderColor: "#D4B5F0" }}
+                                  />
+                                ) : (
+                                  <div
+                                    className="w-56 h-56 rounded-full border-4 shadow-md flex items-center justify-center text-5xl font-bold text-white"
+                                    style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
+                                    aria-label={`Maestra ${t.name}`}
+                                  >
+                                    {t.name.charAt(0)}
+                                  </div>
+                                )}
                                 <span className="text-base font-bold text-white tracking-wide">{t.name}</span>
                               </div>
                             </CarouselItem>
@@ -173,15 +185,25 @@ const SobreCarousel = () => {
                     <div className="hidden sm:grid grid-cols-4 gap-4 items-start w-full max-w-3xl mx-auto">
                       {teachers.map((t, i) => (
                         <div key={i} className="flex flex-col items-center gap-2">
-                          <img
-                            src={t.src}
-                            alt={`Maestra ${t.name}`}
-                            loading="lazy"
-                            width={400}
-                            height={400}
-                            className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
-                            style={{ borderColor: "#D4B5F0" }}
-                          />
+                          {t.src ? (
+                            <img
+                              src={t.src}
+                              alt={`Maestra ${t.name}`}
+                              loading="lazy"
+                              width={400}
+                              height={400}
+                              className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                              style={{ borderColor: "#D4B5F0" }}
+                            />
+                          ) : (
+                            <div
+                              className="w-full aspect-square rounded-full border-4 shadow-md flex items-center justify-center text-3xl sm:text-4xl font-bold text-white"
+                              style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
+                              aria-label={`Maestra ${t.name}`}
+                            >
+                              {t.name.charAt(0)}
+                            </div>
+                          )}
                           <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
                         </div>
                       ))}

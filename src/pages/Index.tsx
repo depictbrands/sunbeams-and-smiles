@@ -400,10 +400,9 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center mb-14">
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Formación Integral</span>
             <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-              Cada niño tiene un plan de desarrollo propio. <br />
-              Cada familia tiene un acompañamiento directo con la maestra y el personal.
+              La atención personal que se ofrece a cada niño es fundamental para el desarrollo de sus facultades y virtudes.
             </h2>
-            <p className="text-lg sm:text-xl text-ink font-bold">Áreas de desarrollo que fortalecemos</p>
+            <p className="text-lg sm:text-xl text-ink font-bold">Áreas de desarrollo</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[

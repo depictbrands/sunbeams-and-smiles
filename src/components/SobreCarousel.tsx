@@ -229,7 +229,7 @@ const SobreCarousel = () => {
                 loading="lazy"
                 width={1280}
                 height={896}
-                className="block w-full max-w-xl h-auto object-contain mb-6"
+                className="block w-full max-w-xl h-auto object-contain mb-6 rounded-3xl shadow-2xl border-4 border-azure bg-white"
               />
             </div>
           </div>

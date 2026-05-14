@@ -130,10 +130,10 @@ const Performances = () => {
             className="text-4xl sm:text-5xl text-ink mt-3"
             style={{ fontFamily: "'ChildsPlayground', cursive" }}
           >
-            Nuestros pequeños en escena
+            Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.
           </h2>
           <p className="text-muted-foreground mt-4">
-            Momentos especiales donde nuestros niños brillan, aprenden y se divierten juntos.
+            {"\n"}
           </p>
         </div>
 

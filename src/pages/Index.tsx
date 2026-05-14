@@ -34,7 +34,7 @@ import facility5 from "/lovable-uploads/facility-extra-1.jpeg";
 import facility6 from "/lovable-uploads/facility-extra-2.jpeg";
 import facility7 from "/lovable-uploads/facility-extra-3.jpeg";
 import sonsolesBuilding from "@/assets/sonsoles-building.webp";
-import kidsDrawing from "@/assets/kids-drawing.gif";
+
 import { useEffect, useState } from "react";
 
 const Index = () => {

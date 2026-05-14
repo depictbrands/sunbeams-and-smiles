@@ -27,16 +27,16 @@ const SobreCarousel = () => {
       className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mt-2 mb-4"
       aria-expanded={open}
     >
-      {open ? "Menos detalle" : "Más detalle"}
+      {open ? "Leer menos" : "Leer más"}
       <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
   );
 
   const bioFull = "Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.";
+  const bioPeek = "Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik…";
   const credsFull = "Bachillerato en Artes y Maestría en Educación del Niño en la Universidad de Puerto Rico";
   const recogFull = "Autora del libro Canciones y cantos-juegos infantiles del folklore puertorriqueño y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.";
-
-  const peek = (text: string, n = 90) => (text.length > n ? text.slice(0, n).trimEnd() + "…" : text);
+  const recogPeek = "Autora del libro Canciones y cantos-juegos infantiles del folklore puertorriqueño y su disco compacto…";
 
   return (
     <Carousel opts={{ loop: true, align: "start" }} plugins={[sobreAutoplay.current]} className="group">
@@ -67,16 +67,15 @@ const SobreCarousel = () => {
                 {/* Mobile: peek + "Más detalle" per block */}
                 <div className="md:hidden">
                   <p className="text-sm leading-relaxed text-ink">
-                    {bioOpen ? bioFull : peek(bioFull)}
+                    {bioOpen ? bioFull : bioPeek}
                   </p>
                   {moreBtn(bioOpen, () => setBioOpen((v) => !v))}
 
                   <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
-                    {credsOpen ? credsFull : peek(credsFull, 60)}
+                    {credsFull}
                   </div>
-                  {moreBtn(credsOpen, () => setCredsOpen((v) => !v))}
 
-                  <div className="rounded-2xl bg-ink px-5 py-4">
+                  <div className="rounded-2xl bg-ink px-5 py-4 mt-4">
                     <span className="block font-bold uppercase tracking-[0.18em] text-[11px] mb-2" style={{ color: "#FF80B0" }}>
                       Reconocimiento Internacional
                     </span>
@@ -84,14 +83,14 @@ const SobreCarousel = () => {
                       {recogOpen ? (
                         <>Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.</>
                       ) : (
-                        peek(recogFull, 90)
+                        recogPeek
                       )}
                     </p>
                   </div>
                   {moreBtn(recogOpen, () => setRecogOpen((v) => !v))}
 
 
-                  <div className="mt-2">
+                  <div className="mt-2 mb-4">
                     <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
                       <a href="mailto:grisellebou@gmail.com">
                         <Mail className="h-4 w-4" /> Escríbele a Griselle

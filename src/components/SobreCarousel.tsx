@@ -216,10 +216,10 @@ const SobreCarousel = () => {
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#7CC9E8" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col justify-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
-              <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
+              <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
                 NUESTRAS FAMILIAS
               </span>
-              <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+              <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                 Las familias son las principales protagonistas de nuestro programa educativo.
               </h3>
               <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">

@@ -302,8 +302,6 @@ const Index = () => {
             <Button asChild variant="hero" size="xl" className="rounded-full w-full max-w-xs">
               <a href="#contacto">Agenda un tour</a>
             </Button>
-          </div>
-          <div className="flex justify-center mt-5">
             <Button asChild variant="outlineWarm" size="xl" className="rounded-full w-full max-w-xs">
               <a href="#sobre">Conoce nuestro proyecto educativo</a>
             </Button>

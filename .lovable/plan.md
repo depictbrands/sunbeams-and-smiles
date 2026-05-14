@@ -1,18 +1,28 @@
-## Move mobile secondary CTA outside the hero bubble
+## Hero revisions
 
-In `src/pages/Index.tsx`, the mobile hero wraps everything in a single `bg-card` rounded bubble. The new "Conoce nuestro proyecto educativo" button currently lives inside that bubble, where its longer label wraps and visually mismatches the primary "Agenda un tour" button.
+Update both the mobile and desktop hero in `src/pages/Index.tsx` to match the new copy structure. Headline and badges stay the same; we add a subtitle and a secondary CTA, and tighten the desktop CTAs.
 
-### Change
+### Copy
 
-- Remove the secondary `<Button>` from inside the `bg-card` bubble (so the bubble ends right after the primary CTA, as before).
-- Add the secondary CTA as a sibling **below** the bubble, inside the outer `lg:hidden` yellow wrapper, centered. Style:
-  - `variant="outlineWarm"`, `size="xl"`, `rounded-full`
-  - `w-full max-w-xs mx-auto mt-5` so it sits centered under the bubble at the same width as the primary CTA inside the bubble
-  - Wrap in a `flex justify-center` so it stays centered on all mobile widths
-- Keep `href="#sobre"`.
+- **Title** (unchanged): *Sembrando excelencia en el corazón de la familia puertorriqueña.*
+- **Subtitle** (new): *Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.*
+- **Badges** (unchanged): `Maternal · Preescolar · PreKínder` and `Cupey, cerca de Los Paseos` (fix the existing "PreKinder" → "PreKínder" and the stray "•" so both badges read consistently with `·`).
+- **Primary CTA**: *Agenda un tour* → `#contacto`
+- **Secondary CTA** (new): *Conoce nuestro proyecto educativo* → `#sobre`
 
-### Result
+### Mobile card (lines ~261–303)
 
-The bubble keeps its tight composition (badges → headline → subtitle → photo → primary CTA). The secondary action floats on the yellow background just below the bubble, matching the primary button's size and giving the eye a clear hierarchy.
+- Insert a subtitle `<p>` between the `<h1>` and the photo block, styled `text-base text-ink/80 leading-relaxed`.
+- Below the existing primary "Agenda un tour" button, add a secondary button using `variant="outlineWarm"` (or `outline`) linking to `#sobre` with the same `rounded-full w-full max-w-xs` width so the two CTAs stack cleanly.
 
-No desktop changes — desktop layout already shows the two CTAs side by side and is fine.
+### Desktop hero (lines ~306–323)
+
+- Add the subtitle `<p>` between the `<h1>` and the CTA row: `text-lg lg:text-xl text-white/90 max-w-xl mb-8 leading-relaxed`.
+- Replace the current second button (Calendly "Agenda una cita") with *Conoce nuestro proyecto educativo* → `#sobre`, keeping `variant="outlineWarm" size="xl"`.
+- Normalize the badge separator from `•` to `·` and `PreKinder` → `PreKínder`.
+
+### Notes
+
+- Subtitles use the existing `Sora` body font (no inline font override) so they contrast with the `ChildsPlayground` headline.
+- No new components or assets; pure presentation edits inside `Index.tsx`.
+- Verify after changes by previewing at desktop (≥1280px) and mobile (≤640px) widths to confirm wrapping and CTA stacking.

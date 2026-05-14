@@ -252,7 +252,7 @@ const SobreCarousel = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mx-auto mt-2">
                 {[
                   "Los padres reciben información periódica del desarrollo educativo del niño.",
-                  "Se ofrecen cursos de orientación familiar con métodos prácticos para el desarrollo integral de sus hijos.",
+                  "Se ofrecen escuela de padres con métodos prácticos para el desarrollo integral de sus hijos.",
                   "El Preescolar SonSoles apoya a los padres, quienes son los primeros educadores de los hijos.",
                 ].map((text, i) => (
                   <div

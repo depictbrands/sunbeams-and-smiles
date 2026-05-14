@@ -438,7 +438,7 @@ const Index = () => {
               { icon: Sparkles, title: 'Formativa', desc: 'Cultivamos las virtudes humanas: orden, obediencia, paciencia, respeto y alegría.', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary/50' },
             ].map((a: any, i) => {
               const cardInner = (
-                <Card className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImage ? 'cursor-pointer w-full text-left' : ''}`}>
+                <Card className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImages ? 'cursor-pointer w-full text-left' : ''}`}>
                   <div className={`${a.bg} ${a.color} w-14 h-14 rounded-2xl flex items-center justify-center gap-1 mb-5`}>
                     <a.icon className={a.secondaryIcon ? 'h-5 w-5' : 'h-7 w-7'} />
                     {a.secondaryIcon && <a.secondaryIcon className="h-5 w-5" />}
@@ -447,7 +447,7 @@ const Index = () => {
                   <p className="text-muted-foreground text-sm">{a.desc}</p>
                 </Card>
               );
-              if (a.popupImage) {
+              if (a.popupImages) {
                 return (
                   <Dialog key={i}>
                     <DialogTrigger asChild>
@@ -455,9 +455,19 @@ const Index = () => {
                     </DialogTrigger>
                     <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={{ backgroundColor: a.popupBg }}>
                       <div className="p-6 flex flex-col items-center text-center gap-5" style={{ backgroundColor: a.popupBg }}>
-                        <div className="w-full aspect-square rounded-2xl overflow-hidden">
-                          <img src={a.popupImage} alt={a.title} className="w-full h-full object-cover" loading="lazy" />
-                        </div>
+                        <Carousel className="w-full" opts={{ loop: true }}>
+                          <CarouselContent>
+                            {a.popupImages.map((src: string, idx: number) => (
+                              <CarouselItem key={idx}>
+                                <div className="w-full aspect-square rounded-2xl overflow-hidden">
+                                  <img src={src} alt={`${a.title} ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                                </div>
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                          <CarouselPrevious className="left-2" />
+                          <CarouselNext className="right-2" />
+                        </Carousel>
                         <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</DialogTitle>
                         <DialogDescription className="sr-only">{a.title}</DialogDescription>
                       </div>

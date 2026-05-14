@@ -433,17 +433,39 @@ const Index = () => {
               { icon: Activity, title: 'Física', desc: 'Desarrollamos el motor grueso y fino, los patrones de movimiento, la lateralidad y el dominio espacial.', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf/50' },
               { icon: Heart, title: 'Socioemocional', desc: 'Enseñamos a relacionarse, esperar, compartir y manejar emociones.', color: 'text-purple', bg: 'bg-purple/10', hoverBorder: 'hover:border-purple/50' },
               { icon: MessageCircle, title: 'Lingüística', desc: 'Creamos un ambiente bilingüe donde se aprende con naturalidad.', color: 'text-azure', bg: 'bg-azure/10', hoverBorder: 'hover:border-azure/50' },
-              { icon: Palette, title: 'Música y Arte', desc: 'Despertamos la imaginación, la expresión, la sensibilidad estética a través del arte, la música y el baile.', color: 'text-accent', bg: 'bg-accent/20', hoverBorder: 'hover:border-accent/60' },
+              { icon: Palette, secondaryIcon: Music, title: 'Música y Arte', desc: 'Despertamos la imaginación, la expresión, la sensibilidad estética a través del arte, la música y el baile.', color: 'text-accent', bg: 'bg-accent/20', hoverBorder: 'hover:border-accent/60', popupImage: metodologiaMusic, popupBg: '#FFF3EA' },
               { icon: Sparkles, title: 'Formativa', desc: 'Cultivamos las virtudes humanas: orden, obediencia, paciencia, respeto y alegría.', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary/50' },
-            ].map((a, i) => (
-              <Card key={i} className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all`}>
-                <div className={`${a.bg} ${a.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-5`}>
-                  <a.icon className="h-7 w-7" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</h3>
-                <p className="text-muted-foreground text-sm">{a.desc}</p>
-              </Card>
-            ))}
+            ].map((a: any, i) => {
+              const cardInner = (
+                <Card className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImage ? 'cursor-pointer w-full text-left' : ''}`}>
+                  <div className={`${a.bg} ${a.color} ${a.secondaryIcon ? 'w-auto px-4 gap-2' : 'w-14'} h-14 rounded-2xl flex items-center justify-center mb-5`}>
+                    <a.icon className="h-7 w-7" />
+                    {a.secondaryIcon && <a.secondaryIcon className="h-7 w-7" />}
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</h3>
+                  <p className="text-muted-foreground text-sm">{a.desc}</p>
+                </Card>
+              );
+              if (a.popupImage) {
+                return (
+                  <Dialog key={i}>
+                    <DialogTrigger asChild>
+                      <button type="button" className="text-left">{cardInner}</button>
+                    </DialogTrigger>
+                    <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={{ backgroundColor: a.popupBg }}>
+                      <div className="p-6 flex flex-col items-center text-center gap-5" style={{ backgroundColor: a.popupBg }}>
+                        <div className="w-full aspect-square rounded-2xl overflow-hidden">
+                          <img src={a.popupImage} alt={a.title} className="w-full h-full object-cover" loading="lazy" />
+                        </div>
+                        <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</DialogTitle>
+                        <DialogDescription className="sr-only">{a.title}</DialogDescription>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                );
+              }
+              return <div key={i}>{cardInner}</div>;
+            })}
           </div>
         </div>
       </section>

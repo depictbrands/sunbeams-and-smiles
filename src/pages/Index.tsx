@@ -376,7 +376,7 @@ const Index = () => {
         <div className="container grid md:grid-cols-3 gap-6 mb-16">
           {[
             { color: 'bg-accent text-accent-foreground', title: 'Educación personalizada', text: 'Cada niño recibe una atención personalizada que fortalece sus facultades, virtudes y desarrollo integral.', icon: BookOpen },
-            { color: 'bg-secondary text-secondary-foreground', title: 'Un ambiente familiar', text: 'lleno de alegría y cariño, donde se educa en la adquisición de buenos modales y trato con las demás personas.', icon: Heart },
+            { color: 'bg-secondary text-secondary-foreground', title: 'Un ambiente familiar', text: 'Fomentamos la alegría, el respeto y los buenos modales en un ambiente de cariño y convivencia.', icon: Heart },
             { color: 'bg-leaf text-leaf-foreground', title: 'Papá y mamá', text: 'son los primeros educadores de sus hijos y en SonSoles los acompañamos en esa hermosa misión.', icon: PersonStanding },
           ].map((item, i) => (
             <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>

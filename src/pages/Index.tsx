@@ -438,9 +438,9 @@ const Index = () => {
             ].map((a: any, i) => {
               const cardInner = (
                 <Card className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImage ? 'cursor-pointer w-full text-left' : ''}`}>
-                  <div className={`${a.bg} ${a.color} ${a.secondaryIcon ? 'w-auto px-4 gap-2' : 'w-14'} h-14 rounded-2xl flex items-center justify-center mb-5`}>
-                    <a.icon className="h-7 w-7" />
-                    {a.secondaryIcon && <a.secondaryIcon className="h-7 w-7" />}
+                  <div className={`${a.bg} ${a.color} w-14 h-14 rounded-2xl flex items-center justify-center gap-1 mb-5`}>
+                    <a.icon className={a.secondaryIcon ? 'h-5 w-5' : 'h-7 w-7'} />
+                    {a.secondaryIcon && <a.secondaryIcon className="h-5 w-5" />}
                   </div>
                   <h3 className="text-2xl sm:text-3xl font-bold text-ink mb-2" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</h3>
                   <p className="text-muted-foreground text-sm">{a.desc}</p>

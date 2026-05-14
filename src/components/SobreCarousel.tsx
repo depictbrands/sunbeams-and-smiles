@@ -67,16 +67,15 @@ const SobreCarousel = () => {
                 {/* Mobile: peek + "Más detalle" per block */}
                 <div className="md:hidden">
                   <p className="text-sm leading-relaxed text-ink">
-                    {bioOpen ? bioFull : peek(bioFull)}
+                    {bioOpen ? bioFull : bioPeek}
                   </p>
                   {moreBtn(bioOpen, () => setBioOpen((v) => !v))}
 
                   <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
-                    {credsOpen ? credsFull : peek(credsFull, 60)}
+                    {credsFull}
                   </div>
-                  {moreBtn(credsOpen, () => setCredsOpen((v) => !v))}
 
-                  <div className="rounded-2xl bg-ink px-5 py-4">
+                  <div className="rounded-2xl bg-ink px-5 py-4 mt-4">
                     <span className="block font-bold uppercase tracking-[0.18em] text-[11px] mb-2" style={{ color: "#FF80B0" }}>
                       Reconocimiento Internacional
                     </span>
@@ -84,14 +83,14 @@ const SobreCarousel = () => {
                       {recogOpen ? (
                         <>Autora del libro <em>Canciones y cantos-juegos infantiles del folklore puertorriqueño</em> y su disco compacto — nominado a los Grammy Latinos como Mejor Álbum de Música Latina para Niños, 7ma entrega, Nueva York, noviembre 2006.</>
                       ) : (
-                        peek(recogFull, 90)
+                        recogPeek
                       )}
                     </p>
                   </div>
                   {moreBtn(recogOpen, () => setRecogOpen((v) => !v))}
 
 
-                  <div className="mt-2">
+                  <div className="mt-2 mb-4">
                     <Button asChild size="lg" className="bg-ink text-card hover:bg-ink/90 shadow-playful hover:-translate-y-0.5 transition-all">
                       <a href="mailto:grisellebou@gmail.com">
                         <Mail className="h-4 w-4" /> Escríbele a Griselle

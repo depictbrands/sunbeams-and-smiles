@@ -220,10 +220,10 @@ const SobreCarousel = () => {
                 NUESTRAS FAMILIAS
               </span>
               <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
-                Padres que caminan con nosotros
+                Las familias son las principales protagonistas de nuestro programa educativo.
               </h3>
               <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
-                Las familias son las protagonistas del proyecto educativo. Cultivamos un acompañamiento cercano y constante, porque educar a un niño es una tarea que hacemos juntos.
+                {"\n"}
               </p>
             </div>
           </div>

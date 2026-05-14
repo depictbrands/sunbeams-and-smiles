@@ -20,7 +20,7 @@ const performances: Performance[] = [
   {
     title: "Programa de Navidad",
     description:
-      "Nuestros niños celebrando la magia de la Navidad sobre el escenario.",
+      "Se desarrollan habilidades artísticas y musicales.",
     videoUrl: programaNavidad,
   },
 ];

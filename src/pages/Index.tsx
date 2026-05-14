@@ -438,15 +438,15 @@ const Index = () => {
               { icon: Sparkles, title: 'Formativa', desc: 'Cultivamos las virtudes humanas: orden, obediencia, paciencia, respeto y alegría.', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary/50' },
             ].map((a: any, i) => {
               const cardInner = (
-                <Card className={`p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImages ? 'cursor-pointer w-full text-left' : ''}`}>
-                  <div className={`${a.bg} ${a.color} w-full rounded-2xl flex items-center gap-3 px-4 py-3 mb-5`}>
+                <Card className={`group p-6 rounded-3xl border-2 border-border ${a.hoverBorder} hover:-translate-y-1 transition-all ${a.popupImages ? 'cursor-pointer w-full text-left' : ''}`}>
+                  <div className={`${a.bg} ${a.color} w-full rounded-2xl flex items-center gap-3 px-4 py-3`}>
                     <div className="flex items-center gap-1 shrink-0">
                       <a.icon className={a.secondaryIcon ? 'h-5 w-5' : 'h-7 w-7'} />
                       {a.secondaryIcon && <a.secondaryIcon className="h-5 w-5" />}
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</h3>
                   </div>
-                  <p className="text-muted-foreground text-sm">{a.desc}</p>
+                  <p className="text-muted-foreground text-sm overflow-hidden max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 group-hover:mt-4 transition-all duration-300">{a.desc}</p>
                 </Card>
               );
               if (a.popupImages) {

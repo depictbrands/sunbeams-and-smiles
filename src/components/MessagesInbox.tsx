@@ -264,6 +264,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                         }`}
                       >
                         <Avatar className="h-11 w-11">
+                          {c.avatar && <AvatarImage src={c.avatar} alt={c.name} />}
                           <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
                             {c.name.charAt(0).toUpperCase()}
                           </AvatarFallback>

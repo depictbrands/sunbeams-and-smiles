@@ -271,9 +271,6 @@ const Index = () => {
             <h1 className="text-4xl sm:text-5xl leading-[1.05] text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
-            <p className="text-base text-ink/80 leading-relaxed">
-              Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.
-            </p>
             <div className="relative w-full max-w-[320px] mx-auto pb-6">
               <img
                 src={heroKids}
@@ -322,9 +319,6 @@ const Index = () => {
             <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
-            <p className="text-lg lg:text-xl text-white/90 max-w-xl mb-8 leading-relaxed">
-              Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.
-            </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="#contacto">Agenda un tour</a></Button>
               <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce nuestro proyecto educativo</a></Button>

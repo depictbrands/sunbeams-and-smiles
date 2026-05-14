@@ -39,17 +39,17 @@ const initialOf = (p?: Profile | null) =>
 
 const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 
-const STAFF_CONTACTS: { name: string; role: string }[] = [
+const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Griselle", role: "Directora" },
   { name: "Nilda", role: "Subdirectora" },
-  { name: "Yeidy", role: "Maestra" },
+  { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg" },
   { name: "Zuania", role: "Maestra" },
-  { name: "Bea", role: "Maestra" },
-  { name: "Nay", role: "Maestra" },
-  { name: "Keisy", role: "Maestra" },
+  { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg" },
+  { name: "Nay", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
+  { name: "Keisy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
   { name: "Andrea", role: "Maestra" },
   { name: "Génesis", role: "Maestra" },
-  { name: "Esmeralda", role: "Maestra" },
+  { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },
 ];
 
 const MessagesInbox = ({ userId, isStaff }: Props) => {
@@ -264,6 +264,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                         }`}
                       >
                         <Avatar className="h-11 w-11">
+                          {c.avatar && <AvatarImage src={c.avatar} alt={c.name} />}
                           <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
                             {c.name.charAt(0).toUpperCase()}
                           </AvatarFallback>

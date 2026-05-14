@@ -507,6 +507,9 @@ const Index = () => {
               </Dialog>
             ))}
           </div>
+          <div className="mt-12">
+            <Suspense fallback={null}><Performances /></Suspense>
+          </div>
         </div>
       </section>
 

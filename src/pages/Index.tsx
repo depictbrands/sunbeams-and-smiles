@@ -433,7 +433,7 @@ const Index = () => {
               { icon: Activity, title: 'Física', desc: 'Desarrollamos el motor grueso y fino, los patrones de movimiento, la lateralidad y el dominio espacial.', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf/50' },
               { icon: Heart, title: 'Socioemocional', desc: 'Enseñamos a relacionarse, esperar, compartir y manejar emociones.', color: 'text-purple', bg: 'bg-purple/10', hoverBorder: 'hover:border-purple/50' },
               { icon: MessageCircle, title: 'Lingüística', desc: 'Creamos un ambiente bilingüe donde se aprende con naturalidad.', color: 'text-azure', bg: 'bg-azure/10', hoverBorder: 'hover:border-azure/50' },
-              { icon: Palette, secondaryIcon: Music, title: 'Música y Arte', desc: 'Despertamos la imaginación, la expresión, la sensibilidad estética a través del arte, la música y el baile.', color: 'text-accent', bg: 'bg-accent/20', hoverBorder: 'hover:border-accent/60', popupImage: metodologiaMusic, popupBg: '#FFF3EA' },
+              { icon: Music, secondaryIcon: Palette, title: 'Música y Arte', desc: 'Despertamos la imaginación, la expresión, la sensibilidad estética a través del arte, la música y el baile.', color: 'text-accent', bg: 'bg-accent/20', hoverBorder: 'hover:border-accent/60', popupImage: metodologiaMusic, popupBg: '#FFF3EA' },
               { icon: Sparkles, title: 'Formativa', desc: 'Cultivamos las virtudes humanas: orden, obediencia, paciencia, respeto y alegría.', color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary/50' },
             ].map((a: any, i) => {
               const cardInner = (

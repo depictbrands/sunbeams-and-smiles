@@ -42,6 +42,7 @@ const Index = () => {
   const [facilityIndex, setFacilityIndex] = useState(0);
   const [deferredWidgetsReady, setDeferredWidgetsReady] = useState(false);
   const [mapActive, setMapActive] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<number[]>([]);
   useEffect(() => {
     const id = setInterval(() => {
       setFacilityIndex((i) => (i + 1) % facilityImages.length);

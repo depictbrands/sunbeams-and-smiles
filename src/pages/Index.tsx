@@ -520,7 +520,7 @@ const Index = () => {
               </Dialog>
             ))}
           </div>
-          <div className="mt-4">
+          <div className="mt-8">
             <Suspense fallback={null}><Performances /></Suspense>
           </div>
         </div>

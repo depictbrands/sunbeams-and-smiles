@@ -135,6 +135,7 @@ const SobreCarousel = () => {
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
                   { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
+                  { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
                 ];
                 return (
                   <>

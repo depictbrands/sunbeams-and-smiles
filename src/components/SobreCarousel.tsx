@@ -186,10 +186,10 @@ const SobreCarousel = () => {
                   NUESTRAS MAESTRAS
                 </span>
                 <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
-                  Maestras que enseñan con el corazón
+                  Cada maestra acompaña el desarrollo individual del niño respetando su ritmo, personalidad y proceso de aprendizaje.
                 </h3>
                 <p className="text-base sm:text-lg leading-relaxed text-slate-100">
-                  En SonSoles cada maestra es elegida con cuidado: por su preparación, por su vocación y por su capacidad de amar a cada niño como único. Son especializadas en estimulación temprana, expertas en cada etapa del desarrollo, y cariñosas en cada gesto del día.
+                  {"\n"}
                 </p>
               </div>
             </div>

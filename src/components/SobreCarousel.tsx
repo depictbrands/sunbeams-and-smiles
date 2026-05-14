@@ -185,15 +185,25 @@ const SobreCarousel = () => {
                     <div className="hidden sm:grid grid-cols-4 gap-4 items-start w-full max-w-3xl mx-auto">
                       {teachers.map((t, i) => (
                         <div key={i} className="flex flex-col items-center gap-2">
-                          <img
-                            src={t.src}
-                            alt={`Maestra ${t.name}`}
-                            loading="lazy"
-                            width={400}
-                            height={400}
-                            className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
-                            style={{ borderColor: "#D4B5F0" }}
-                          />
+                          {t.src ? (
+                            <img
+                              src={t.src}
+                              alt={`Maestra ${t.name}`}
+                              loading="lazy"
+                              width={400}
+                              height={400}
+                              className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                              style={{ borderColor: "#D4B5F0" }}
+                            />
+                          ) : (
+                            <div
+                              className="w-full aspect-square rounded-full border-4 shadow-md flex items-center justify-center text-3xl sm:text-4xl font-bold text-white"
+                              style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
+                              aria-label={`Maestra ${t.name}`}
+                            >
+                              {t.name.charAt(0)}
+                            </div>
+                          )}
                           <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
                         </div>
                       ))}

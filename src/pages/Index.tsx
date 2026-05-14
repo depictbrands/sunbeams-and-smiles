@@ -381,10 +381,10 @@ const Index = () => {
             { color: 'bg-leaf text-leaf-foreground', title: 'Papá y mamá', text: 'Creemos en una estrecha colaboración entre la familia y la escuela para acompañar el desarrollo integral de cada niño.', icon: PersonStanding },
             { color: 'bg-[#F4842C] text-white', title: 'Estimulación temprana', text: 'Utilizamos técnicas de estimulación temprana de vanguardia que fortalecen el aprendizaje, la creatividad y el desarrollo integral de cada niño.', icon: Sparkles },
           ].map((item, i) => (
-            <div key={i} className={`${item.color} rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-transform`}>
+            <div key={i} className={`${item.color} group rounded-3xl p-8 shadow-soft hover:-translate-y-1 transition-all min-h-[220px] flex flex-col justify-center`}>
               <item.icon className="h-10 w-10 mb-4 opacity-90" />
-              <h3 className="text-xl md:text-2xl font-bold mb-2" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.title}</h3>
-              <p className="text-base md:text-lg leading-snug" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.text}</p>
+              <h3 className="text-xl md:text-2xl font-bold" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.title}</h3>
+              <p className="text-base md:text-lg leading-snug max-h-0 opacity-0 overflow-hidden group-hover:max-h-40 group-hover:opacity-100 group-hover:mt-2 transition-all duration-500" style={{ fontFamily: "'Sora', system-ui, sans-serif" }}>{item.text}</p>
             </div>
           ))}
         </div>

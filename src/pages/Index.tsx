@@ -262,7 +262,7 @@ const Index = () => {
           <div className="bg-card text-ink rounded-[2rem] shadow-playful overflow-hidden p-6 flex flex-col items-center text-center gap-5 bg-amber-100">
             <div className="flex flex-wrap items-center justify-center gap-2">
               <div className="inline-flex items-center gap-1.5 bg-ink/90 text-white px-3 py-1 rounded-full text-xs font-bold">
-                <Sparkles className="h-3.5 w-3.5 text-primary" /> Maternal · Preescolar · PreKinder
+                <Sparkles className="h-3.5 w-3.5 text-primary" /> Maternal · Preescolar · PreKínder
               </div>
               <div className="inline-flex items-center gap-1.5 bg-ink/90 text-white px-3 py-1 rounded-full text-xs font-bold">
                 <MapPin className="h-3.5 w-3.5 text-primary" /> Cupey, cerca de Los Paseos
@@ -271,6 +271,9 @@ const Index = () => {
             <h1 className="text-4xl sm:text-5xl leading-[1.05] text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
+            <p className="text-base text-ink/80 leading-relaxed">
+              Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.
+            </p>
             <div className="relative w-full max-w-[320px] mx-auto pb-6">
               <img
                 src={heroKids}
@@ -299,6 +302,9 @@ const Index = () => {
             <Button asChild variant="hero" size="xl" className="rounded-full w-full max-w-xs">
               <a href="#contacto">Agenda un tour</a>
             </Button>
+            <Button asChild variant="outlineWarm" size="xl" className="rounded-full w-full max-w-xs">
+              <a href="#sobre">Conoce nuestro proyecto educativo</a>
+            </Button>
           </div>
         </div>
 
@@ -307,7 +313,7 @@ const Index = () => {
           <div className="relative z-10">
             <div className="flex flex-wrap items-center gap-2 mb-6">
               <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold">
-                <Sparkles className="h-4 w-4 text-primary" /> Maternal · Preescolar • PreKinder
+                <Sparkles className="h-4 w-4 text-primary" /> Maternal · Preescolar · PreKínder
               </div>
               <div className="inline-flex items-center gap-2 bg-[#413D45] text-white px-4 py-1.5 rounded-full text-sm font-bold">
                 <MapPin className="h-4 w-4 text-primary" /> Cupey, cerca de Los Paseos
@@ -316,9 +322,12 @@ const Index = () => {
             <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
+            <p className="text-lg lg:text-xl text-white/90 max-w-xl mb-8 leading-relaxed">
+              Educación personalizada con formación humana y espíritu cristiano, donde cada niño es tratado como un ser único e irrepetible.
+            </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="#contacto">Agenda un tour</a></Button>
-              <Button asChild variant="outlineWarm" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda una cita</a></Button>
+              <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce nuestro proyecto educativo</a></Button>
             </div>
           </div>
           <div className="relative">

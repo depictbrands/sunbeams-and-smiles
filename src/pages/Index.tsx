@@ -430,7 +430,7 @@ const Index = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Brain, title: 'Cognitiva', desc: 'Estimulamos  la inteligencia, la curiosidad y el sentido crítico.', color: 'text-pink', bg: 'bg-pink/10', hoverBorder: 'hover:border-pink/50' },
+              { icon: Brain, title: 'Cognitiva', desc: 'Estimulamos  la inteligencia, la curiosidad y el sentido crítico.', color: 'text-pink', bg: 'bg-pink/10', hoverBorder: 'hover:border-pink/50', popupImages: [metodologiaRead], popupLabel: 'Lectoescritura', popupBg: '#EBF6ED' },
               { icon: Activity, title: 'Física', desc: 'Desarrollamos el motor grueso y fino, los patrones de movimiento, la lateralidad y el dominio espacial.', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf/50' },
               { icon: Heart, title: 'Socioemocional', desc: 'Enseñamos a relacionarse, esperar, compartir y manejar emociones.', color: 'text-purple', bg: 'bg-purple/10', hoverBorder: 'hover:border-purple/50' },
               { icon: MessageCircle, title: 'Lingüística', desc: 'Creamos un ambiente bilingüe donde se aprende con naturalidad.', color: 'text-azure', bg: 'bg-azure/10', hoverBorder: 'hover:border-azure/50' },
@@ -468,8 +468,8 @@ const Index = () => {
                           <CarouselPrevious className="left-2" />
                           <CarouselNext className="right-2" />
                         </Carousel>
-                        <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</DialogTitle>
-                        <DialogDescription className="sr-only">{a.title}</DialogDescription>
+                        <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.popupLabel || a.title}</DialogTitle>
+                        <DialogDescription className="sr-only">{a.popupLabel || a.title}</DialogDescription>
                       </div>
                     </DialogContent>
                   </Dialog>

@@ -56,7 +56,7 @@ const PerformanceCard = ({ item }: { item: Performance }) => {
   };
 
   return (
-    <div className="group relative rounded-3xl overflow-hidden shadow-playful bg-ink">
+    <div className="group relative rounded-3xl overflow-hidden shadow-playful bg-card">
       <div className="relative aspect-video w-full">
         {item.videoUrl ? (
           <video
@@ -66,7 +66,7 @@ const PerformanceCard = ({ item }: { item: Performance }) => {
             playsInline
             loop
             autoPlay
-            preload="metadata"
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (

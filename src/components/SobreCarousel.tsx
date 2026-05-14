@@ -126,7 +126,7 @@ const SobreCarousel = () => {
         {/* Slide 2 — Purple: Teachers */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#9B6BD1" }}>
-            <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
+            <div className="p-8 sm:p-14 lg:p-16 flex flex-col gap-10 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               {(() => {
                 const teachers = [
                   { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana" },
@@ -138,6 +138,14 @@ const SobreCarousel = () => {
                 ];
                 return (
                   <>
+                    <div className="flex flex-col justify-center items-center text-center max-w-3xl mx-auto">
+                      <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
+                        NUESTRAS MAESTRAS
+                      </span>
+                      <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                        Cada maestra acompaña el desarrollo individual del niño respetando su ritmo, personalidad y proceso de aprendizaje.
+                      </h3>
+                    </div>
                     {/* Mobile: nested carousel, one circle at a time */}
                     <div className="sm:hidden w-full max-w-xs mx-auto flex-shrink-0">
                       <Carousel opts={{ loop: true, align: "center" }} plugins={[teachersAutoplay.current]}>
@@ -161,8 +169,8 @@ const SobreCarousel = () => {
                         </CarouselContent>
                       </Carousel>
                     </div>
-                    {/* Tablet/Desktop: grid */}
-                    <div className="hidden sm:grid grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 self-center w-full max-w-md sm:w-80 lg:w-96 mx-auto">
+                    {/* Tablet/Desktop: single column stack */}
+                    <div className="hidden sm:flex flex-col gap-4 items-center w-full max-w-xs mx-auto">
                       {teachers.map((t, i) => (
                         <div key={i} className="flex flex-col items-center gap-2">
                           <img
@@ -171,27 +179,16 @@ const SobreCarousel = () => {
                             loading="lazy"
                             width={400}
                             height={400}
-                            className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                            className="w-40 h-40 lg:w-48 lg:h-48 rounded-full object-cover border-4 shadow-md"
                             style={{ borderColor: "#D4B5F0" }}
                           />
-                          <span className="text-xs sm:text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
+                          <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
                         </div>
                       ))}
                     </div>
                   </>
                 );
               })()}
-              <div className="flex flex-col justify-center text-left max-w-2xl">
-                <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
-                  NUESTRAS MAESTRAS
-                </span>
-                <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
-                  Cada maestra acompaña el desarrollo individual del niño respetando su ritmo, personalidad y proceso de aprendizaje.
-                </h3>
-                <p className="text-base sm:text-lg leading-relaxed text-slate-100">
-                  {"\n"}
-                </p>
-              </div>
             </div>
           </div>
         </CarouselItem>

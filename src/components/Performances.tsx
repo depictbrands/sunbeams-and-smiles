@@ -20,7 +20,7 @@ const performances: Performance[] = [
   {
     title: "Programa de Navidad",
     description:
-      "Se desarrollan habilidades artísticas y musicales.",
+      "Nuestros niños celebrando la magia de la Navidad sobre el escenario.",
     videoUrl: programaNavidad,
   },
 ];
@@ -120,8 +120,22 @@ const PerformanceCard = ({ item }: { item: Performance }) => {
 
 const Performances = () => {
   return (
-    <section id="presentaciones" className="pb-16 bg-background">
+    <section id="presentaciones" className="py-24 bg-background">
       <div className="container">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <span className="text-primary font-bold uppercase tracking-wider text-sm">
+            ​
+          </span>
+          <h2
+            className="text-4xl sm:text-5xl text-ink mt-3"
+            style={{ fontFamily: "'ChildsPlayground', cursive" }}
+          >
+            {"\n"}
+          </h2>
+          <p className="text-muted-foreground mt-4">
+            {"\n"}
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {performances.map((item) => (

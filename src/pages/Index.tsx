@@ -488,7 +488,39 @@ const Index = () => {
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Proyecto Educativo</span>
             <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
-          <Suspense fallback={null}><Performances /></Suspense>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
+              { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary', popupBg: '#E9F0FF', ringHsl: '217 96% 51%' },
+              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
+            ].map((f, i) => (
+              <Dialog key={i}>
+                <DialogTrigger asChild>
+                  <button type="button" className="text-left">
+                    <Card className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full cursor-pointer`}>
+                      <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
+                        <f.icon className="h-7 w-7" />
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-bold text-ink flex-1" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
+                      <ChevronRight className={`h-6 w-6 ${f.color} shrink-0`} />
+                    </Card>
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={{ ...(f.popupBg ? { backgroundColor: f.popupBg } : {}), ...(f.ringHsl ? ({ ['--ring' as any]: f.ringHsl } as React.CSSProperties) : {}) }}>
+                  <div className="p-6 flex flex-col items-center text-center gap-5" style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
+                    <div className="w-full aspect-square rounded-2xl overflow-hidden">
+                      <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                    <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</DialogTitle>
+                    <DialogDescription className="sr-only">{f.title}</DialogDescription>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            ))}
+          </div>
+          <div className="mt-12">
+            <Suspense fallback={null}><Performances /></Suspense>
+          </div>
         </div>
       </section>
 

@@ -4,7 +4,7 @@ import { Mail, ChevronDown } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
-import kidsDrawing from "@/assets/kids-drawing.gif";
+
 
 const SobreCarousel = () => {
   const sobreAutoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
@@ -195,47 +195,6 @@ const SobreCarousel = () => {
           </div>
         </CarouselItem>
 
-        {/* Slide 3 — Green: Family illustration */}
-        <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
-          <div className="lg:hidden rounded-3xl overflow-hidden h-full">
-            <div className="flex flex-col h-full justify-between min-h-[440px] lg:min-h-[560px]">
-              <div className="px-6 pt-8 text-center">
-                <h3 className="text-2xl sm:text-3xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                  Las familias son las principales protagonistas de nuestro proyecto educativo.
-                </h3>
-              </div>
-              <img
-                src={kidsDrawing}
-                alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
-                loading="lazy"
-                width={1280}
-                height={896}
-                className="block w-full h-auto flex-1 object-contain my-4"
-              />
-              <div className="px-8 pb-8 flex justify-center">
-                <Button asChild variant="sun" size="xl" className="px-6 text-base"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
-              </div>
-            </div>
-          </div>
-          <div className="hidden lg:block relative rounded-3xl shadow-soft overflow-hidden h-full">
-            <img
-              src={kidsDrawing}
-              alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
-              loading="lazy"
-              width={1280}
-              height={896}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 px-4 w-full max-w-3xl text-center">
-              <h3 className="text-3xl lg:text-4xl font-bold text-ink leading-tight" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-                Las familias son las principales protagonistas de nuestro proyecto educativo.
-              </h3>
-            </div>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-              <Button asChild variant="sun" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
-            </div>
-          </div>
-        </CarouselItem>
       </CarouselContent>
       <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
       <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />

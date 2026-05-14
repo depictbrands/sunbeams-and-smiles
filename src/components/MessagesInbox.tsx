@@ -40,7 +40,7 @@ const initialOf = (p?: Profile | null) =>
 const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 
 const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
-  { name: "Griselle", role: "Directora" },
+  { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
   { name: "Nilda", role: "Subdirectora" },
   { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg" },
   { name: "Zuania", role: "Maestra" },

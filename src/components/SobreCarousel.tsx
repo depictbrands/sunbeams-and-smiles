@@ -65,7 +65,7 @@ const SobreCarousel = () => {
                 </p>
 
                 {/* Mobile: peek + "Más detalle" per block */}
-                <div className="lg:hidden">
+                <div className="md:hidden">
                   <p className="text-sm leading-relaxed text-ink">
                     {bioOpen ? bioFull : peek(bioFull)}
                   </p>
@@ -100,7 +100,7 @@ const SobreCarousel = () => {
                   </div>
                 </div>
                 {/* Desktop / tablet: full content */}
-                <div className="hidden lg:block">
+                <div className="hidden md:block">
                   <p className="text-base sm:text-lg leading-relaxed text-ink mb-8">
                     Formada en el Conservatorio de Música de Puerto Rico, maestra de los métodos Suzuki, Dalcroze, Orff Schulwerk, Kindermusik y directora coral en el Coro de Niños de San Juan por 30 años.
                   </p>

@@ -498,8 +498,8 @@ const Index = () => {
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>
-                  <button type="button" className="text-left">
-                    <Card className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full cursor-pointer`}>
+                  <button type="button" className="text-left h-full">
+                    <Card className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full h-full cursor-pointer`}>
                       <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
                         <f.icon className="h-7 w-7" />
                       </div>

@@ -128,13 +128,15 @@ const SobreCarousel = () => {
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#9B6BD1" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col gap-10 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               {(() => {
-                const teachers = [
+                const teachers: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana" },
                   { src: "/teacher-profile-pictures/maestra-Bea.jpeg", name: "Bea" },
                   { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
                   { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
+                  { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
+                  { name: "Génesis" },
                 ];
                 return (
                   <>

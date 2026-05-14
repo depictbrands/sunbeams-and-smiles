@@ -195,6 +195,40 @@ const SobreCarousel = () => {
           </div>
         </CarouselItem>
 
+        {/* Slide 3 — Green: Staff */}
+        <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
+          <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#6BB36B" }}>
+            <div className="p-8 sm:p-14 lg:p-16 flex flex-col justify-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
+              <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
+                NUESTRO STAFF
+              </span>
+              <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                Un equipo que cuida cada detalle
+              </h3>
+              <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
+                Detrás de cada día en SonSoles hay un equipo comprometido con el bienestar, la seguridad y la alegría de los niños: administración, cocina, mantenimiento y apoyo educativo trabajando en armonía.
+              </p>
+            </div>
+          </div>
+        </CarouselItem>
+
+        {/* Slide 4 — Light Blue: Parents */}
+        <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
+          <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#7CC9E8" }}>
+            <div className="p-8 sm:p-14 lg:p-16 flex flex-col justify-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
+              <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white">
+                NUESTRAS FAMILIAS
+              </span>
+              <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
+                Padres que caminan con nosotros
+              </h3>
+              <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
+                Las familias son las protagonistas del proyecto educativo. Cultivamos un acompañamiento cercano y constante, porque educar a un niño es una tarea que hacemos juntos.
+              </p>
+            </div>
+          </div>
+        </CarouselItem>
+
       </CarouselContent>
       <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
       <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />

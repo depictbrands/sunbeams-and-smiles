@@ -373,7 +373,7 @@ const Index = () => {
       <section id="sobre" className="bg-muted py-20">
         <div className="container text-center max-w-5xl mb-14">
           <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">¿Quiénes somos?</span>
-          <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>SonSoles es un centro preescolar especializado en estimulación temprana, con una <span className="text-secondary">filosofía humanista</span> y <span className="text-secondary">espíritu cristiano</span>, donde cada niño es tratado como lo que es: <span className="text-secondary">único e irrepetible</span>.</h2>
+          <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-5" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Somos un centro educativo en donde se imparte un innovador programa en educación infantil, donde cada niño es tratado como lo que es: único e irrepetible.</h2>
         </div>
 
         <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">

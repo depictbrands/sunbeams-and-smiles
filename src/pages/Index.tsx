@@ -507,6 +507,9 @@ const Index = () => {
               </Dialog>
             ))}
           </div>
+          <div className="mt-12">
+            <Suspense fallback={null}><Performances /></Suspense>
+          </div>
         </div>
       </section>
 
@@ -552,9 +555,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* PRESENTACIONES */}
-      <Suspense fallback={null}><Performances /></Suspense>
 
       {/* TESTIMONIOS */}
       <section id="testimonios" className="py-24 bg-background">

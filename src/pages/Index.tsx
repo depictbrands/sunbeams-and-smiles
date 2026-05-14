@@ -426,7 +426,7 @@ const Index = () => {
             <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               La atención personal que se ofrece a cada niño es fundamental para el desarrollo de sus facultades y virtudes.
             </h2>
-            <p className="text-lg sm:text-xl text-ink font-bold">Áreas de desarrollo</p>
+            <p className="text-lg text-ink font-bold sm:text-2xl">Áreas de desarrollo que se fortalecen:</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[

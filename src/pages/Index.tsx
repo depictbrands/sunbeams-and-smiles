@@ -207,7 +207,7 @@ const Index = () => {
                 </SheetTitle>
                 <nav className="flex flex-col gap-1 text-base font-semibold text-ink">
                   {[
-                    { href: '#sobre', label: 'Sobre Nosotros' },
+                    { href: '#sobre', label: '¿Quiénes somos?' },
                     { href: '#metodologia', label: 'Metodología' },
                     { href: '#facilidades', label: 'Facilidades' },
                     { href: '#testimonios', label: 'Testimonios' },

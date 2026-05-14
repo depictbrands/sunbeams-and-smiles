@@ -4,6 +4,7 @@ import { Mail, ChevronDown } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
+import kidsDrawing from "@/assets/kids-drawing.gif";
 
 
 const SobreCarousel = () => {
@@ -215,16 +216,24 @@ const SobreCarousel = () => {
         {/* Slide 4 — Light Blue: Parents */}
         <CarouselItem className="pl-4 basis-[85%] sm:basis-full">
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#7CC9E8" }}>
-            <div className="p-8 sm:p-14 lg:p-16 flex flex-col justify-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
+            <div className="p-8 sm:p-14 lg:p-16 flex flex-col justify-center items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               <span className="block font-bold uppercase tracking-[0.18em] text-xs sm:text-sm mb-4 text-white text-center">
                 NUESTRAS FAMILIAS
               </span>
               <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                 Las familias son las principales protagonistas de nuestro programa educativo.
               </h3>
-              <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
-                {"\n"}
-              </p>
+              <img
+                src={kidsDrawing}
+                alt="Dibujo infantil de una familia con la bandera de Puerto Rico"
+                loading="lazy"
+                width={1280}
+                height={896}
+                className="block w-full max-w-xl h-auto object-contain mb-6"
+              />
+              <div className="flex justify-center w-full">
+                <Button asChild size="xl" className="bg-transparent hover:bg-transparent text-ink border-2 border-ink shadow-none"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Conoce nuestro programa</a></Button>
+              </div>
             </div>
           </div>
         </CarouselItem>

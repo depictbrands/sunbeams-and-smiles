@@ -204,7 +204,7 @@ const SobreCarousel = () => {
                 Un equipo que cuida cada detalle
               </h3>
               <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
-                Detrás de cada día en SonSoles hay un equipo comprometido con el bienestar, la seguridad y la alegría de los niños: administración, cocina, mantenimiento y apoyo educativo trabajando en armonía.
+                {"\n"}
               </p>
             </div>
           </div>

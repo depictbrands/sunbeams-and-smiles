@@ -468,8 +468,8 @@ const Index = () => {
                           <CarouselPrevious className="left-2" />
                           <CarouselNext className="right-2" />
                         </Carousel>
-                        <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.title}</DialogTitle>
-                        <DialogDescription className="sr-only">{a.title}</DialogDescription>
+                        <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.popupLabel || a.title}</DialogTitle>
+                        <DialogDescription className="sr-only">{a.popupLabel || a.title}</DialogDescription>
                       </div>
                     </DialogContent>
                   </Dialog>

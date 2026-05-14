@@ -128,13 +128,12 @@ const SobreCarousel = () => {
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col lg:flex-row gap-10 lg:gap-12 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               {(() => {
                 const teachers = [
-                  { src: teacher1, name: "Yeidy" },
-                  { src: teacher2, name: "Zuania" },
-                  { src: teacher3, name: "Bea" },
-                  { src: teacher4, name: "Nay" },
-                  { src: teacher5, name: "Keisy" },
-                  { src: teacher6, name: "Andrea" },
-                  { src: teacher7, name: "Génesis" },
+                  { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana" },
+                  { src: "/teacher-profile-pictures/maestra-Bea.jpeg", name: "Bea" },
+                  { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
+                  { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
+                  { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
+                  { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
                 ];
                 return (
                   <>

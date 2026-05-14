@@ -147,15 +147,25 @@ const SobreCarousel = () => {
                           {teachers.map((t, i) => (
                             <CarouselItem key={i} className="flex justify-center">
                               <div className="flex flex-col items-center gap-3">
-                                <img
-                                  src={t.src}
-                                  alt={`Maestra ${t.name}`}
-                                  loading="lazy"
-                                  width={400}
-                                  height={400}
-                                  className="w-56 h-56 rounded-full object-cover border-4 shadow-md"
-                                  style={{ borderColor: "#D4B5F0" }}
-                                />
+                                {t.src ? (
+                                  <img
+                                    src={t.src}
+                                    alt={`Maestra ${t.name}`}
+                                    loading="lazy"
+                                    width={400}
+                                    height={400}
+                                    className="w-56 h-56 rounded-full object-cover border-4 shadow-md"
+                                    style={{ borderColor: "#D4B5F0" }}
+                                  />
+                                ) : (
+                                  <div
+                                    className="w-56 h-56 rounded-full border-4 shadow-md flex items-center justify-center text-5xl font-bold text-white"
+                                    style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
+                                    aria-label={`Maestra ${t.name}`}
+                                  >
+                                    {t.name.charAt(0)}
+                                  </div>
+                                )}
                                 <span className="text-base font-bold text-white tracking-wide">{t.name}</span>
                               </div>
                             </CarouselItem>

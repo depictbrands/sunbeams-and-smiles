@@ -490,11 +490,10 @@ const Index = () => {
             <span className="font-bold uppercase tracking-wider text-sm bg-secondary text-primary-foreground px-3 py-2 rounded-sm">Proyecto Educativo</span>
             <h2 className="text-4xl sm:text-5xl text-ink mt-6 mb-6" style={{ fontFamily: "'ChildsPlayground', cursive" }}>Las experiencias educativas en SonSoles están dirigidas a desarrollar en los niños sus capacidades, talentos y sensibilidad como seres humanos.</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {[
-              { icon: Music, title: 'Música y Movimiento', image: metodologiaMusic, color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
-              { icon: Palette, title: 'Arte y Creatividad', image: metodologiaArt, color: 'text-secondary', bg: 'bg-secondary/10', hoverBorder: 'hover:border-secondary', popupBg: '#E9F0FF', ringHsl: '217 96% 51%' },
-              { icon: BookOpen, title: 'Lectoescritura', image: metodologiaRead, color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
+              { icon: Music, title: 'Música y Arte', images: [metodologiaMusic, metodologiaArt], color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
+              { icon: BookOpen, title: 'Lectoescritura', images: [metodologiaRead], color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>
@@ -510,8 +509,12 @@ const Index = () => {
                 </DialogTrigger>
                 <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 overflow-hidden rounded-3xl border-0" style={{ ...(f.popupBg ? { backgroundColor: f.popupBg } : {}), ...(f.ringHsl ? ({ ['--ring' as any]: f.ringHsl } as React.CSSProperties) : {}) }}>
                   <div className="p-6 flex flex-col items-center text-center gap-5" style={f.popupBg ? { backgroundColor: f.popupBg } : undefined}>
-                    <div className="w-full aspect-square rounded-2xl overflow-hidden">
-                      <img src={f.image} alt={f.title} className="w-full h-full object-cover" loading="lazy" />
+                    <div className={`w-full grid gap-3 ${f.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                      {f.images.map((img, idx) => (
+                        <div key={idx} className="w-full aspect-square rounded-2xl overflow-hidden">
+                          <img src={img} alt={f.title} className="w-full h-full object-cover" loading="lazy" />
+                        </div>
+                      ))}
                     </div>
                     <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</DialogTitle>
                     <DialogDescription className="sr-only">{f.title}</DialogDescription>

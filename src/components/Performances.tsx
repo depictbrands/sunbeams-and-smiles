@@ -115,7 +115,7 @@ const Performances = () => {
   return (
     <section id="presentaciones" className="bg-background">
       <div>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 justify-items-center">
           {performances.map((item) => (
             <PerformanceCard key={item.title} item={item} />
           ))}

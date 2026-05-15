@@ -492,18 +492,27 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {[
-              { icon: Music, title: 'Música y Arte', images: [metodologiaMusic, metodologiaArt], color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
+              { icon: Music, title: 'Música y Arte', desc: 'Se introduce a los niños en la música desarrollando su área auditiva, vocal, rítmica y de movimiento mediante diferentes ejercicios musicales que incluyen juegos, bailes y cantos. Además se promueve el interés y el desarrollo de destrezas en el arte, a través de actividades como manualidades, pintura, entre otras.', images: [metodologiaMusic, metodologiaArt], color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
               { icon: BookOpen, title: 'Lectoescritura', images: [metodologiaRead], color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>
                   <button type="button" className="text-left h-full">
-                    <Card className={`p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-row items-center gap-4 w-full h-full cursor-pointer`}>
-                      <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
-                        <f.icon className="h-7 w-7" />
+                    <Card className={`group p-5 rounded-3xl border-2 border-border ${f.hoverBorder} hover:-translate-y-1 transition-all flex flex-col gap-4 w-full h-full cursor-pointer`}>
+                      <div className="flex flex-row items-center gap-4 w-full">
+                        <div className={`${f.bg} ${f.color} w-14 h-14 rounded-2xl flex items-center justify-center shrink-0`}>
+                          <f.icon className="h-7 w-7" />
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-ink flex-1" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
+                        <ChevronRight className={`h-6 w-6 ${f.color} shrink-0`} />
                       </div>
-                      <h3 className="text-2xl sm:text-3xl font-bold text-ink flex-1" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{f.title}</h3>
-                      <ChevronRight className={`h-6 w-6 ${f.color} shrink-0`} />
+                      {f.desc && (
+                        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
+                          <div className="overflow-hidden">
+                            <p className="text-sm sm:text-base text-muted-foreground pt-1">{f.desc}</p>
+                          </div>
+                        </div>
+                      )}
                     </Card>
                   </button>
                 </DialogTrigger>

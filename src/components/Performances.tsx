@@ -115,9 +115,11 @@ const Performances = () => {
   return (
     <section id="presentaciones" className="bg-background">
       <div>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="flex justify-center">
           {performances.map((item) => (
-            <PerformanceCard key={item.title} item={item} />
+            <div key={item.title} className="w-full max-w-xl">
+              <PerformanceCard item={item} />
+            </div>
           ))}
         </div>
       </div>

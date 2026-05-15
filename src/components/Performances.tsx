@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 import diaDeJuegos from "@/assets/3rdVersion-DiadeJuegos-compressed.mp4";
-import programaNavidad from "@/assets/highlights-christmas-program.mp4";
 
 type Performance = {
   title: string;
@@ -16,12 +15,6 @@ const performances: Performance[] = [
     description:
       "Un día familiar, lleno de risas y muuuuucho movimiento.",
     videoUrl: diaDeJuegos,
-  },
-  {
-    title: "Programa de Navidad",
-    description:
-      "Se desarrollan habilidades artísticas y musicales.",
-    videoUrl: programaNavidad,
   },
 ];
 

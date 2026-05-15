@@ -493,7 +493,7 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {[
               { icon: Music, title: 'Música y Arte', desc: 'Se introduce a los niños en la música desarrollando su área auditiva, vocal, rítmica y de movimiento mediante diferentes ejercicios musicales que incluyen juegos, bailes y cantos. Además se promueve el interés y el desarrollo de destrezas en el arte, a través de actividades como manualidades, pintura, entre otras.', images: [metodologiaMusic, metodologiaArt], color: 'text-primary', bg: 'bg-primary/10', hoverBorder: 'hover:border-primary', popupBg: '#FFF3EA' },
-              { icon: BookOpen, title: 'Lectoescritura', images: [metodologiaRead], color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
+              { icon: BookOpen, title: 'Lectoescritura', desc: 'Los niños aprenden a leer y a escribir cuando su desarrollo neurológico lo permita, respetando el ritmo de aprendizaje de cada niño. Desde los tres años, los niños reciben una estimulación adecuada para el perfeccionamiento de estas capacidades.', images: [metodologiaRead], color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf', popupBg: '#EBF6ED', ringHsl: '144 99% 33%' },
             ].map((f, i) => (
               <Dialog key={i}>
                 <DialogTrigger asChild>

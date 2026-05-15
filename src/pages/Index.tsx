@@ -430,7 +430,7 @@ const Index = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Brain, title: 'Cognitiva', desc: 'Se refuerzan los patrones básicos de movimiento con ejercicios programados de diversos tipos. Los niños efectúan ejercicios de psicomotricidad, en un ambiente diseñado para este fin. Esto contribuye a conseguir una buena maduración neuronal, una correcta lateralización y un buen dominio espacial.', color: 'text-pink', bg: 'bg-pink/10', hoverBorder: 'hover:border-pink/50' },
+              { icon: Brain, title: 'Cognitiva', desc: 'El programa está diseñado para desarrollar la inteligencia de los niños, proporcionándole los conocimientos apropiados a su edad, utilizando efectivos métodos de enseñanza.', color: 'text-pink', bg: 'bg-pink/10', hoverBorder: 'hover:border-pink/50' },
               { icon: Activity, title: 'Física', desc: 'Desarrollamos el motor grueso y fino, los patrones de movimiento, la lateralidad y el dominio espacial.', color: 'text-leaf', bg: 'bg-leaf/10', hoverBorder: 'hover:border-leaf/50' },
               { icon: Heart, title: 'Socioemocional', desc: 'Se ayuda a los niños a comprender qué comportamientos son los apropiados y cuáles no lo son y se les enseña una conducta que promueva su competencia social, cuidando a la vez su estabilidad emocional.', color: 'text-purple', bg: 'bg-purple/10', hoverBorder: 'hover:border-purple/50' },
               { icon: MessageCircle, title: 'Lingüística', desc: 'Se ofrecen actividades diarias en donde se incorporan poesías, cuentos, canciones, trabalenguas, adivinanzas que ayudan al desarrollo del lenguaje.', color: 'text-azure', bg: 'bg-azure/10', hoverBorder: 'hover:border-azure/50' },

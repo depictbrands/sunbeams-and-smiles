@@ -240,6 +240,16 @@ const Index = () => {
         </div>
       </header>
 
+      {/* SUMMER PROGRAM BANNER */}
+      <a
+        href="https://forms.gle/UnrfX5Lv8zPWCB8X9"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block bg-primary text-primary-foreground text-center py-2.5 px-4 font-bold text-sm sm:text-base hover:bg-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+      >
+        Programa de verano 2025 — Inscríbete ahora
+      </a>
+
       {/* HERO */}
       <section
         id="top"

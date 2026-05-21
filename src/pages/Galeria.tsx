@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 
 const photos: { name: string; w: number; h: number }[] = [
   { name: "Foto de Nilda_1.jpg", w: 2480, h: 1536 },
-  { name: "Foto de Nilda_10.jpg", w: 1536, h: 2728 },
   { name: "Foto de Nilda_11.jpg", w: 1599, h: 899 },
   { name: "Foto de Nilda_12.jpg", w: 1599, h: 899 },
   { name: "Foto de Nilda_13.jpg", w: 1200, h: 1600 },

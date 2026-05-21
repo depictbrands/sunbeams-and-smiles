@@ -268,10 +268,13 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Calendario</h3>
                       <p className="text-sm text-muted-foreground">Próximamente</p>
                     </Card>
-                    <Card className="p-5 rounded-2xl border-2">
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setFormsOpen(true)}
+                    >
                       <FileText className="h-6 w-6 text-accent mb-3" />
                       <h3 className="font-bold text-ink mb-1">Formularios</h3>
-                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                      <p className="text-sm text-muted-foreground">Inscripción y más</p>
                     </Card>
                     <Card className="p-5 rounded-2xl border-2">
                       <Megaphone className="h-6 w-6 text-azure mb-3" />

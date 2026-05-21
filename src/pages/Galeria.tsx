@@ -58,7 +58,7 @@ const Galeria = () => {
           {photos.map((p, i) => {
             const dirs = ["up", "left", "down", "right"] as const;
             const dir = dirs[i % dirs.length];
-            const src = `/gallery-optimized/${encodeURIComponent(p.name)}`;
+            const src = `/gallery-images/${encodeURIComponent(p.name)}`;
             return (
               <div
                 key={src}

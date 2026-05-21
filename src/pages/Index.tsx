@@ -300,7 +300,7 @@ const Index = () => {
               </a>
             </div>
             <Button asChild variant="hero" size="xl" className="rounded-full w-full max-w-xs">
-              <a href="#contacto">Agenda un tour</a>
+              <a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a>
             </Button>
             <Button asChild variant="outlineWarm" size="xl" className="rounded-full w-full max-w-xs">
               <a href="#sobre">Conoce preescolar sonsoles</a>
@@ -323,7 +323,7 @@ const Index = () => {
               Sembrando excelencia en el corazón de la familia puertorriqueña.
             </h1>
             <div className="flex flex-wrap gap-4">
-              <Button asChild variant="hero" size="xl"><a href="#contacto">Agenda un tour</a></Button>
+              <Button asChild variant="hero" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a></Button>
               <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce preescolar sonsoles</a></Button>
             </div>
           </div>

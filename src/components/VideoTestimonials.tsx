@@ -2,17 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-import video1 from "@/assets/testimonial-1.mp4";
-import video2 from "@/assets/testimonial-2.mp4";
-import video3 from "@/assets/testimonial-3.mp4";
-import video4 from "@/assets/testimonial-4.mp4";
 type VideoTestimonial = { videoUrl: string; color: string };
 
 const testimonials: VideoTestimonial[] = [
-  { videoUrl: video1, color: "#FF7E1D" },
-  { videoUrl: video2, color: "#FFCE00" },
-  { videoUrl: video3, color: "#00A4FF" },
-  { videoUrl: video4, color: "#01A652" },
+  { videoUrl: "/Testimonial-optimized-videos/compressed-reel1.mp4", color: "#FF7E1D" },
+  { videoUrl: "/Testimonial-optimized-videos/compressed-reel2.mp4", color: "#FFCE00" },
+  { videoUrl: "/Testimonial-optimized-videos/compresed - reel3.mp4", color: "#00A4FF" },
+  { videoUrl: "/Testimonial-optimized-videos/compressed - reel4.mp4", color: "#01A652" },
 ];
 
 // Inactive slides keep their original (narrow) aspect ratio.

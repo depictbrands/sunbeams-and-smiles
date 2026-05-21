@@ -311,7 +311,7 @@ const ParentPortal = () => {
                   <ClipboardList className="h-6 w-6" />
                 </div>
                 <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
-                  Formulario de inscripción
+                  Solicitud de Admisión
                   <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </h3>
                 <p className="text-sm text-muted-foreground">
@@ -330,7 +330,7 @@ const ParentPortal = () => {
                   <HeartHandshake className="h-6 w-6" />
                 </div>
                 <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
-                  Ficha del estudiante
+                  Hoja de Entrevista a Padres de Familia
                   <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </h3>
                 <p className="text-sm text-muted-foreground">

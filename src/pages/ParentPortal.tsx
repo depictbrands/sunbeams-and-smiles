@@ -288,6 +288,59 @@ const ParentPortal = () => {
           )}
         </div>
       </div>
+
+      <Dialog open={formsOpen} onOpenChange={setFormsOpen}>
+        <DialogContent className="sm:max-w-2xl rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Formularios
+            </DialogTitle>
+            <DialogDescription>
+              Elige el formulario que deseas completar. Se abrirá en una nueva pestaña.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid sm:grid-cols-2 gap-4 mt-2">
+            <a
+              href="https://form.jotform.com/261398147565064"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/15 text-primary mb-4">
+                  <ClipboardList className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Formulario de inscripción
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Completa los datos para inscribir a tu hijo/a.
+                </p>
+              </Card>
+            </a>
+            <a
+              href="https://form.jotform.com/261397579388075"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-leaf hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-leaf/15 text-leaf mb-4">
+                  <HeartHandshake className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Ficha del estudiante
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Información médica y de contacto del niño/a.
+                </p>
+              </Card>
+            </a>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

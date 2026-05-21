@@ -2,21 +2,24 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 const photos: { name: string; w: number; h: number }[] = [
-  { name: "90ddcee5-e4b1-4fcd-be96-c2d10d77698f.webp", w: 1536, h: 2728 },
-  { name: "Foto de Nilda🌷💗.webp", w: 2480, h: 1536 },
-  { name: "Foto de Nilda🌷💗 2.webp", w: 2048, h: 1536 },
-  { name: "Foto de Nilda🌷💗 3.webp", w: 1536, h: 2048 },
-  { name: "Foto de Nilda🌷💗 4.webp", w: 1567, h: 951 },
-  { name: "Foto de Nilda🌷💗 6.webp", w: 2000, h: 1126 },
-  { name: "Foto de Nilda🌷💗 7.webp", w: 1024, h: 768 },
-  { name: "Foto de Nilda🌷💗 8.webp", w: 1031, h: 1021 },
-  { name: "Foto de Nilda🌷💗 9.webp", w: 1536, h: 2048 },
-  { name: "Foto de Nilda🌷💗 11.webp", w: 1599, h: 899 },
-  { name: "Foto de Nilda🌷💗 12.webp", w: 1599, h: 899 },
-  { name: "Foto de Nilda🌷💗 13.webp", w: 1200, h: 1600 },
-  { name: "IMG_7440.webp", w: 1980, h: 3520 },
-  { name: "PHOTO-2025-10-14-10-32-08.webp", w: 1920, h: 1080 },
+  { name: "Foto de Nilda_1.jpg", w: 2480, h: 1536 },
+  { name: "Foto de Nilda_10.jpg", w: 1536, h: 2728 },
+  { name: "Foto de Nilda_11.jpg", w: 1599, h: 899 },
+  { name: "Foto de Nilda_12.jpg", w: 1599, h: 899 },
+  { name: "Foto de Nilda_13.jpg", w: 1200, h: 1600 },
+  { name: "Foto de Nilda_2.jpg", w: 2048, h: 1536 },
+  { name: "Foto de Nilda_3.jpg", w: 1536, h: 2048 },
+  { name: "Foto de Nilda_4.jpg", w: 1567, h: 951 },
+  { name: "Foto de Nilda_5.jpg", w: 1600, h: 1200 },
+  { name: "Foto de Nilda_6.jpg", w: 2000, h: 1126 },
+  { name: "Foto de Nilda_7.jpg", w: 1024, h: 768 },
+  { name: "Foto de Nilda_8.jpg", w: 1031, h: 1021 },
+  { name: "Foto de Nilda_9.jpg", w: 1536, h: 2048 },
+  { name: "a-group-of-kids-together.jpg", w: 1980, h: 3520 },
+  { name: "gallery-childs-together.jpg", w: 1536, h: 2728 },
+  { name: "kids-making-arts.jpg", w: 1920, h: 1080 },
 ];
+
 
 const Galeria = () => {
   return (
@@ -55,7 +58,7 @@ const Galeria = () => {
           {photos.map((p, i) => {
             const dirs = ["up", "left", "down", "right"] as const;
             const dir = dirs[i % dirs.length];
-            const src = `/gallery-optimized/${encodeURIComponent(p.name)}`;
+            const src = `/gallery-images/${encodeURIComponent(p.name)}`;
             return (
               <div
                 key={src}

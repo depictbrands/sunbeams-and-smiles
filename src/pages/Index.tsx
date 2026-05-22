@@ -706,10 +706,21 @@ const Index = () => {
           </div>
           <div>
             <h4 className="font-bold mb-3 text-base">Síguenos</h4>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-5">
               <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="bg-card/10 hover:bg-primary p-2.5 rounded-full transition-colors"><Instagram className="h-5 w-5" /></a>
               <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="bg-card/10 hover:bg-secondary p-2.5 rounded-full transition-colors"><Facebook className="h-5 w-5" /></a>
             </div>
+            <h4 className="font-bold mb-2 text-base">Navegación</h4>
+            <nav className="flex flex-col gap-1.5 text-sm opacity-90">
+              <a href="#sobre" className="hover:text-primary transition-colors">¿Quiénes somos?</a>
+              <a href="#desarrollo-integral" className="hover:text-primary transition-colors">Formación Integral</a>
+              <a href="#metodologia" className="hover:text-primary transition-colors">Proyecto Educativo</a>
+              <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
+              <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
+              <a href="/galeria" className="hover:text-primary transition-colors">Galería</a>
+              <a href="#contacto" className="hover:text-primary transition-colors">Visítanos</a>
+              <a href="/portal-padres" className="hover:text-primary transition-colors">Portal de Padres</a>
+            </nav>
           </div>
           <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>

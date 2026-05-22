@@ -713,7 +713,7 @@ const Index = () => {
           <Suspense fallback={null}><NewsletterForm /></Suspense>
         </div>
         <div className="container mt-10 pt-6 border-t border-white/20 text-xs opacity-90 text-center">
-          © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
+          © {new Date().getFullYear()} Preescolar SonSoles. Todos los derechos reservados. · <Link to="/privacidad" className="hover:text-primary transition-colors underline-offset-2 hover:underline">Política de Privacidad</Link> · Designed by <a href="https://depictbrands.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline-offset-2 hover:underline">DepictBrands</a>
         </div>
       </footer>
 

@@ -7,6 +7,7 @@ const ParentPortal = lazy(() => import("./pages/ParentPortal.tsx"));
 const TeacherInbox = lazy(() => import("./pages/TeacherInbox.tsx"));
 const Galeria = lazy(() => import("./pages/Galeria.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
 
 // Defer global UI providers (toasts, tooltips) until after the page is interactive.
 const DeferredProviders = lazy(() => import("./components/DeferredProviders"));
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/admin/mensajes" element={<TeacherInbox />} />
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/privacidad" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

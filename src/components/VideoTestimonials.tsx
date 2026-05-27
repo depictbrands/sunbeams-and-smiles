@@ -7,8 +7,8 @@ type VideoTestimonial = { videoUrl: string; color: string };
 const testimonials: VideoTestimonial[] = [
   { videoUrl: "/Testimonial-optimized-videos/compressed-reel1.mp4", color: "#FF7E1D" },
   { videoUrl: "/Testimonial-optimized-videos/compressed-reel2.mp4", color: "#FFCE00" },
-  { videoUrl: "/Testimonial-optimized-videos/compresed - reel3.mp4", color: "#00A4FF" },
-  { videoUrl: "/Testimonial-optimized-videos/compressed - reel4.mp4", color: "#01A652" },
+  { videoUrl: "/Testimonial-optimized-videos/compresed-reel3.mp4", color: "#00A4FF" },
+  { videoUrl: "/Testimonial-optimized-videos/compressed-reel4.mp4", color: "#01A652" },
 ];
 
 // Inactive slides keep their original (narrow) aspect ratio.

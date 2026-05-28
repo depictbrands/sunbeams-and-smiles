@@ -161,11 +161,11 @@ const Index = () => {
             <img src={logo} alt="Preescolar SonSoles escudo" width={48} height={48} className="h-12 w-12" />
             <span className="font-display text-xl text-ink hidden sm:block" style={{ fontFamily: "'SoupBone', serif", fontWeight: 600 }}>Preescolar SonSoles</span>
           </a>
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-ink">
-            <a href="#sobre" className="hover:text-primary transition-colors">¿Quiénes somos?</a>
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-ink whitespace-nowrap">
+            <a href="#sobre" className="hover:text-primary transition-colors whitespace-nowrap">¿Quiénes somos?</a>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none">
-                Proyecto Educativo <ChevronDown className="h-4 w-4" />
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none whitespace-nowrap">
+                Proyecto Educativo <ChevronDown className="h-4 w-4 shrink-0" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="rounded-2xl">
                 <DropdownMenuItem asChild>
@@ -176,11 +176,12 @@ const Index = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <a href="#facilidades" className="hover:text-primary transition-colors">Facilidades</a>
-            <a href="#testimonios" className="hover:text-primary transition-colors">Testimonios</a>
-            <a href="/galeria" className="hover:text-primary transition-colors">Galería</a>
+            <a href="#facilidades" className="hover:text-primary transition-colors whitespace-nowrap">Facilidades</a>
+            <a href="#testimonios" className="hover:text-primary transition-colors whitespace-nowrap">Testimonios</a>
+            <a href="/galeria" className="hover:text-primary transition-colors whitespace-nowrap">Galería</a>
           </nav>
-          <div className="flex items-center gap-3">
+
+          <div className="flex items-center gap-3 lg:gap-4 lg:pl-6">
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
             <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-ink hover:text-secondary hidden sm:inline-flex"><Facebook className="h-5 w-5" /></a>
             <Button asChild variant="outlineWarm" size="lg" className="hidden lg:inline-flex">

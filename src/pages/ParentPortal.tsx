@@ -70,21 +70,46 @@ const ParentPortal = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAuthLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: signupEmail.trim(),
-      password: signupPassword,
-      options: {
-        emailRedirectTo: `${window.location.origin}/portal-padres`,
-        data: { display_name: signupName.trim() },
-      },
-    });
-    setAuthLoading(false);
-    if (error) {
-      toast({ title: "Error al crear cuenta", description: error.message, variant: "destructive" });
+    if (!captchaToken) {
+      toast({ title: "Verificación requerida", description: "Completa la verificación anti-robot.", variant: "destructive" });
       return;
     }
-    toast({ title: "¡Cuenta creada!", description: "Revisa tu correo para confirmar tu cuenta." });
+    setAuthLoading(true);
+    const { data, error } = await supabase.functions.invoke("parent-signup", {
+      body: {
+        email: signupEmail.trim(),
+        password: signupPassword,
+        displayName: signupName.trim(),
+        studentNumber: signupStudentNumber.trim(),
+        captchaToken,
+      },
+    });
+
+    if (error || !data?.success) {
+      setAuthLoading(false);
+      setCaptchaToken("");
+      if (window.turnstile) {
+        try { window.turnstile.reset(); } catch { /* noop */ }
+      }
+      toast({
+        title: "No se pudo crear la cuenta",
+        description: data?.error ?? "Ocurrió un error. Intenta de nuevo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Account created & confirmed — sign the parent in automatically.
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: signupEmail.trim(),
+      password: signupPassword,
+    });
+    setAuthLoading(false);
+    if (signInError) {
+      toast({ title: "¡Cuenta creada!", description: "Ya puedes iniciar sesión." });
+      return;
+    }
+    toast({ title: "¡Bienvenido!", description: "Tu cuenta fue creada con éxito." });
   };
 
   const handleLogin = async (e: React.FormEvent) => {

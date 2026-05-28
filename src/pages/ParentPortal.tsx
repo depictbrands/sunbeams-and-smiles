@@ -82,15 +82,17 @@ const ParentPortal = () => {
         displayName: signupName.trim(),
         studentNumber: signupStudentNumber.trim(),
         captchaToken,
+        redirectTo: `${window.location.origin}/portal-padres`,
       },
     });
 
+    setAuthLoading(false);
+    setCaptchaToken("");
+    if (window.turnstile) {
+      try { window.turnstile.reset(); } catch { /* noop */ }
+    }
+
     if (error || !data?.success) {
-      setAuthLoading(false);
-      setCaptchaToken("");
-      if (window.turnstile) {
-        try { window.turnstile.reset(); } catch { /* noop */ }
-      }
       toast({
         title: "No se pudo crear la cuenta",
         description: data?.error ?? "Ocurrió un error. Intenta de nuevo.",
@@ -99,18 +101,24 @@ const ParentPortal = () => {
       return;
     }
 
-    // Account created & confirmed — sign the parent in automatically.
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: signupEmail.trim(),
-      password: signupPassword,
-    });
-    setAuthLoading(false);
-    if (signInError) {
-      toast({ title: "¡Cuenta creada!", description: "Ya puedes iniciar sesión." });
+    // Account created as unverified — the parent must confirm via email.
+    setSignupName("");
+    setSignupEmail("");
+    setSignupPassword("");
+    setSignupStudentNumber("");
+    if (data?.emailSent === false) {
+      toast({
+        title: "¡Cuenta creada!",
+        description: "No pudimos enviar el correo de confirmación. Usa \"¿Olvidaste tu contraseña?\" para recibir el enlace.",
+      });
       return;
     }
-    toast({ title: "¡Bienvenido!", description: "Tu cuenta fue creada con éxito." });
+    toast({
+      title: "¡Revisa tu correo!",
+      description: "Te enviamos un enlace para confirmar tu cuenta. Confírmalo para poder iniciar sesión.",
+    });
   };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

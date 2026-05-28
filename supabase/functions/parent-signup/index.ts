@@ -8,6 +8,7 @@ const BodySchema = z.object({
   displayName: z.string().trim().min(1).max(100),
   studentNumber: z.string().trim().min(1).max(50),
   captchaToken: z.string().min(1).max(4096),
+  redirectTo: z.string().url().max(500).optional(),
 });
 
 function json(body: unknown, status = 200) {
@@ -46,7 +47,7 @@ Deno.serve(async (req) => {
     if (!parsed.success) {
       return json({ success: false, error: "Datos inválidos. Revisa el formulario." }, 200);
     }
-    const { email, password, displayName, studentNumber, captchaToken } = parsed.data;
+    const { email, password, displayName, studentNumber, captchaToken, redirectTo } = parsed.data;
 
     // 1. Verify the Turnstile (anti-bot) challenge.
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
@@ -55,13 +56,11 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Verificación anti-robot fallida. Intenta de nuevo." }, 200);
     }
 
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+    const admin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
     // 2. Verify the student number belongs to an enrolled student.
-    const { data: student, error: studentError } = await supabase
+    const { data: student, error: studentError } = await admin
       .from("allowed_students")
       .select("id")
       .eq("student_number", studentNumber)
@@ -78,11 +77,11 @@ Deno.serve(async (req) => {
       }, 200);
     }
 
-    // 3. Create the account (auto-confirmed: the student number is the gate).
-    const { error: createError } = await supabase.auth.admin.createUser({
+    // 3. Create the account as UNVERIFIED — the parent must confirm via email.
+    const { error: createError } = await admin.auth.admin.createUser({
       email,
       password,
-      email_confirm: true,
+      email_confirm: false,
       user_metadata: { display_name: displayName },
     });
 
@@ -95,7 +94,20 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "No se pudo crear la cuenta. Intenta de nuevo." }, 200);
     }
 
-    return json({ success: true });
+    // 4. Trigger the built-in confirmation email for the new unverified user.
+    const anon = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!);
+    const { error: resendError } = await anon.auth.resend({
+      type: "signup",
+      email,
+      options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+    });
+
+    if (resendError) {
+      console.error("Confirmation email error:", resendError);
+      return json({ success: true, emailSent: false });
+    }
+
+    return json({ success: true, emailSent: true });
   } catch (e) {
     console.error("parent-signup error:", e);
     return json({ success: false, error: "Error del servidor." }, 200);

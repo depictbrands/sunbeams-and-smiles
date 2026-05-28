@@ -181,7 +181,7 @@ const Index = () => {
             <a href="/galeria" className="hover:text-primary transition-colors whitespace-nowrap">Galería</a>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:gap-4 lg:pl-6">
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
             <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-ink hover:text-secondary hidden sm:inline-flex"><Facebook className="h-5 w-5" /></a>
             <Button asChild variant="outlineWarm" size="lg" className="hidden lg:inline-flex">

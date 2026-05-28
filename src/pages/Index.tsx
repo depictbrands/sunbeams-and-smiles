@@ -222,7 +222,7 @@ const Index = () => {
                 <div className="mt-6 flex flex-col gap-3">
                   <SheetClose asChild>
                     <Button asChild variant="outlineWarm" size="lg" className="w-full">
-                      <a href="/portal-padres"><Lock className="h-4 w-4" /> Portal de Padres</a>
+                      <a href="https://form.jotform.com/261475088622866" target="_blank" rel="noopener noreferrer"><Lock className="h-4 w-4" /> Programa de verano 2026</a>
                     </Button>
                   </SheetClose>
                   <SheetClose asChild>

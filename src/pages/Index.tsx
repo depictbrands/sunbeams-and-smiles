@@ -314,7 +314,7 @@ const Index = () => {
               <a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a>
             </Button>
             <Button asChild variant="outlineWarm" size="xl" className="rounded-full w-full max-w-xs">
-              <a href="#sobre">Conoce preescolar sonsoles</a>
+              <a href="#sobre">Conoce Preescolar Sonsoles</a>
             </Button>
           </div>
         </div>
@@ -335,7 +335,7 @@ const Index = () => {
             </h1>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a></Button>
-              <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce preescolar sonsoles</a></Button>
+              <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce Preescolar Sonsoles</a></Button>
             </div>
           </div>
           <div className="relative">

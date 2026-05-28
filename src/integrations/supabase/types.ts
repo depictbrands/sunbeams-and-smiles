@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      allowed_students: {
+        Row: {
+          created_at: string
+          id: string
+          student_name: string | null
+          student_number: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          student_name?: string | null
+          student_number: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          student_name?: string | null
+          student_number?: string
+        }
+        Relationships: []
+      }
       message_threads: {
         Row: {
           assigned_teacher_id: string | null

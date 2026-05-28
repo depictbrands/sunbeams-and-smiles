@@ -247,6 +247,20 @@ const ParentPortal = () => {
                       <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
                     </div>
                     <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Número de estudiante</label>
+                      <Input
+                        required
+                        value={signupStudentNumber}
+                        onChange={(e) => setSignupStudentNumber(e.target.value)}
+                        maxLength={50}
+                        placeholder="Ej. 2026-014"
+                        className="h-12 rounded-xl"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1.5">
+                        Solo los padres de estudiantes inscritos pueden crear una cuenta. Encuentra el número de tu hijo/a en su documentación o contáctanos.
+                      </p>
+                    </div>
+                    <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
                       <Input type="email" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} className="h-12 rounded-xl" />
                     </div>
@@ -254,7 +268,8 @@ const ParentPortal = () => {
                       <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
                       <Input type="password" required minLength={6} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} className="h-12 rounded-xl" />
                     </div>
-                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                    <Turnstile siteKey={TURNSTILE_SITE_KEY} onVerify={setCaptchaToken} onExpire={() => setCaptchaToken("")} />
+                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading || !captchaToken}>
                       {authLoading ? "Creando…" : "Crear cuenta"}
                     </Button>
                   </form>

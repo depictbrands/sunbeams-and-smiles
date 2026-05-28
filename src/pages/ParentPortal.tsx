@@ -10,6 +10,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
+import Turnstile from "@/components/Turnstile";
+
+// Public Cloudflare Turnstile site key (safe to expose in the client).
+const TURNSTILE_SITE_KEY = "REPLACE_WITH_YOUR_TURNSTILE_SITE_KEY";
 
 const ParentPortal = () => {
   const navigate = useNavigate();
@@ -20,6 +24,8 @@ const ParentPortal = () => {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
+  const [signupStudentNumber, setSignupStudentNumber] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
 
@@ -64,21 +70,46 @@ const ParentPortal = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAuthLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: signupEmail.trim(),
-      password: signupPassword,
-      options: {
-        emailRedirectTo: `${window.location.origin}/portal-padres`,
-        data: { display_name: signupName.trim() },
-      },
-    });
-    setAuthLoading(false);
-    if (error) {
-      toast({ title: "Error al crear cuenta", description: error.message, variant: "destructive" });
+    if (!captchaToken) {
+      toast({ title: "Verificación requerida", description: "Completa la verificación anti-robot.", variant: "destructive" });
       return;
     }
-    toast({ title: "¡Cuenta creada!", description: "Revisa tu correo para confirmar tu cuenta." });
+    setAuthLoading(true);
+    const { data, error } = await supabase.functions.invoke("parent-signup", {
+      body: {
+        email: signupEmail.trim(),
+        password: signupPassword,
+        displayName: signupName.trim(),
+        studentNumber: signupStudentNumber.trim(),
+        captchaToken,
+      },
+    });
+
+    if (error || !data?.success) {
+      setAuthLoading(false);
+      setCaptchaToken("");
+      if (window.turnstile) {
+        try { window.turnstile.reset(); } catch { /* noop */ }
+      }
+      toast({
+        title: "No se pudo crear la cuenta",
+        description: data?.error ?? "Ocurrió un error. Intenta de nuevo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Account created & confirmed — sign the parent in automatically.
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: signupEmail.trim(),
+      password: signupPassword,
+    });
+    setAuthLoading(false);
+    if (signInError) {
+      toast({ title: "¡Cuenta creada!", description: "Ya puedes iniciar sesión." });
+      return;
+    }
+    toast({ title: "¡Bienvenido!", description: "Tu cuenta fue creada con éxito." });
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -216,6 +247,20 @@ const ParentPortal = () => {
                       <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
                     </div>
                     <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Número de estudiante</label>
+                      <Input
+                        required
+                        value={signupStudentNumber}
+                        onChange={(e) => setSignupStudentNumber(e.target.value)}
+                        maxLength={50}
+                        placeholder="Ej. 2026-014"
+                        className="h-12 rounded-xl"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1.5">
+                        Solo los padres de estudiantes inscritos pueden crear una cuenta. Encuentra el número de tu hijo/a en su documentación o contáctanos.
+                      </p>
+                    </div>
+                    <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Correo</label>
                       <Input type="email" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} className="h-12 rounded-xl" />
                     </div>
@@ -223,7 +268,8 @@ const ParentPortal = () => {
                       <label className="block text-sm font-semibold text-ink mb-2">Contraseña</label>
                       <Input type="password" required minLength={6} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} className="h-12 rounded-xl" />
                     </div>
-                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading}>
+                    <Turnstile siteKey={TURNSTILE_SITE_KEY} onVerify={setCaptchaToken} onExpire={() => setCaptchaToken("")} />
+                    <Button type="submit" variant="hero" size="xl" className="w-full" disabled={authLoading || !captchaToken}>
                       {authLoading ? "Creando…" : "Crear cuenta"}
                     </Button>
                   </form>

@@ -10,6 +10,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
+import Turnstile from "@/components/Turnstile";
+
+// Public Cloudflare Turnstile site key (safe to expose in the client).
+const TURNSTILE_SITE_KEY = "REPLACE_WITH_YOUR_TURNSTILE_SITE_KEY";
 
 const ParentPortal = () => {
   const navigate = useNavigate();
@@ -20,6 +24,8 @@ const ParentPortal = () => {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
+  const [signupStudentNumber, setSignupStudentNumber] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
 

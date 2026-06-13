@@ -73,14 +73,10 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   };
 
   const loadTeachers = async () => {
-    const { data: roles } = await supabase.from("user_roles").select("user_id").eq("role", "teacher");
-    const ids = (roles ?? []).map((r) => r.user_id);
-    if (!ids.length) {
-      setTeachers([]);
-      return;
-    }
-    const map = await fetchProfiles(ids);
-    setTeachers(Array.from(map.values()));
+    const { data } = await supabase
+      .from("teacher_profiles_public" as any)
+      .select("user_id, display_name, avatar_url");
+    setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
   const loadThreads = async () => {

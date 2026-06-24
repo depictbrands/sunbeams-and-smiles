@@ -254,8 +254,19 @@ const ParentPortal = () => {
                 <TabsContent value="signup">
                   <form onSubmit={handleSignup} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-semibold text-ink mb-2">Nombre completo</label>
+                      <label className="block text-sm font-semibold text-ink mb-2">Su nombre completo (padre/madre/tutor)</label>
                       <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Nombre completo del estudiante</label>
+                      <Input
+                        required
+                        value={signupStudentName}
+                        onChange={(e) => setSignupStudentName(e.target.value)}
+                        maxLength={150}
+                        placeholder="Ej. María González López"
+                        className="h-12 rounded-xl"
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Número de estudiante</label>

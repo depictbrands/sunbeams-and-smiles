@@ -82,6 +82,7 @@ const ParentPortal = () => {
         password: signupPassword,
         displayName: signupName.trim(),
         studentNumber: signupStudentNumber.trim(),
+        studentName: signupStudentName.trim(),
         captchaToken,
         redirectTo: `${window.location.origin}/portal-padres`,
       },

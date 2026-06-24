@@ -108,6 +108,7 @@ const ParentPortal = () => {
     setSignupEmail("");
     setSignupPassword("");
     setSignupStudentNumber("");
+    setSignupStudentName("");
     if (data?.emailSent === false) {
       toast({
         title: "¡Cuenta creada!",

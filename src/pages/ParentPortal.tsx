@@ -25,6 +25,7 @@ const ParentPortal = () => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupStudentNumber, setSignupStudentNumber] = useState("");
+  const [signupStudentName, setSignupStudentName] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
@@ -81,6 +82,7 @@ const ParentPortal = () => {
         password: signupPassword,
         displayName: signupName.trim(),
         studentNumber: signupStudentNumber.trim(),
+        studentName: signupStudentName.trim(),
         captchaToken,
         redirectTo: `${window.location.origin}/portal-padres`,
       },
@@ -106,6 +108,7 @@ const ParentPortal = () => {
     setSignupEmail("");
     setSignupPassword("");
     setSignupStudentNumber("");
+    setSignupStudentName("");
     if (data?.emailSent === false) {
       toast({
         title: "¡Cuenta creada!",
@@ -251,8 +254,19 @@ const ParentPortal = () => {
                 <TabsContent value="signup">
                   <form onSubmit={handleSignup} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-semibold text-ink mb-2">Nombre completo</label>
+                      <label className="block text-sm font-semibold text-ink mb-2">Su nombre completo (padre/madre/tutor)</label>
                       <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-ink mb-2">Nombre completo del estudiante</label>
+                      <Input
+                        required
+                        value={signupStudentName}
+                        onChange={(e) => setSignupStudentName(e.target.value)}
+                        maxLength={150}
+                        placeholder="Ej. María González López"
+                        className="h-12 rounded-xl"
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Número de estudiante</label>

@@ -41,6 +41,7 @@ const App = () => {
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/privacidad" element={<PrivacyPolicy />} />
+          <Route path="/admin/estudiantes" element={<AdminStudents />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

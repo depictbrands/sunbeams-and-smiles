@@ -18,20 +18,29 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          parent_user_id: string | null
+          status: string
           student_name: string | null
           student_number: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
           id?: string
+          parent_user_id?: string | null
+          status?: string
           student_name?: string | null
           student_number: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
           id?: string
+          parent_user_id?: string | null
+          status?: string
           student_name?: string | null
           student_number?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -168,6 +177,27 @@ export type Database = {
       }
     }
     Views: {
+      my_student: {
+        Row: {
+          id: string | null
+          parent_user_id: string | null
+          status: string | null
+          student_name: string | null
+        }
+        Insert: {
+          id?: string | null
+          parent_user_id?: string | null
+          status?: string | null
+          student_name?: string | null
+        }
+        Update: {
+          id?: string | null
+          parent_user_id?: string | null
+          status?: string | null
+          student_name?: string | null
+        }
+        Relationships: []
+      }
       teacher_profiles_public: {
         Row: {
           avatar_url: string | null

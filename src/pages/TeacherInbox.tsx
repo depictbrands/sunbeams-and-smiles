@@ -14,6 +14,7 @@ const TeacherInbox = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [isStaff, setIsStaff] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

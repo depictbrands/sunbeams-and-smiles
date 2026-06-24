@@ -101,13 +101,20 @@ const TeacherInbox = () => {
             </Card>
           ) : isStaff ? (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <p className="text-sm text-muted-foreground">
                   Maestra: <span className="font-semibold text-ink">{session.user.email}</span>
                 </p>
-                <Button variant="outline" size="sm" onClick={handleLogout}>
-                  <LogOut className="h-4 w-4" /> Salir
-                </Button>
+                <div className="flex items-center gap-2">
+                  {isAdmin && (
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to="/admin/estudiantes">Gestionar estudiantes</Link>
+                    </Button>
+                  )}
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                    <LogOut className="h-4 w-4" /> Salir
+                  </Button>
+                </div>
               </div>
               <ProfileEditor userId={session.user.id} />
               <MessagesInbox userId={session.user.id} isStaff={true} />

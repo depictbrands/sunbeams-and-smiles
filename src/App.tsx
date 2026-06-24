@@ -8,6 +8,7 @@ const TeacherInbox = lazy(() => import("./pages/TeacherInbox.tsx"));
 const Galeria = lazy(() => import("./pages/Galeria.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
+const AdminStudents = lazy(() => import("./pages/AdminStudents.tsx"));
 
 // Defer global UI providers (toasts, tooltips) until after the page is interactive.
 const DeferredProviders = lazy(() => import("./components/DeferredProviders"));

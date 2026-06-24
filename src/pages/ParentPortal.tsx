@@ -25,6 +25,7 @@ const ParentPortal = () => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupStudentNumber, setSignupStudentNumber] = useState("");
+  const [signupStudentName, setSignupStudentName] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");

@@ -128,6 +128,37 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
     if (activeId) loadMessages(activeId);
   }, [activeId]);
 
+  const notifySchool = async (params: {
+    teacherName: string;
+    subject: string;
+    bodyText: string;
+    threadId: string;
+  }) => {
+    try {
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("display_name, email")
+        .eq("user_id", userId)
+        .maybeSingle();
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "new-parent-message",
+          recipientEmail: "preescolarsonsoles@gmail.com",
+          idempotencyKey: `msg-${params.threadId}-${Date.now()}`,
+          templateData: {
+            parentName: prof?.display_name || prof?.email || "Padre",
+            parentEmail: prof?.email ?? "",
+            teacherName: params.teacherName,
+            subject: params.subject,
+            body: params.bodyText,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn("Email notification failed", e);
+    }
+  };
+
   const createThread = async () => {
     if (!newSubject.trim() || !body.trim()) {
       toast({ title: "Falta información", description: "Agrega un asunto y un mensaje.", variant: "destructive" });
@@ -154,14 +185,21 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
       setLoading(false);
       return;
     }
+    const msgText = body.trim().slice(0, 5000);
     const { error: msgErr } = await supabase
       .from("messages")
-      .insert({ thread_id: thread.id, sender_id: userId, body: body.trim().slice(0, 5000) });
+      .insert({ thread_id: thread.id, sender_id: userId, body: msgText });
     setLoading(false);
     if (msgErr) {
       toast({ title: "Error", description: msgErr.message, variant: "destructive" });
       return;
     }
+    notifySchool({
+      teacherName: selectedContact,
+      subject: newSubject.trim(),
+      bodyText: msgText,
+      threadId: thread.id,
+    });
     setNewSubject("");
     setBody("");
     setSelectedContact("");

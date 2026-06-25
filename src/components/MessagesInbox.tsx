@@ -211,13 +211,23 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   const sendReply = async () => {
     if (!body.trim() || !activeId) return;
     setLoading(true);
+    const replyText = body.trim().slice(0, 5000);
     const { error } = await supabase
       .from("messages")
-      .insert({ thread_id: activeId, sender_id: userId, body: body.trim().slice(0, 5000) });
+      .insert({ thread_id: activeId, sender_id: userId, body: replyText });
     setLoading(false);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
       return;
+    }
+    if (!isStaff && activeThread) {
+      const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
+      notifySchool({
+        teacherName,
+        subject: activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, ""),
+        bodyText: replyText,
+        threadId: activeId,
+      });
     }
     setBody("");
     loadMessages(activeId);

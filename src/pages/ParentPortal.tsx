@@ -13,7 +13,7 @@ import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
-const TURNSTILE_SITE_KEY = "REPLACE_WITH_YOUR_TURNSTILE_SITE_KEY";
+const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";
 
 const ParentPortal = () => {
   const navigate = useNavigate();

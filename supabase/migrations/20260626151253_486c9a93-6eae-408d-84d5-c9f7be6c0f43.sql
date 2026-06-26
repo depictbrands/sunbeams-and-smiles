@@ -1,0 +1,1 @@
+ALTER TABLE public.announcements ADD COLUMN IF NOT EXISTS audience_group text NOT NULL DEFAULT 'all' CHECK (audience_group IN ('all','maternal','preescolar','prekinder'));

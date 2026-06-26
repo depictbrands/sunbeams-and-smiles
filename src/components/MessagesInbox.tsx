@@ -220,14 +220,47 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
       return;
     }
-    if (!isStaff && activeThread) {
+    if (activeThread) {
       const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
-      notifySchool({
-        teacherName,
-        subject: activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, ""),
-        bodyText: replyText,
-        threadId: activeId,
-      });
+      const cleanSubject = activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, "");
+      if (!isStaff) {
+        notifySchool({
+          teacherName,
+          subject: cleanSubject,
+          bodyText: replyText,
+          threadId: activeId,
+        });
+      } else {
+        // Staff replied — notify registrar so they know there's a response in the portal
+        try {
+          const { data: prof } = await supabase
+            .from("profiles")
+            .select("display_name, email")
+            .eq("user_id", userId)
+            .maybeSingle();
+          const { data: parentProf } = await supabase
+            .from("profiles")
+            .select("display_name, email")
+            .eq("user_id", activeThread.parent_id)
+            .maybeSingle();
+          await supabase.functions.invoke("send-transactional-email", {
+            body: {
+              templateName: "new-parent-message",
+              recipientEmail: "preescolarsonsoles@gmail.com",
+              idempotencyKey: `msg-${activeId}-${Date.now()}`,
+              templateData: {
+                parentName: `${prof?.display_name || prof?.email || "Staff"} (respuesta)`,
+                parentEmail: prof?.email ?? "",
+                teacherName: `${parentProf?.display_name || parentProf?.email || "Padre"}`,
+                subject: cleanSubject,
+                body: replyText,
+              },
+            },
+          });
+        } catch (e) {
+          console.warn("Email notification failed", e);
+        }
+      }
     }
     setBody("");
     loadMessages(activeId);

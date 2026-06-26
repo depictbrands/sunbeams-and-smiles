@@ -409,7 +409,14 @@ const ParentPortal = () => {
               </Card>
             </a>
           </div>
+
+          {session && (
+            <div className="mt-6 pt-6 border-t">
+              <ParentDocumentUploads userId={session.user.id} />
+            </div>
+          )}
         </DialogContent>
+
       </Dialog>
     </div>
   );

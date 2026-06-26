@@ -359,7 +359,8 @@ const ParentPortal = () => {
       </div>
 
       <Dialog open={formsOpen} onOpenChange={setFormsOpen}>
-        <DialogContent className="sm:max-w-2xl rounded-3xl">
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
+
           <DialogHeader>
             <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Formularios

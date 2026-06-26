@@ -5,7 +5,7 @@ import { Upload, FileText, Syringe, HeartPulse, Trash2, Download, Loader2 } from
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-type DocType = "documentos_anuales" | "vacunas" | "certificado_salud";
+type DocType = "documentos_anuales" | "vacunas" | "certificado_salud" | "admin_assigned";
 
 type DocRow = {
   id: string;
@@ -14,6 +14,7 @@ type DocRow = {
   file_name: string;
   file_size: number | null;
   created_at: string;
+  title: string | null;
 };
 
 const TYPES: { key: DocType; label: string; icon: typeof FileText; color: string; bg: string }[] = [

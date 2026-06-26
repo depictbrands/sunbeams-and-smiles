@@ -292,7 +292,7 @@ export type Database = {
           title: string | null
           updated_at: string
           uploaded_by: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           category?: string | null
@@ -308,7 +308,7 @@ export type Database = {
           title?: string | null
           updated_at?: string
           uploaded_by?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           category?: string | null
@@ -324,7 +324,7 @@ export type Database = {
           title?: string | null
           updated_at?: string
           uploaded_by?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {

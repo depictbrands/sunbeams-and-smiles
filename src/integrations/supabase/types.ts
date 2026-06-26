@@ -286,7 +286,10 @@ export type Database = {
           file_size: number | null
           id: string
           mime_type: string | null
+          student_id: string | null
+          title: string | null
           updated_at: string
+          uploaded_by: string | null
           user_id: string
         }
         Insert: {
@@ -297,7 +300,10 @@ export type Database = {
           file_size?: number | null
           id?: string
           mime_type?: string | null
+          student_id?: string | null
+          title?: string | null
           updated_at?: string
+          uploaded_by?: string | null
           user_id: string
         }
         Update: {
@@ -308,10 +314,28 @@ export type Database = {
           file_size?: number | null
           id?: string
           mime_type?: string | null
+          student_id?: string | null
+          title?: string | null
           updated_at?: string
+          uploaded_by?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "parent_documents_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "allowed_students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "parent_documents_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "my_student"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -507,6 +531,7 @@ export type Database = {
         | "documentos_anuales"
         | "vacunas"
         | "certificado_salud"
+        | "admin_assigned"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -639,6 +664,7 @@ export const Constants = {
         "documentos_anuales",
         "vacunas",
         "certificado_salud",
+        "admin_assigned",
       ],
     },
   },

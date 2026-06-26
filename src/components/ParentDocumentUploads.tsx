@@ -5,7 +5,7 @@ import { Upload, FileText, Syringe, HeartPulse, Trash2, Download, Loader2 } from
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-type DocType = "documentos_anuales" | "vacunas" | "certificado_salud";
+type DocType = "documentos_anuales" | "vacunas" | "certificado_salud" | "admin_assigned";
 
 type DocRow = {
   id: string;
@@ -14,6 +14,7 @@ type DocRow = {
   file_name: string;
   file_size: number | null;
   created_at: string;
+  title: string | null;
 };
 
 const TYPES: { key: DocType; label: string; icon: typeof FileText; color: string; bg: string }[] = [
@@ -38,6 +39,7 @@ const ParentDocumentUploads = ({ userId }: { userId: string }) => {
     documentos_anuales: null,
     vacunas: null,
     certificado_salud: null,
+    admin_assigned: null,
   });
 
   const load = async () => {
@@ -214,6 +216,40 @@ const ParentDocumentUploads = ({ userId }: { userId: string }) => {
           );
         })}
       </div>
+
+      {(() => {
+        const assigned = docs.filter((d) => d.document_type === "admin_assigned");
+        if (assigned.length === 0) return null;
+        return (
+          <div className="pt-4 border-t">
+            <h3 className="font-bold text-ink text-lg mb-1">Documentos del preescolar</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              Archivos que el preescolar te asignó para tu hijo/a.
+            </p>
+            <ul className="space-y-2">
+              {assigned.map((d) => (
+                <li key={d.id} className="flex items-center gap-2 text-sm bg-muted/50 rounded-lg px-3 py-2">
+                  <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-ink truncate">{d.title ?? d.file_name}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {d.file_name}{d.file_size ? ` · ${formatSize(d.file_size)}` : ""}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleDownload(d)}
+                    className="p-1.5 hover:text-primary"
+                    title="Descargar"
+                  >
+                    <Download className="h-4 w-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
     </div>
   );
 };

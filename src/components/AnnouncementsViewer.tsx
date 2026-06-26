@@ -121,7 +121,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
 
   const resetForm = () => {
     setEditingId(null);
-    setFTitle(""); setFContent(""); setFCategory("general");
+    setFTitle(""); setFContent(""); setFCategory("general"); setFGroup("all");
     setFPinned(false); setFFile(null);
   };
 
@@ -130,6 +130,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
     setFTitle(a.title);
     setFContent(a.content ?? "");
     setFCategory(a.category);
+    setFGroup(a.audience_group ?? "all");
     setFPinned(a.pinned);
     setFFile(null);
     setShowForm(true);

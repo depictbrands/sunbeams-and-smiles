@@ -57,19 +57,32 @@ const SchoolCalendarViewer = ({ isAdmin }: Props) => {
     const selected = calendars.find((c) => c.id === selectedId);
     if (!selected) { setSignedUrl(null); return; }
     let cancelled = false;
+    let createdBlobUrl: string | null = null;
     (async () => {
       const { data, error } = await supabase.storage
         .from(BUCKET)
         .createSignedUrl(selected.file_path, 60 * 60);
       if (cancelled) return;
-      if (error) {
-        toast({ title: "No se pudo abrir el PDF", description: error.message, variant: "destructive" });
+      if (error || !data) {
+        toast({ title: "No se pudo abrir el PDF", description: error?.message ?? "Error", variant: "destructive" });
         setSignedUrl(null);
-      } else {
-        setSignedUrl(data.signedUrl);
+        return;
+      }
+      // Fetch as blob to bypass Chrome's cross-origin PDF iframe restrictions
+      try {
+        const res = await fetch(data.signedUrl);
+        const blob = await res.blob();
+        if (cancelled) return;
+        createdBlobUrl = URL.createObjectURL(blob);
+        setSignedUrl(createdBlobUrl);
+      } catch {
+        if (!cancelled) setSignedUrl(data.signedUrl);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      if (createdBlobUrl) URL.revokeObjectURL(createdBlobUrl);
+    };
   }, [selectedId, calendars]);
 
   const handleUpload = async () => {

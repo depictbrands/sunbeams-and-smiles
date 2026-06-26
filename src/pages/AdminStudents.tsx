@@ -22,9 +22,12 @@ type Student = {
   student_number: string;
   student_name: string | null;
   status: "active" | "inactive";
+  group_name: string | null;
   parent_user_id: string | null;
   created_at: string;
 };
+
+const GROUPS = ["Maternal", "Preescolar", "PreKinder"] as const;
 
 const AdminStudents = () => {
   const navigate = useNavigate();

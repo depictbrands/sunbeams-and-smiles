@@ -12,6 +12,7 @@ import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
+import YearCalendar from "@/components/YearCalendar";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";
@@ -37,6 +38,7 @@ const ParentPortal = () => {
 
   const [isStaff, setIsStaff] = useState(false);
   const [formsOpen, setFormsOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   useEffect(() => {
     const prevTitle = document.title;
@@ -332,10 +334,13 @@ const ParentPortal = () => {
                         {portalLoading ? "Abriendo…" : "Pagar matrícula"}
                       </p>
                     </Card>
-                    <Card className="p-5 rounded-2xl border-2">
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setCalendarOpen(true)}
+                    >
                       <Calendar className="h-6 w-6 text-primary mb-3" />
                       <h3 className="font-bold text-ink mb-1">Calendario</h3>
-                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                      <p className="text-sm text-muted-foreground">Ver año completo</p>
                     </Card>
                     <Card
                       className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
@@ -417,6 +422,20 @@ const ParentPortal = () => {
           )}
         </DialogContent>
 
+      </Dialog>
+
+      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
+        <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Calendario
+            </DialogTitle>
+            <DialogDescription>
+              Vista de todos los meses del año.
+            </DialogDescription>
+          </DialogHeader>
+          <YearCalendar />
+        </DialogContent>
       </Dialog>
     </div>
   );

@@ -211,6 +211,42 @@ export type Database = {
         }
         Relationships: []
       }
+      parent_documents: {
+        Row: {
+          created_at: string
+          document_type: Database["public"]["Enums"]["parent_document_type"]
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          mime_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_type: Database["public"]["Enums"]["parent_document_type"]
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_type?: Database["public"]["Enums"]["parent_document_type"]
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -364,6 +400,10 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "teacher" | "parent"
+      parent_document_type:
+        | "documentos_anuales"
+        | "vacunas"
+        | "certificado_salud"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -492,6 +532,11 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "teacher", "parent"],
+      parent_document_type: [
+        "documentos_anuales",
+        "vacunas",
+        "certificado_salud",
+      ],
     },
   },
 } as const

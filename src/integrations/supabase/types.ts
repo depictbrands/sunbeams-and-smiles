@@ -17,6 +17,7 @@ export type Database = {
       allowed_students: {
         Row: {
           created_at: string
+          group_name: string | null
           id: string
           parent_user_id: string | null
           status: string
@@ -26,6 +27,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          group_name?: string | null
           id?: string
           parent_user_id?: string | null
           status?: string
@@ -35,6 +37,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          group_name?: string | null
           id?: string
           parent_user_id?: string | null
           status?: string

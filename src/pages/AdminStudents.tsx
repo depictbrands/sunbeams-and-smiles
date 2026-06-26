@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Session } from "@supabase/supabase-js";
@@ -22,9 +23,12 @@ type Student = {
   student_number: string;
   student_name: string | null;
   status: "active" | "inactive";
+  group_name: string | null;
   parent_user_id: string | null;
   created_at: string;
 };
+
+const GROUPS = ["Maternal", "Preescolar", "PreKinder"] as const;
 
 const AdminStudents = () => {
   const navigate = useNavigate();
@@ -34,6 +38,7 @@ const AdminStudents = () => {
   const [loading, setLoading] = useState(false);
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
+  const [newGroup, setNewGroup] = useState<string>("");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -69,7 +74,7 @@ const AdminStudents = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("allowed_students")
-      .select("id, student_number, student_name, status, parent_user_id, created_at")
+      .select("id, student_number, student_name, status, group_name, parent_user_id, created_at")
       .order("created_at", { ascending: false });
     setLoading(false);
     if (error) {
@@ -86,14 +91,14 @@ const AdminStudents = () => {
     if (!number || !name) return;
     const { error } = await supabase
       .from("allowed_students")
-      // status defaults to 'active' on the server
-      .insert({ student_number: number, student_name: name } as never);
+      .insert({ student_number: number, student_name: name, group_name: newGroup || null } as never);
     if (error) {
       toast({ title: "No se pudo agregar", description: error.message, variant: "destructive" });
       return;
     }
     setNewNumber("");
     setNewName("");
+    setNewGroup("");
     toast({ title: "Estudiante agregado" });
     loadStudents();
   };
@@ -129,6 +134,26 @@ const AdminStudents = () => {
     else loadStudents();
   };
 
+  const normalizeGroup = (v?: string | null): string | null => {
+    if (!v) return null;
+    const t = v.trim().toLowerCase();
+    if (!t) return null;
+    if (t.startsWith("mater")) return "Maternal";
+    if (t.startsWith("prees")) return "Preescolar";
+    if (t.startsWith("prek")) return "PreKinder";
+    return null;
+  };
+
+  const handleUpdateGroup = async (s: Student, group: string) => {
+    const value = group === "__none__" ? null : group;
+    const { error } = await supabase
+      .from("allowed_students")
+      .update({ group_name: value } as never)
+      .eq("id", s.id);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else loadStudents();
+  };
+
   const handleDelete = async (s: Student) => {
     if (!confirm(`Eliminar al estudiante ${s.student_name ?? s.student_number}? Esta acción no se puede deshacer.`)) return;
     const { error } = await supabase.from("allowed_students").delete().eq("id", s.id);
@@ -137,16 +162,18 @@ const AdminStudents = () => {
   };
 
   const handleCsvUpload = async (file: File) => {
-    const text = await file.text();
+    const text = await file.text().then((t) => t.replace(/^\uFEFF/, ""));
     const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
     if (!lines.length) return;
-    // Detect header
     const first = lines[0].toLowerCase();
-    const hasHeader = first.includes("student") || first.includes("number") || first.includes("nombre") || first.includes("id");
+    const hasHeader = first.includes("student") || first.includes("number") || first.includes("nombre") || first.includes("numero") || first.includes("id");
     const rows = (hasHeader ? lines.slice(1) : lines)
       .map((line) => {
         const cols = line.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
-        return { student_number: cols[0], student_name: cols[1] ?? null, status: (cols[2] ?? "active").toLowerCase() === "inactive" ? "inactive" : "active" };
+        const third = cols[2] ?? "";
+        const group = normalizeGroup(third);
+        const status = third.toLowerCase() === "inactive" ? "inactive" : "active";
+        return { student_number: cols[0], student_name: cols[1] ?? null, status, group_name: group };
       })
       .filter((r) => r.student_number);
 
@@ -214,7 +241,7 @@ const AdminStudents = () => {
 
           <Card className="p-6 rounded-2xl border-2 mb-6">
             <h2 className="font-bold text-ink mb-3">Agregar estudiante</h2>
-            <form onSubmit={handleAdd} className="grid sm:grid-cols-[180px_1fr_auto] gap-3">
+            <form onSubmit={handleAdd} className="grid sm:grid-cols-[160px_1fr_160px_auto] gap-3">
               <Input
                 placeholder="ID (p. ej. 2026-014)"
                 value={newNumber}
@@ -227,6 +254,16 @@ const AdminStudents = () => {
                 onChange={(e) => setNewName(e.target.value)}
                 maxLength={150}
               />
+              <Select value={newGroup} onValueChange={setNewGroup}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Grupo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {GROUPS.map((g) => (
+                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Button type="submit" variant="hero">
                 <Plus className="h-4 w-4" /> Agregar
               </Button>
@@ -248,7 +285,7 @@ const AdminStudents = () => {
                 />
               </label>
               <span className="text-xs text-muted-foreground">
-                Columnas: <code>student_number, student_name, status</code> (status opcional: active/inactive).
+                Columnas: <code>numero, nombre, grupo</code> (grupo: Maternal / Preescolar / PreKinder, o "inactive" para desactivar).
               </span>
             </div>
           </Card>
@@ -276,6 +313,7 @@ const AdminStudents = () => {
                     <TableRow>
                       <TableHead>ID</TableHead>
                       <TableHead>Nombre</TableHead>
+                      <TableHead>Grupo</TableHead>
                       <TableHead>Estado</TableHead>
                       <TableHead>Padre vinculado</TableHead>
                       <TableHead className="text-right">Acciones</TableHead>
@@ -299,6 +337,22 @@ const AdminStudents = () => {
                           />
                         </TableCell>
                         <TableCell>
+                          <Select
+                            value={s.group_name ?? "__none__"}
+                            onValueChange={(v) => handleUpdateGroup(s, v)}
+                          >
+                            <SelectTrigger className="h-9 w-[140px]">
+                              <SelectValue placeholder="—" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="__none__">—</SelectItem>
+                              {GROUPS.map((g) => (
+                                <SelectItem key={g} value={g}>{g}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
                           <Badge variant={s.status === "active" ? "default" : "secondary"}>
                             {s.status === "active" ? "Activo" : "Inactivo"}
                           </Badge>
@@ -320,7 +374,7 @@ const AdminStudents = () => {
                     ))}
                     {filtered.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                           Sin estudiantes.
                         </TableCell>
                       </TableRow>

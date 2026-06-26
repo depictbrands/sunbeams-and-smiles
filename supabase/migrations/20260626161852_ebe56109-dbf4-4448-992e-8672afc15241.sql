@@ -1,0 +1,1 @@
+ALTER TABLE public.allowed_students ADD COLUMN IF NOT EXISTS group_name TEXT;

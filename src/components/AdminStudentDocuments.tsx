@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, FileText, Trash2, Download, Loader2, AlertCircle } from "lucide-react";
+import { Upload, FileText, Trash2, Download, Loader2, AlertCircle, FileSignature, Syringe, HeartPulse, Folder } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -23,9 +23,20 @@ type DocRow = {
   file_name: string;
   file_size: number | null;
   created_at: string;
-  user_id: string;
+  user_id: string | null;
   student_id: string | null;
+  category: string | null;
+  jotform_submission_id: string | null;
 };
+
+type CategoryKey = "admision" | "vacunas" | "certificado_medico" | "otros";
+
+const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; color: string; bg: string }[] = [
+  { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
+  { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
+  { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
+  { key: "otros", label: "Otros documentos", icon: Folder, color: "text-muted-foreground", bg: "bg-muted" },
+];
 
 const MAX_BYTES = 10 * 1024 * 1024;
 
@@ -42,9 +53,13 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [docs, setDocs] = useState<DocRow[]>([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
   const [loadingDocs, setLoadingDocs] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [title, setTitle] = useState("");
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [uploadingCat, setUploadingCat] = useState<CategoryKey | null>(null);
+  const [titles, setTitles] = useState<Record<CategoryKey, string>>({
+    admision: "", vacunas: "", certificado_medico: "", otros: "",
+  });
+  const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
+    admision: null, vacunas: null, certificado_medico: null, otros: null,
+  });
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);
 
@@ -55,7 +70,6 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
         .from("allowed_students")
         .select("id, student_number, student_name, group_name, parent_user_id")
         .eq("status", "active")
-        .not("parent_user_id", "is", null)
         .order("student_name", { ascending: true });
       setLoadingStudents(false);
       if (error) {
@@ -70,9 +84,8 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
     setLoadingDocs(true);
     const { data, error } = await supabase
       .from("parent_documents")
-      .select("id, title, file_path, file_name, file_size, created_at, user_id, student_id")
+      .select("id, title, file_path, file_name, file_size, created_at, user_id, student_id, category, jotform_submission_id")
       .eq("student_id", studentId)
-      .eq("document_type", "admin_assigned")
       .order("created_at", { ascending: false });
     setLoadingDocs(false);
     if (error) {
@@ -87,32 +100,21 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
     else setDocs([]);
   }, [selectedId]);
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async (category: CategoryKey, file: File) => {
     if (!selected) return;
-    if (!selected.parent_user_id) {
-      toast({
-        title: "Estudiante sin padre vinculado",
-        description: "El padre debe crear su cuenta para que pueda ver el archivo.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!title.trim()) {
-      toast({ title: "Falta el título", description: "Escribe un nombre para el documento.", variant: "destructive" });
-      return;
-    }
     if (file.size > MAX_BYTES) {
       toast({ title: "Archivo muy grande", description: "Máximo 10 MB.", variant: "destructive" });
       return;
     }
-    setUploading(true);
+    setUploadingCat(category);
+    const ownerScope = selected.parent_user_id ?? "unassigned";
     const ext = file.name.includes(".") ? file.name.split(".").pop() : "";
-    const path = `${selected.parent_user_id}/admin/${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext ? "." + ext : ""}`;
+    const path = `students/${selected.id}/${category}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext ? "." + ext : ""}`;
     const { error: upErr } = await supabase.storage
       .from("parent-documents")
       .upload(path, file, { contentType: file.type || undefined });
     if (upErr) {
-      setUploading(false);
+      setUploadingCat(null);
       toast({ title: "Error al subir", description: upErr.message, variant: "destructive" });
       return;
     }
@@ -124,17 +126,23 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
       file_size: file.size,
       mime_type: file.type || null,
       uploaded_by: adminUserId,
-      title: title.trim(),
+      title: titles[category].trim() || CATEGORIES.find((c) => c.key === category)?.label || null,
       student_id: selected.id,
+      category,
     } as never);
-    setUploading(false);
+    setUploadingCat(null);
     if (insErr) {
       await supabase.storage.from("parent-documents").remove([path]);
       toast({ title: "Error", description: insErr.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Archivo asignado", description: `${file.name} → ${selected.student_name ?? selected.student_number}` });
-    setTitle("");
+    toast({
+      title: "Archivo guardado",
+      description: selected.parent_user_id
+        ? "Visible para el padre del estudiante."
+        : `Guardado en el expediente (estudiante sin padre activado: ${ownerScope === "unassigned" ? "queda pendiente de mostrar" : ""}).`,
+    });
+    setTitles((t) => ({ ...t, [category]: "" }));
     loadDocs(selected.id);
   };
 
@@ -161,107 +169,126 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
     if (selected) loadDocs(selected.id);
   };
 
+  const docsByCat = useMemo(() => {
+    const m: Record<string, DocRow[]> = {};
+    for (const d of docs) {
+      const k = d.category ?? "otros";
+      (m[k] ||= []).push(d);
+    }
+    return m;
+  }, [docs]);
+
   return (
     <div className="space-y-5">
       <div>
-        <h3 className="font-bold text-ink text-lg mb-1">Asignar documentos por estudiante</h3>
+        <h3 className="font-bold text-ink text-lg mb-1">Expediente del estudiante</h3>
         <p className="text-sm text-muted-foreground">
-          Sube archivos (PDF o imágenes, máx. 10 MB) para un estudiante. El padre vinculado los verá en su sección de Formularios.
+          Selecciona un estudiante para ver y administrar su expediente: solicitud de admisión, vacunas, certificado médico y otros documentos.
+          Si el padre ya activó su cuenta, los archivos aparecerán automáticamente en su portal.
         </p>
       </div>
 
-      <div className="grid gap-3">
-        <div>
-          <Label className="text-sm mb-1.5 block">Estudiante</Label>
-          <Select value={selectedId} onValueChange={setSelectedId} disabled={loadingStudents}>
-            <SelectTrigger>
-              <SelectValue placeholder={loadingStudents ? "Cargando…" : "Selecciona un estudiante"} />
-            </SelectTrigger>
-            <SelectContent>
-              {students.map((s) => (
-                <SelectItem key={s.id} value={s.id}>
-                  {(s.student_name ?? s.student_number)}
-                  {s.group_name ? ` · ${s.group_name}` : ""}
-                  {!s.parent_user_id ? " · (sin padre vinculado)" : ""}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {selected && !selected.parent_user_id && (
-          <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
-            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>Este estudiante aún no tiene un padre vinculado. El padre debe registrarse con su número de estudiante antes de poder ver los archivos.</span>
-          </div>
-        )}
-
-        {selected && (
-          <Card className="p-4 rounded-2xl border-2 space-y-3">
-            <div>
-              <Label className="text-sm mb-1.5 block">Título del documento</Label>
-              <Input
-                placeholder="Ej. Solicitud de Admisión"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                maxLength={150}
-              />
-            </div>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf,image/*"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) handleUpload(f);
-                e.target.value = "";
-              }}
-            />
-            <Button
-              type="button"
-              variant="hero"
-              disabled={uploading || !selected.parent_user_id}
-              onClick={() => inputRef.current?.click()}
-            >
-              {uploading ? (
-                <><Loader2 className="h-4 w-4 animate-spin" /> Subiendo…</>
-              ) : (
-                <><Upload className="h-4 w-4" /> Subir y asignar</>
-              )}
-            </Button>
-          </Card>
-        )}
+      <div>
+        <Label className="text-sm mb-1.5 block">Estudiante</Label>
+        <Select value={selectedId} onValueChange={setSelectedId} disabled={loadingStudents}>
+          <SelectTrigger>
+            <SelectValue placeholder={loadingStudents ? "Cargando…" : "Selecciona un estudiante"} />
+          </SelectTrigger>
+          <SelectContent>
+            {students.map((s) => (
+              <SelectItem key={s.id} value={s.id}>
+                {(s.student_name ?? s.student_number)}
+                {s.group_name ? ` · ${s.group_name}` : ""}
+                {!s.parent_user_id ? " · (sin activar)" : ""}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
+      {selected && !selected.parent_user_id && (
+        <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+          <span>
+            Este estudiante aún no ha activado su cuenta de padre. Puedes subir documentos al expediente; cuando el padre se registre con el número de estudiante, los archivos se vincularán automáticamente.
+          </span>
+        </div>
+      )}
+
       {selected && (
-        <div>
-          <h4 className="font-bold text-ink text-sm mb-2">Archivos asignados</h4>
-          {loadingDocs ? (
-            <p className="text-xs text-muted-foreground">Cargando…</p>
-          ) : docs.length === 0 ? (
-            <p className="text-xs text-muted-foreground">Sin archivos para este estudiante.</p>
-          ) : (
-            <ul className="space-y-2">
-              {docs.map((d) => (
-                <li key={d.id} className="flex items-center gap-2 text-sm bg-muted/50 rounded-lg px-3 py-2">
-                  <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-ink truncate">{d.title ?? d.file_name}</p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {d.file_name}{d.file_size ? ` · ${formatSize(d.file_size)}` : ""}
-                    </p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {CATEGORIES.map(({ key, label, icon: Icon, color, bg }) => {
+            const items = docsByCat[key] ?? [];
+            const busy = uploadingCat === key;
+            return (
+              <Card key={key} className="p-4 rounded-2xl border-2 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${bg} ${color}`}>
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <button type="button" onClick={() => handleDownload(d)} className="p-1.5 hover:text-primary" title="Descargar">
-                    <Download className="h-4 w-4" />
-                  </button>
-                  <button type="button" onClick={() => handleDelete(d)} className="p-1.5 hover:text-destructive" title="Eliminar">
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+                  <h4 className="font-bold text-ink">{label}</h4>
+                  <span className="ml-auto text-xs text-muted-foreground">{items.length}</span>
+                </div>
+
+                <div className="space-y-2">
+                  <Input
+                    placeholder={`Título (opcional, por defecto: ${label})`}
+                    value={titles[key]}
+                    onChange={(e) => setTitles((t) => ({ ...t, [key]: e.target.value }))}
+                    maxLength={150}
+                  />
+                  <input
+                    ref={(el) => { inputRefs.current[key] = el; }}
+                    type="file"
+                    accept="application/pdf,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleUpload(key, f);
+                      e.target.value = "";
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    disabled={busy}
+                    onClick={() => inputRefs.current[key]?.click()}
+                  >
+                    {busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Subiendo…</> : <><Upload className="h-4 w-4" /> Subir archivo</>}
+                  </Button>
+                </div>
+
+                <ul className="space-y-1.5">
+                  {loadingDocs ? (
+                    <li className="text-xs text-muted-foreground">Cargando…</li>
+                  ) : items.length === 0 ? (
+                    <li className="text-xs text-muted-foreground">Sin archivos.</li>
+                  ) : (
+                    items.map((d) => (
+                      <li key={d.id} className="flex items-center gap-2 text-xs bg-muted/50 rounded-lg px-2 py-1.5">
+                        <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-ink truncate">{d.title ?? d.file_name}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">
+                            {d.file_name}{d.file_size ? ` · ${formatSize(d.file_size)}` : ""}
+                            {d.jotform_submission_id ? " · Jotform" : ""}
+                          </p>
+                        </div>
+                        <button type="button" onClick={() => handleDownload(d)} className="p-1 hover:text-primary" title="Descargar">
+                          <Download className="h-3.5 w-3.5" />
+                        </button>
+                        <button type="button" onClick={() => handleDelete(d)} className="p-1 hover:text-destructive" title="Eliminar">
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

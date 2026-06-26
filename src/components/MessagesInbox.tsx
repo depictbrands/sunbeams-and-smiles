@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { Send, Plus, ArrowLeft, MessageCircle } from "lucide-react";
+import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download } from "lucide-react";
 
 type Profile = { user_id: string; display_name: string | null; email: string; avatar_url: string | null };
 
@@ -24,8 +24,12 @@ type Message = {
   id: string;
   thread_id: string;
   sender_id: string;
-  body: string;
+  body: string | null;
   created_at: string;
+  attachment_path: string | null;
+  attachment_name: string | null;
+  attachment_type: string | null;
+  attachment_size: number | null;
   sender?: Profile;
 };
 
@@ -33,6 +37,8 @@ interface Props {
   userId: string;
   isStaff: boolean;
 }
+
+const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024; // 10 MB
 
 const initialOf = (p?: Profile | null) =>
   ((p?.display_name || p?.email || "?").trim().charAt(0) || "?").toUpperCase();
@@ -51,6 +57,13 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },
 ];
 
+const formatBytes = (n: number | null) => {
+  if (!n) return "";
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / 1024 / 1024).toFixed(1)} MB`;
+};
+
 const MessagesInbox = ({ userId, isStaff }: Props) => {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -61,7 +74,11 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const newFileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchProfiles = async (ids: string[]) => {
     if (!ids.length) return new Map<string, Profile>();
@@ -96,13 +113,33 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   const loadMessages = async (threadId: string) => {
     const { data } = await supabase
       .from("messages")
-      .select("id, thread_id, sender_id, body, created_at")
+      .select("id, thread_id, sender_id, body, created_at, attachment_path, attachment_name, attachment_type, attachment_size")
       .eq("thread_id", threadId)
       .order("created_at", { ascending: true });
     const msgs = (data ?? []) as Message[];
     const ids = Array.from(new Set(msgs.map((m) => m.sender_id)));
     const map = await fetchProfiles(ids);
     setMessages(msgs.map((m) => ({ ...m, sender: map.get(m.sender_id) })));
+
+    // Sign URLs for any attachments we haven't signed yet
+    const toSign = msgs
+      .map((m) => m.attachment_path)
+      .filter((p): p is string => !!p && !signedUrls[p]);
+    if (toSign.length) {
+      const entries: [string, string][] = [];
+      await Promise.all(
+        toSign.map(async (path) => {
+          const { data: signed } = await supabase.storage
+            .from("message-attachments")
+            .createSignedUrl(path, 3600);
+          if (signed?.signedUrl) entries.push([path, signed.signedUrl]);
+        }),
+      );
+      if (entries.length) {
+        setSignedUrls((prev) => ({ ...prev, ...Object.fromEntries(entries) }));
+      }
+    }
+
     setTimeout(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }), 50);
   };
 
@@ -127,6 +164,37 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   useEffect(() => {
     if (activeId) loadMessages(activeId);
   }, [activeId]);
+
+  const handlePickFile = (file: File | null) => {
+    if (!file) {
+      setPendingFile(null);
+      return;
+    }
+    if (file.size > MAX_ATTACHMENT_BYTES) {
+      toast({
+        title: "Archivo demasiado grande",
+        description: "El máximo permitido es 10 MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setPendingFile(file);
+  };
+
+  const uploadAttachment = async (threadId: string, file: File) => {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-120);
+    const path = `${threadId}/${userId}/${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage
+      .from("message-attachments")
+      .upload(path, file, { contentType: file.type || "application/octet-stream", upsert: false });
+    if (error) throw error;
+    return {
+      attachment_path: path,
+      attachment_name: file.name,
+      attachment_type: file.type || null,
+      attachment_size: file.size,
+    };
+  };
 
   const notifySchool = async (params: {
     teacherName: string;
@@ -160,8 +228,8 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
   };
 
   const createThread = async () => {
-    if (!newSubject.trim() || !body.trim()) {
-      toast({ title: "Falta información", description: "Agrega un asunto y un mensaje.", variant: "destructive" });
+    if (!newSubject.trim() || (!body.trim() && !pendingFile)) {
+      toast({ title: "Falta información", description: "Agrega un asunto y un mensaje o adjunto.", variant: "destructive" });
       return;
     }
     if (!selectedContact) {
@@ -186,9 +254,24 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
       return;
     }
     const msgText = body.trim().slice(0, 5000);
+    let attachmentFields: Record<string, unknown> = {};
+    if (pendingFile) {
+      try {
+        attachmentFields = await uploadAttachment(thread.id, pendingFile);
+      } catch (e: any) {
+        setLoading(false);
+        toast({ title: "Error al subir archivo", description: e.message ?? String(e), variant: "destructive" });
+        return;
+      }
+    }
     const { error: msgErr } = await supabase
       .from("messages")
-      .insert({ thread_id: thread.id, sender_id: userId, body: msgText });
+      .insert({
+        thread_id: thread.id,
+        sender_id: userId,
+        body: msgText || null,
+        ...attachmentFields,
+      });
     setLoading(false);
     if (msgErr) {
       toast({ title: "Error", description: msgErr.message, variant: "destructive" });
@@ -197,24 +280,40 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
     notifySchool({
       teacherName: selectedContact,
       subject: newSubject.trim(),
-      bodyText: msgText,
+      bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
       threadId: thread.id,
     });
     setNewSubject("");
     setBody("");
     setSelectedContact("");
+    setPendingFile(null);
     setShowNew(false);
     setActiveId(thread.id);
     loadThreads();
   };
 
   const sendReply = async () => {
-    if (!body.trim() || !activeId) return;
+    if ((!body.trim() && !pendingFile) || !activeId) return;
     setLoading(true);
     const replyText = body.trim().slice(0, 5000);
+    let attachmentFields: Record<string, unknown> = {};
+    if (pendingFile) {
+      try {
+        attachmentFields = await uploadAttachment(activeId, pendingFile);
+      } catch (e: any) {
+        setLoading(false);
+        toast({ title: "Error al subir archivo", description: e.message ?? String(e), variant: "destructive" });
+        return;
+      }
+    }
     const { error } = await supabase
       .from("messages")
-      .insert({ thread_id: activeId, sender_id: userId, body: replyText });
+      .insert({
+        thread_id: activeId,
+        sender_id: userId,
+        body: replyText || null,
+        ...attachmentFields,
+      });
     setLoading(false);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -223,15 +322,15 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
     if (activeThread) {
       const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
       const cleanSubject = activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, "");
+      const notifyBody = replyText || (pendingFile ? `📎 ${pendingFile.name}` : "");
       if (!isStaff) {
         notifySchool({
           teacherName,
           subject: cleanSubject,
-          bodyText: replyText,
+          bodyText: notifyBody,
           threadId: activeId,
         });
       } else {
-        // Staff replied — notify registrar so they know there's a response in the portal
         try {
           const { data: prof } = await supabase
             .from("profiles")
@@ -253,7 +352,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                 parentEmail: prof?.email ?? "",
                 teacherName: `${parentProf?.display_name || parentProf?.email || "Padre"}`,
                 subject: cleanSubject,
-                body: replyText,
+                body: notifyBody,
               },
             },
           });
@@ -263,10 +362,43 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
       }
     }
     setBody("");
+    setPendingFile(null);
     loadMessages(activeId);
   };
 
   const activeThread = threads.find((t) => t.id === activeId);
+
+  const renderAttachment = (m: Message, mine: boolean) => {
+    if (!m.attachment_path) return null;
+    const url = signedUrls[m.attachment_path];
+    const isImage = (m.attachment_type ?? "").startsWith("image/");
+    if (isImage && url) {
+      return (
+        <a href={url} target="_blank" rel="noopener noreferrer" className="block mt-1">
+          <img
+            src={url}
+            alt={m.attachment_name ?? "Imagen"}
+            className="max-h-64 rounded-xl border border-black/10 object-cover"
+          />
+        </a>
+      );
+    }
+    return (
+      <a
+        href={url ?? "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`mt-2 flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium ${
+          mine ? "bg-primary-foreground/15 text-primary-foreground" : "bg-background text-ink border"
+        }`}
+      >
+        <FileIcon className="h-4 w-4 flex-shrink-0" />
+        <span className="truncate flex-1">{m.attachment_name ?? "Archivo"}</span>
+        <span className="opacity-70">{formatBytes(m.attachment_size)}</span>
+        <Download className="h-3.5 w-3.5 opacity-70" />
+      </a>
+    );
+  };
 
   return (
     <Card className="rounded-3xl border-2 shadow-soft overflow-hidden">
@@ -363,6 +495,39 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                 <label className="text-sm font-semibold text-ink mb-1 block">Mensaje</label>
                 <Textarea value={body} onChange={(e) => setBody(e.target.value)} maxLength={5000} rows={6} placeholder="Escribe tu mensaje..." />
               </div>
+
+              <div>
+                <input
+                  ref={newFileInputRef}
+                  type="file"
+                  className="hidden"
+                  accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={(e) => handlePickFile(e.target.files?.[0] ?? null)}
+                />
+                {pendingFile ? (
+                  <div className="flex items-center gap-2 rounded-xl border bg-muted/40 p-2 text-sm">
+                    <FileIcon className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="truncate flex-1">{pendingFile.name}</span>
+                    <span className="text-xs text-muted-foreground">{formatBytes(pendingFile.size)}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPendingFile(null);
+                        if (newFileInputRef.current) newFileInputRef.current.value = "";
+                      }}
+                      className="text-muted-foreground hover:text-ink"
+                      aria-label="Quitar archivo"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <Button type="button" variant="outline" size="sm" onClick={() => newFileInputRef.current?.click()}>
+                    <Paperclip className="h-4 w-4" /> Adjuntar archivo o foto
+                  </Button>
+                )}
+              </div>
+
               <Button variant="hero" onClick={createThread} disabled={loading} className="w-full">
                 <Send className="h-4 w-4" /> Enviar
               </Button>
@@ -400,7 +565,8 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                       )}
                       <div className={`max-w-[75%] rounded-2xl px-4 py-2 ${mine ? "bg-primary text-primary-foreground" : "bg-muted text-ink"}`}>
                         {!mine && <div className="text-xs font-semibold opacity-70 mb-1">{nameOf(m.sender)}</div>}
-                        <div className="text-sm whitespace-pre-wrap break-words">{m.body}</div>
+                        {m.body && <div className="text-sm whitespace-pre-wrap break-words">{m.body}</div>}
+                        {renderAttachment(m, mine)}
                         <div className="text-[10px] mt-1 opacity-70">
                           {new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
                         </div>
@@ -409,7 +575,44 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                   );
                 })}
               </div>
-              <div className="p-3 border-t flex gap-2">
+              {pendingFile && (
+                <div className="px-3 pt-2">
+                  <div className="flex items-center gap-2 rounded-xl border bg-muted/40 p-2 text-sm">
+                    <FileIcon className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="truncate flex-1">{pendingFile.name}</span>
+                    <span className="text-xs text-muted-foreground">{formatBytes(pendingFile.size)}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPendingFile(null);
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      }}
+                      className="text-muted-foreground hover:text-ink"
+                      aria-label="Quitar archivo"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className="p-3 border-t flex gap-2 items-end">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={(e) => handlePickFile(e.target.files?.[0] ?? null)}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Adjuntar archivo o foto"
+                  className="flex-shrink-0"
+                >
+                  <Paperclip className="h-4 w-4" />
+                </Button>
                 <Textarea
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
@@ -424,7 +627,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                     }
                   }}
                 />
-                <Button variant="hero" onClick={sendReply} disabled={loading || !body.trim()}>
+                <Button variant="hero" onClick={sendReply} disabled={loading || (!body.trim() && !pendingFile)}>
                   <Send className="h-4 w-4" />
                 </Button>
               </div>

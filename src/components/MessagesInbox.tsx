@@ -660,6 +660,19 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                 >
                   <Paperclip className="h-4 w-4" />
                 </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    const url = promptForLink();
+                    if (url) setBody((b) => (b ? `${b}\n${url}` : url));
+                  }}
+                  title="Agregar enlace (Google Drive, YouTube, etc.)"
+                  className="flex-shrink-0"
+                >
+                  <LinkIcon className="h-4 w-4" />
+                </Button>
                 <Textarea
                   value={body}
                   onChange={(e) => setBody(e.target.value)}

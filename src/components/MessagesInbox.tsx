@@ -599,7 +599,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                       )}
                       <div className={`max-w-[75%] rounded-2xl px-4 py-2 ${mine ? "bg-primary text-primary-foreground" : "bg-muted text-ink"}`}>
                         {!mine && <div className="text-xs font-semibold opacity-70 mb-1">{nameOf(m.sender)}</div>}
-                        {m.body && <div className="text-sm whitespace-pre-wrap break-words">{m.body}</div>}
+                        {m.body && <div className="text-sm whitespace-pre-wrap break-words">{renderBodyWithLinks(m.body, mine)}</div>}
                         {renderAttachment(m, mine)}
                         <div className="text-[10px] mt-1 opacity-70">
                           {new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}

@@ -71,7 +71,6 @@ const ParentPortal = () => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
     const staff = (data ?? []).some((r) => r.role === "teacher" || r.role === "admin");
     setIsStaff(staff);
-    if (staff) navigate("/admin/mensajes");
   };
 
   const handleSignup = async (e: React.FormEvent) => {

@@ -49,6 +49,7 @@ export type Database = {
           attachment_mime: string | null
           attachment_name: string | null
           attachment_path: string | null
+          audience_group: string
           category: string
           content: string | null
           created_at: string
@@ -64,6 +65,7 @@ export type Database = {
           attachment_mime?: string | null
           attachment_name?: string | null
           attachment_path?: string | null
+          audience_group?: string
           category?: string
           content?: string | null
           created_at?: string
@@ -79,6 +81,7 @@ export type Database = {
           attachment_mime?: string | null
           attachment_name?: string | null
           attachment_path?: string | null
+          audience_group?: string
           category?: string
           content?: string | null
           created_at?: string

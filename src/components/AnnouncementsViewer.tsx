@@ -16,6 +16,7 @@ interface Announcement {
   title: string;
   content: string | null;
   category: string;
+  audience_group: string;
   attachment_path: string | null;
   attachment_name: string | null;
   attachment_mime: string | null;
@@ -39,6 +40,22 @@ const CATEGORIES = [
   { value: "urgente", label: "Urgente" },
 ];
 
+const GROUPS = [
+  { value: "all", label: "Todos los grupos" },
+  { value: "maternal", label: "Maternal" },
+  { value: "preescolar", label: "Preescolar" },
+  { value: "prekinder", label: "Pre-Kínder" },
+];
+
+const groupColor = (g: string) => {
+  switch (g) {
+    case "maternal": return "bg-pink-100 text-pink-700 border-pink-200";
+    case "preescolar": return "bg-emerald-100 text-emerald-700 border-emerald-200";
+    case "prekinder": return "bg-sky-100 text-sky-700 border-sky-200";
+    default: return "bg-slate-100 text-slate-700 border-slate-200";
+  }
+};
+
 const categoryColor = (cat: string) => {
   switch (cat) {
     case "urgente": return "bg-red-100 text-red-700 border-red-200";
@@ -57,6 +74,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   const [loading, setLoading] = useState(true);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState<string>("all");
+  const [groupFilter, setGroupFilter] = useState<string>("all");
 
   // Editor state
   const [showForm, setShowForm] = useState(false);
@@ -64,6 +82,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   const [fTitle, setFTitle] = useState("");
   const [fContent, setFContent] = useState("");
   const [fCategory, setFCategory] = useState("general");
+  const [fGroup, setFGroup] = useState("all");
   const [fPinned, setFPinned] = useState(false);
   const [fFile, setFFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
@@ -102,7 +121,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
 
   const resetForm = () => {
     setEditingId(null);
-    setFTitle(""); setFContent(""); setFCategory("general");
+    setFTitle(""); setFContent(""); setFCategory("general"); setFGroup("all");
     setFPinned(false); setFFile(null);
   };
 
@@ -111,6 +130,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
     setFTitle(a.title);
     setFContent(a.content ?? "");
     setFCategory(a.category);
+    setFGroup(a.audience_group ?? "all");
     setFPinned(a.pinned);
     setFFile(null);
     setShowForm(true);
@@ -145,11 +165,11 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
 
     if (editingId) {
       const update: {
-        title: string; content: string | null; category: string; pinned: boolean;
+        title: string; content: string | null; category: string; audience_group: string; pinned: boolean;
         attachment_path?: string | null; attachment_name?: string | null; attachment_mime?: string | null;
       } = {
         title: fTitle.trim(), content: fContent.trim() || null,
-        category: fCategory, pinned: fPinned,
+        category: fCategory, audience_group: fGroup, pinned: fPinned,
       };
       if (attachment_path !== undefined) {
         update.attachment_path = attachment_path ?? null;
@@ -165,6 +185,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
         title: fTitle.trim(),
         content: fContent.trim() || null,
         category: fCategory,
+        audience_group: fGroup,
         pinned: fPinned,
         is_active: true,
         attachment_path: attachment_path ?? null,
@@ -201,41 +222,59 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   };
 
   const visibleItems = (isAdmin ? items : items.filter((i) => i.is_active))
-    .filter((i) => filter === "all" || i.category === filter);
+    .filter((i) => filter === "all" || i.category === filter)
+    .filter((i) => groupFilter === "all" || i.audience_group === groupFilter || i.audience_group === "all");
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
-              filter === "all" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
-            }`}
-          >
-            Todos
-          </button>
-          {CATEGORIES.map((c) => (
+      <div className="space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mr-1">Grupo:</span>
+          {GROUPS.map((g) => (
             <button
-              key={c.value}
-              onClick={() => setFilter(c.value)}
+              key={g.value}
+              onClick={() => setGroupFilter(g.value)}
               className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
-                filter === c.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+                groupFilter === g.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
               }`}
             >
-              {c.label}
+              {g.label}
             </button>
           ))}
         </div>
-        {isAdmin && (
-          <Button
-            onClick={() => { if (showForm) { resetForm(); } setShowForm((v) => !v); }}
-            size="sm"
-            className="rounded-full"
-          >
-            {showForm ? <><X className="h-4 w-4 mr-1.5" /> Cerrar</> : <><Plus className="h-4 w-4 mr-1.5" /> Nuevo anuncio</>}
-          </Button>
-        )}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-2">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mr-1 self-center">Categoría:</span>
+            <button
+              onClick={() => setFilter("all")}
+              className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
+                filter === "all" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+              }`}
+            >
+              Todos
+            </button>
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => setFilter(c.value)}
+                className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
+                  filter === c.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+                }`}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+          {isAdmin && (
+            <Button
+              onClick={() => { if (showForm) { resetForm(); } setShowForm((v) => !v); }}
+              size="sm"
+              className="rounded-full"
+            >
+              {showForm ? <><X className="h-4 w-4 mr-1.5" /> Cerrar</> : <><Plus className="h-4 w-4 mr-1.5" /> Nuevo anuncio</>}
+            </Button>
+          )}
+        </div>
       </div>
 
       {isAdmin && showForm && (
@@ -266,12 +305,25 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
                   ))}
                 </select>
               </div>
-              <div className="flex items-end">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={fPinned} onChange={(e) => setFPinned(e.target.checked)} />
-                  <span className="text-sm">Fijar arriba</span>
-                </label>
+              <div>
+                <Label htmlFor="an-group">Grupo</Label>
+                <select
+                  id="an-group"
+                  value={fGroup}
+                  onChange={(e) => setFGroup(e.target.value)}
+                  className="w-full h-10 px-3 rounded-md border bg-background"
+                >
+                  {GROUPS.map((g) => (
+                    <option key={g.value} value={g.value}>{g.label}</option>
+                  ))}
+                </select>
               </div>
+            </div>
+            <div className="flex items-center">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={fPinned} onChange={(e) => setFPinned(e.target.checked)} />
+                <span className="text-sm">Fijar arriba</span>
+              </label>
             </div>
             <div>
               <Label htmlFor="an-file">Adjunto (PDF o imagen, opcional)</Label>
@@ -323,6 +375,11 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
                         <Badge variant="outline" className={`text-xs ${categoryColor(a.category)}`}>
                           {CATEGORIES.find((c) => c.value === a.category)?.label ?? a.category}
                         </Badge>
+                        {a.audience_group && a.audience_group !== "all" && (
+                          <Badge variant="outline" className={`text-xs ${groupColor(a.audience_group)}`}>
+                            {GROUPS.find((g) => g.value === a.audience_group)?.label ?? a.audience_group}
+                          </Badge>
+                        )}
                         {!a.is_active && <Badge variant="outline" className="text-xs">Inactivo</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground mb-2">{fmtDate(a.published_at)}</p>

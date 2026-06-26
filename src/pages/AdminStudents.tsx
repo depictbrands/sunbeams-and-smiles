@@ -73,7 +73,7 @@ const AdminStudents = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("allowed_students")
-      .select("id, student_number, student_name, status, parent_user_id, created_at")
+      .select("id, student_number, student_name, status, group_name, parent_user_id, created_at")
       .order("created_at", { ascending: false });
     setLoading(false);
     if (error) {
@@ -90,14 +90,14 @@ const AdminStudents = () => {
     if (!number || !name) return;
     const { error } = await supabase
       .from("allowed_students")
-      // status defaults to 'active' on the server
-      .insert({ student_number: number, student_name: name } as never);
+      .insert({ student_number: number, student_name: name, group_name: newGroup || null } as never);
     if (error) {
       toast({ title: "No se pudo agregar", description: error.message, variant: "destructive" });
       return;
     }
     setNewNumber("");
     setNewName("");
+    setNewGroup("");
     toast({ title: "Estudiante agregado" });
     loadStudents();
   };

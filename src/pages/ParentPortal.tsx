@@ -13,6 +13,7 @@ import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
+import AnnouncementsViewer from "@/components/AnnouncementsViewer";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";
@@ -39,6 +40,7 @@ const ParentPortal = () => {
   const [isStaff, setIsStaff] = useState(false);
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [announcementsOpen, setAnnouncementsOpen] = useState(false);
 
   useEffect(() => {
     const prevTitle = document.title;
@@ -350,10 +352,13 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Formularios</h3>
                       <p className="text-sm text-muted-foreground">Inscripción y más</p>
                     </Card>
-                    <Card className="p-5 rounded-2xl border-2">
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setAnnouncementsOpen(true)}
+                    >
                       <Megaphone className="h-6 w-6 text-azure mb-3" />
                       <h3 className="font-bold text-ink mb-1">Anuncios</h3>
-                      <p className="text-sm text-muted-foreground">Próximamente</p>
+                      <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
                   </div>
                 </TabsContent>
@@ -435,6 +440,20 @@ const ParentPortal = () => {
             </DialogDescription>
           </DialogHeader>
           <SchoolCalendarViewer isAdmin={isStaff} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={announcementsOpen} onOpenChange={setAnnouncementsOpen}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Anuncios
+            </DialogTitle>
+            <DialogDescription>
+              Comunicados oficiales de la escuela. Los anuncios fijados aparecen primero.
+            </DialogDescription>
+          </DialogHeader>
+          <AnnouncementsViewer isAdmin={isStaff} />
         </DialogContent>
       </Dialog>
     </div>

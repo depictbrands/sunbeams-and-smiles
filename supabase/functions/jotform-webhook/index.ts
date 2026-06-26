@@ -76,23 +76,29 @@ Deno.serve(async (req) => {
   if (!SUPABASE_URL || !SERVICE_KEY) return json(500, { error: "missing_config" });
 
   // Jotform posts multipart/form-data with `formID`, `submissionID`, `rawRequest`.
+  // Jotform Sign posts similar fields plus `documentID`.
   let submissionId = "";
+  let formId = "";
   let raw: Record<string, unknown> = {};
   try {
     const ct = req.headers.get("content-type") ?? "";
     if (ct.includes("application/json")) {
       const body = await req.json();
       submissionId = String(body.submissionID ?? body.submission_id ?? "");
+      formId = String(body.formID ?? body.documentID ?? body.formId ?? "");
       raw = typeof body.rawRequest === "string" ? JSON.parse(body.rawRequest) : (body.rawRequest ?? body);
     } else {
       const fd = await req.formData();
       submissionId = String(fd.get("submissionID") ?? "");
+      formId = String(fd.get("formID") ?? fd.get("documentID") ?? "");
       const rawStr = fd.get("rawRequest");
       raw = typeof rawStr === "string" && rawStr ? JSON.parse(rawStr) : {};
     }
   } catch (e) {
     return json(400, { error: "bad_payload", detail: String(e) });
   }
+
+  const category = FORM_CATEGORY_MAP[formId] ?? "admision";
 
   const studentNumber = pickStudentNumber(raw);
   if (!studentNumber) {

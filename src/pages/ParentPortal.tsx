@@ -11,6 +11,7 @@ import { toast } from "@/hooks/use-toast";
 import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
+import ParentDocumentUploads from "@/components/ParentDocumentUploads";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";

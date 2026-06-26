@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
 
   // Save submission JSON as a record for traceability.
   const ts = Date.now();
-  const baseDir = `students/${student.id}/admision/${ts}-${submissionId || "jf"}`;
+  const baseDir = `students/${student.id}/${category}/${ts}-${submissionId || "jf"}`;
   const records: { path: string; name: string; size: number; mime: string }[] = [];
 
   const summaryBlob = new Blob([JSON.stringify(raw, null, 2)], { type: "application/json" });

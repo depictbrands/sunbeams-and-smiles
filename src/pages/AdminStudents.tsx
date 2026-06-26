@@ -240,7 +240,7 @@ const AdminStudents = () => {
 
           <Card className="p-6 rounded-2xl border-2 mb-6">
             <h2 className="font-bold text-ink mb-3">Agregar estudiante</h2>
-            <form onSubmit={handleAdd} className="grid sm:grid-cols-[180px_1fr_auto] gap-3">
+            <form onSubmit={handleAdd} className="grid sm:grid-cols-[160px_1fr_160px_auto] gap-3">
               <Input
                 placeholder="ID (p. ej. 2026-014)"
                 value={newNumber}
@@ -253,6 +253,16 @@ const AdminStudents = () => {
                 onChange={(e) => setNewName(e.target.value)}
                 maxLength={150}
               />
+              <Select value={newGroup} onValueChange={setNewGroup}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Grupo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {GROUPS.map((g) => (
+                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Button type="submit" variant="hero">
                 <Plus className="h-4 w-4" /> Agregar
               </Button>
@@ -274,7 +284,7 @@ const AdminStudents = () => {
                 />
               </label>
               <span className="text-xs text-muted-foreground">
-                Columnas: <code>student_number, student_name, status</code> (status opcional: active/inactive).
+                Columnas: <code>numero, nombre, grupo</code> (grupo: Maternal / Preescolar / PreKinder, o "inactive" para desactivar).
               </span>
             </div>
           </Card>

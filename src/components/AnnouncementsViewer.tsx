@@ -40,6 +40,22 @@ const CATEGORIES = [
   { value: "urgente", label: "Urgente" },
 ];
 
+const GROUPS = [
+  { value: "all", label: "Todos los grupos" },
+  { value: "maternal", label: "Maternal" },
+  { value: "preescolar", label: "Preescolar" },
+  { value: "prekinder", label: "Pre-Kínder" },
+];
+
+const groupColor = (g: string) => {
+  switch (g) {
+    case "maternal": return "bg-pink-100 text-pink-700 border-pink-200";
+    case "preescolar": return "bg-emerald-100 text-emerald-700 border-emerald-200";
+    case "prekinder": return "bg-sky-100 text-sky-700 border-sky-200";
+    default: return "bg-slate-100 text-slate-700 border-slate-200";
+  }
+};
+
 const categoryColor = (cat: string) => {
   switch (cat) {
     case "urgente": return "bg-red-100 text-red-700 border-red-200";

@@ -29,6 +29,17 @@ const json = (status: number, body: unknown) =>
 
 const STUDENT_FIELD_HINTS = ["estudiante", "student", "numero", "número", "id"];
 
+// Map Jotform formID (or Sign documentID) → expediente category.
+// Default (unknown form) → "admision" to preserve previous behavior.
+const FORM_CATEGORY_MAP: Record<string, string> = {
+  "261765113685058": "medicamentos", // Autorización Para Administrar Medicamentos (Jotform Sign)
+};
+
+const CATEGORY_TITLES: Record<string, string> = {
+  admision: "Solicitud de admisión (Jotform)",
+  medicamentos: "Autorización para administrar medicamentos (Jotform)",
+};
+
 function pickStudentNumber(raw: Record<string, unknown>): string | null {
   // Jotform `rawRequest` keys look like "q5_studentNumber" / "q12_numeroDe".
   for (const [k, v] of Object.entries(raw)) {

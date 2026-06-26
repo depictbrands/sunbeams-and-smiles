@@ -133,6 +133,26 @@ const AdminStudents = () => {
     else loadStudents();
   };
 
+  const normalizeGroup = (v?: string | null): string | null => {
+    if (!v) return null;
+    const t = v.trim().toLowerCase();
+    if (!t) return null;
+    if (t.startsWith("mater")) return "Maternal";
+    if (t.startsWith("prees")) return "Preescolar";
+    if (t.startsWith("prek")) return "PreKinder";
+    return null;
+  };
+
+  const handleUpdateGroup = async (s: Student, group: string) => {
+    const value = group === "__none__" ? null : group;
+    const { error } = await supabase
+      .from("allowed_students")
+      .update({ group_name: value } as never)
+      .eq("id", s.id);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else loadStudents();
+  };
+
   const handleDelete = async (s: Student) => {
     if (!confirm(`Eliminar al estudiante ${s.student_name ?? s.student_number}? Esta acción no se puede deshacer.`)) return;
     const { error } = await supabase.from("allowed_students").delete().eq("id", s.id);
@@ -141,16 +161,18 @@ const AdminStudents = () => {
   };
 
   const handleCsvUpload = async (file: File) => {
-    const text = await file.text();
+    const text = await file.text().then((t) => t.replace(/^\uFEFF/, ""));
     const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
     if (!lines.length) return;
-    // Detect header
     const first = lines[0].toLowerCase();
-    const hasHeader = first.includes("student") || first.includes("number") || first.includes("nombre") || first.includes("id");
+    const hasHeader = first.includes("student") || first.includes("number") || first.includes("nombre") || first.includes("numero") || first.includes("id");
     const rows = (hasHeader ? lines.slice(1) : lines)
       .map((line) => {
         const cols = line.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
-        return { student_number: cols[0], student_name: cols[1] ?? null, status: (cols[2] ?? "active").toLowerCase() === "inactive" ? "inactive" : "active" };
+        const third = cols[2] ?? "";
+        const group = normalizeGroup(third);
+        const status = third.toLowerCase() === "inactive" ? "inactive" : "active";
+        return { student_number: cols[0], student_name: cols[1] ?? null, status, group_name: group };
       })
       .filter((r) => r.student_number);
 

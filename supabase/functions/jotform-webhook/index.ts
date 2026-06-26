@@ -155,9 +155,9 @@ Deno.serve(async (req) => {
       file_name: r.name,
       file_size: r.size,
       mime_type: r.mime,
-      title: r.name === "submission.json" ? "Solicitud de admisión (Jotform)" : r.name,
+      title: r.name === "submission.json" ? (CATEGORY_TITLES[category] ?? r.name) : r.name,
       student_id: student.id,
-      category: "admision",
+      category,
       jotform_submission_id: submissionId || null,
     });
   }

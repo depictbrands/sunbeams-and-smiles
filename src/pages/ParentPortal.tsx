@@ -430,7 +430,7 @@ const ParentPortal = () => {
               </Card>
             </a>
             <a
-              href="https://www.jotform.com/sign/261765113685058"
+              href="https://www.jotform.com/sign/261765113685058/invite/01kw2etqnyd733a8f4189ad46c"
               target="_blank"
               rel="noopener noreferrer"
               className="group block"

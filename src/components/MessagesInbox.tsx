@@ -556,9 +556,22 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                     </button>
                   </div>
                 ) : (
-                  <Button type="button" variant="outline" size="sm" onClick={() => newFileInputRef.current?.click()}>
-                    <Paperclip className="h-4 w-4" /> Adjuntar archivo o foto
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={() => newFileInputRef.current?.click()}>
+                      <Paperclip className="h-4 w-4" /> Adjuntar archivo o foto
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const url = promptForLink();
+                        if (url) setBody((b) => (b ? `${b}\n${url}` : url));
+                      }}
+                    >
+                      <LinkIcon className="h-4 w-4" /> Agregar enlace (Drive, YouTube…)
+                    </Button>
+                  </div>
                 )}
               </div>
 

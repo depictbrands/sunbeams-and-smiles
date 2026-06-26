@@ -313,6 +313,7 @@ const AdminStudents = () => {
                     <TableRow>
                       <TableHead>ID</TableHead>
                       <TableHead>Nombre</TableHead>
+                      <TableHead>Grupo</TableHead>
                       <TableHead>Estado</TableHead>
                       <TableHead>Padre vinculado</TableHead>
                       <TableHead className="text-right">Acciones</TableHead>
@@ -336,6 +337,22 @@ const AdminStudents = () => {
                           />
                         </TableCell>
                         <TableCell>
+                          <Select
+                            value={s.group_name ?? "__none__"}
+                            onValueChange={(v) => handleUpdateGroup(s, v)}
+                          >
+                            <SelectTrigger className="h-9 w-[140px]">
+                              <SelectValue placeholder="—" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="__none__">—</SelectItem>
+                              {GROUPS.map((g) => (
+                                <SelectItem key={g} value={g}>{g}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
                           <Badge variant={s.status === "active" ? "default" : "secondary"}>
                             {s.status === "active" ? "Activo" : "Inactivo"}
                           </Badge>
@@ -357,7 +374,7 @@ const AdminStudents = () => {
                     ))}
                     {filtered.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                           Sin estudiantes.
                         </TableCell>
                       </TableRow>

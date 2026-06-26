@@ -16,6 +16,7 @@ interface Announcement {
   title: string;
   content: string | null;
   category: string;
+  audience_group: string;
   attachment_path: string | null;
   attachment_name: string | null;
   attachment_mime: string | null;

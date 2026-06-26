@@ -222,41 +222,59 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   };
 
   const visibleItems = (isAdmin ? items : items.filter((i) => i.is_active))
-    .filter((i) => filter === "all" || i.category === filter);
+    .filter((i) => filter === "all" || i.category === filter)
+    .filter((i) => groupFilter === "all" || i.audience_group === groupFilter || i.audience_group === "all");
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
-              filter === "all" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
-            }`}
-          >
-            Todos
-          </button>
-          {CATEGORIES.map((c) => (
+      <div className="space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mr-1">Grupo:</span>
+          {GROUPS.map((g) => (
             <button
-              key={c.value}
-              onClick={() => setFilter(c.value)}
+              key={g.value}
+              onClick={() => setGroupFilter(g.value)}
               className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
-                filter === c.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+                groupFilter === g.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
               }`}
             >
-              {c.label}
+              {g.label}
             </button>
           ))}
         </div>
-        {isAdmin && (
-          <Button
-            onClick={() => { if (showForm) { resetForm(); } setShowForm((v) => !v); }}
-            size="sm"
-            className="rounded-full"
-          >
-            {showForm ? <><X className="h-4 w-4 mr-1.5" /> Cerrar</> : <><Plus className="h-4 w-4 mr-1.5" /> Nuevo anuncio</>}
-          </Button>
-        )}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-2">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mr-1 self-center">Categoría:</span>
+            <button
+              onClick={() => setFilter("all")}
+              className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
+                filter === "all" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+              }`}
+            >
+              Todos
+            </button>
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => setFilter(c.value)}
+                className={`px-3 py-1.5 rounded-full text-sm border-2 transition-all ${
+                  filter === c.value ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border hover:border-primary/50"
+                }`}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+          {isAdmin && (
+            <Button
+              onClick={() => { if (showForm) { resetForm(); } setShowForm((v) => !v); }}
+              size="sm"
+              className="rounded-full"
+            >
+              {showForm ? <><X className="h-4 w-4 mr-1.5" /> Cerrar</> : <><Plus className="h-4 w-4 mr-1.5" /> Nuevo anuncio</>}
+            </Button>
+          )}
+        </div>
       </div>
 
       {isAdmin && showForm && (

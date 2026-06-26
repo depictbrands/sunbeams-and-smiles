@@ -165,11 +165,11 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
 
     if (editingId) {
       const update: {
-        title: string; content: string | null; category: string; pinned: boolean;
+        title: string; content: string | null; category: string; audience_group: string; pinned: boolean;
         attachment_path?: string | null; attachment_name?: string | null; attachment_mime?: string | null;
       } = {
         title: fTitle.trim(), content: fContent.trim() || null,
-        category: fCategory, pinned: fPinned,
+        category: fCategory, audience_group: fGroup, pinned: fPinned,
       };
       if (attachment_path !== undefined) {
         update.attachment_path = attachment_path ?? null;
@@ -185,6 +185,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
         title: fTitle.trim(),
         content: fContent.trim() || null,
         category: fCategory,
+        audience_group: fGroup,
         pinned: fPinned,
         is_active: true,
         attachment_path: attachment_path ?? null,

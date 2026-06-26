@@ -359,7 +359,18 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Anuncios</h3>
                       <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
+                    {isStaff && (
+                      <Card
+                        className="p-5 rounded-2xl border-2 border-primary/40 bg-primary/5 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                        onClick={() => navigate("/admin/estudiantes")}
+                      >
+                        <UserPlus className="h-6 w-6 text-primary mb-3" />
+                        <h3 className="font-bold text-ink mb-1">Gestionar estudiantes</h3>
+                        <p className="text-sm text-muted-foreground">Añadir, editar y verificar (admin)</p>
+                      </Card>
+                    )}
                   </div>
+
                 </TabsContent>
               </Tabs>
             </div>

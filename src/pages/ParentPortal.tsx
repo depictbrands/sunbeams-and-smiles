@@ -37,6 +37,7 @@ const ParentPortal = () => {
 
   const [isStaff, setIsStaff] = useState(false);
   const [formsOpen, setFormsOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   useEffect(() => {
     const prevTitle = document.title;

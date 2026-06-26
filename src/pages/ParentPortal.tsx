@@ -432,7 +432,8 @@ const ParentPortal = () => {
           </div>
 
           {session && (
-            <div className="mt-6 pt-6 border-t">
+            <div className="mt-6 pt-6 border-t space-y-8">
+              {isStaff && <AdminStudentDocuments adminUserId={session.user.id} />}
               <ParentDocumentUploads userId={session.user.id} />
             </div>
           )}

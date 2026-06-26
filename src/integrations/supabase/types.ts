@@ -277,6 +277,39 @@ export type Database = {
         }
         Relationships: []
       }
+      school_calendars: {
+        Row: {
+          created_at: string
+          file_path: string
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+          year: number
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string

@@ -39,6 +39,7 @@ const ParentDocumentUploads = ({ userId }: { userId: string }) => {
     documentos_anuales: null,
     vacunas: null,
     certificado_salud: null,
+    admin_assigned: null,
   });
 
   const load = async () => {

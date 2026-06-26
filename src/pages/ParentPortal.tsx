@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake } from "lucide-react";
+import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -390,7 +390,7 @@ const ParentPortal = () => {
               Elige el formulario que deseas completar. Se abrirá en una nueva pestaña.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid sm:grid-cols-2 gap-4 mt-2">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
             <a
               href="https://form.jotform.com/261398147565064"
               target="_blank"
@@ -426,6 +426,25 @@ const ParentPortal = () => {
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   Información médica y de contacto del niño/a.
+                </p>
+              </Card>
+            </a>
+            <a
+              href="https://www.jotform.com/sign/261765113685058"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-sun hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-sun/20 text-sun mb-4">
+                  <Pill className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Autorización de Medicamentos
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Firma la autorización para administrar medicamentos a tu hijo/a.
                 </p>
               </Card>
             </a>

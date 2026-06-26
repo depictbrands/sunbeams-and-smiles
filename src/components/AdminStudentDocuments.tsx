@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, FileText, Trash2, Download, Loader2, AlertCircle, FileSignature, Syringe, HeartPulse, Folder } from "lucide-react";
+import { Upload, FileText, Trash2, Download, Loader2, AlertCircle, FileSignature, Syringe, HeartPulse, Folder, Pill } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -29,10 +29,11 @@ type DocRow = {
   jotform_submission_id: string | null;
 };
 
-type CategoryKey = "admision" | "vacunas" | "certificado_medico" | "otros";
+type CategoryKey = "admision" | "medicamentos" | "vacunas" | "certificado_medico" | "otros";
 
 const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; color: string; bg: string }[] = [
   { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
+  { key: "medicamentos", label: "Autorización de medicamentos", icon: Pill, color: "text-sun", bg: "bg-sun/15" },
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
   { key: "otros", label: "Otros documentos", icon: Folder, color: "text-muted-foreground", bg: "bg-muted" },
@@ -55,10 +56,10 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [loadingDocs, setLoadingDocs] = useState(false);
   const [uploadingCat, setUploadingCat] = useState<CategoryKey | null>(null);
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
-    admision: "", vacunas: "", certificado_medico: "", otros: "",
+    admision: "", medicamentos: "", vacunas: "", certificado_medico: "", otros: "",
   });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
-    admision: null, vacunas: null, certificado_medico: null, otros: null,
+    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
   });
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);

@@ -29,6 +29,17 @@ const json = (status: number, body: unknown) =>
 
 const STUDENT_FIELD_HINTS = ["estudiante", "student", "numero", "número", "id"];
 
+// Map Jotform formID (or Sign documentID) → expediente category.
+// Default (unknown form) → "admision" to preserve previous behavior.
+const FORM_CATEGORY_MAP: Record<string, string> = {
+  "261765113685058": "medicamentos", // Autorización Para Administrar Medicamentos (Jotform Sign)
+};
+
+const CATEGORY_TITLES: Record<string, string> = {
+  admision: "Solicitud de admisión (Jotform)",
+  medicamentos: "Autorización para administrar medicamentos (Jotform)",
+};
+
 function pickStudentNumber(raw: Record<string, unknown>): string | null {
   // Jotform `rawRequest` keys look like "q5_studentNumber" / "q12_numeroDe".
   for (const [k, v] of Object.entries(raw)) {
@@ -65,23 +76,29 @@ Deno.serve(async (req) => {
   if (!SUPABASE_URL || !SERVICE_KEY) return json(500, { error: "missing_config" });
 
   // Jotform posts multipart/form-data with `formID`, `submissionID`, `rawRequest`.
+  // Jotform Sign posts similar fields plus `documentID`.
   let submissionId = "";
+  let formId = "";
   let raw: Record<string, unknown> = {};
   try {
     const ct = req.headers.get("content-type") ?? "";
     if (ct.includes("application/json")) {
       const body = await req.json();
       submissionId = String(body.submissionID ?? body.submission_id ?? "");
+      formId = String(body.formID ?? body.documentID ?? body.formId ?? "");
       raw = typeof body.rawRequest === "string" ? JSON.parse(body.rawRequest) : (body.rawRequest ?? body);
     } else {
       const fd = await req.formData();
       submissionId = String(fd.get("submissionID") ?? "");
+      formId = String(fd.get("formID") ?? fd.get("documentID") ?? "");
       const rawStr = fd.get("rawRequest");
       raw = typeof rawStr === "string" && rawStr ? JSON.parse(rawStr) : {};
     }
   } catch (e) {
     return json(400, { error: "bad_payload", detail: String(e) });
   }
+
+  const category = FORM_CATEGORY_MAP[formId] ?? "admision";
 
   const studentNumber = pickStudentNumber(raw);
   if (!studentNumber) {
@@ -100,7 +117,7 @@ Deno.serve(async (req) => {
 
   // Save submission JSON as a record for traceability.
   const ts = Date.now();
-  const baseDir = `students/${student.id}/admision/${ts}-${submissionId || "jf"}`;
+  const baseDir = `students/${student.id}/${category}/${ts}-${submissionId || "jf"}`;
   const records: { path: string; name: string; size: number; mime: string }[] = [];
 
   const summaryBlob = new Blob([JSON.stringify(raw, null, 2)], { type: "application/json" });
@@ -138,9 +155,9 @@ Deno.serve(async (req) => {
       file_name: r.name,
       file_size: r.size,
       mime_type: r.mime,
-      title: r.name === "submission.json" ? "Solicitud de admisión (Jotform)" : r.name,
+      title: r.name === "submission.json" ? (CATEGORY_TITLES[category] ?? r.name) : r.name,
       student_id: student.id,
-      category: "admision",
+      category,
       jotform_submission_id: submissionId || null,
     });
   }

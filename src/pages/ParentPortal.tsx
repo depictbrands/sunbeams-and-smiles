@@ -12,6 +12,7 @@ import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
+import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
 

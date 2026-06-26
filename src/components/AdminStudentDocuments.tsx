@@ -58,6 +58,9 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
     admision: "", medicamentos: "", vacunas: "", certificado_medico: "", otros: "",
   });
+  const [pending, setPending] = useState<Record<CategoryKey, File | null>>({
+    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
+  });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
     admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
   });

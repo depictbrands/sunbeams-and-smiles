@@ -12,7 +12,7 @@ import type { Session } from "@supabase/supabase-js";
 import MessagesInbox from "@/components/MessagesInbox";
 import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
-import YearCalendar from "@/components/YearCalendar";
+import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";
@@ -428,13 +428,13 @@ const ParentPortal = () => {
         <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl">
           <DialogHeader>
             <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
-              Calendario
+              Calendario escolar
             </DialogTitle>
             <DialogDescription>
-              Vista de todos los meses del año.
+              Consulta, descarga o imprime el calendario oficial enviado por la escuela.
             </DialogDescription>
           </DialogHeader>
-          <YearCalendar />
+          <SchoolCalendarViewer isAdmin={isStaff} />
         </DialogContent>
       </Dialog>
     </div>

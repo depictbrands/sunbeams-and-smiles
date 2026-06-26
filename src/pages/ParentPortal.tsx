@@ -423,6 +423,20 @@ const ParentPortal = () => {
         </DialogContent>
 
       </Dialog>
+
+      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
+        <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Calendario
+            </DialogTitle>
+            <DialogDescription>
+              Vista de todos los meses del año.
+            </DialogDescription>
+          </DialogHeader>
+          <YearCalendar />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

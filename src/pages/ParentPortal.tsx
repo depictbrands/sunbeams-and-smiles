@@ -416,8 +416,8 @@ const ParentPortal = () => {
               rel="noopener noreferrer"
               className="group block"
             >
-              <Card className="p-6 rounded-2xl border-2 hover:border-leaf hover:shadow-soft transition-all h-full">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-leaf/15 text-leaf mb-4">
+              <Card className="p-6 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/15 text-primary mb-4">
                   <HeartHandshake className="h-6 w-6" />
                 </div>
                 <h3 className="font-bold text-ink mb-1 flex items-center gap-2">

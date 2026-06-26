@@ -211,7 +211,11 @@ export type Database = {
       }
       messages: {
         Row: {
-          body: string
+          attachment_name: string | null
+          attachment_path: string | null
+          attachment_size: number | null
+          attachment_type: string | null
+          body: string | null
           created_at: string
           id: string
           read_at: string | null
@@ -219,7 +223,11 @@ export type Database = {
           thread_id: string
         }
         Insert: {
-          body: string
+          attachment_name?: string | null
+          attachment_path?: string | null
+          attachment_size?: number | null
+          attachment_type?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null
@@ -227,7 +235,11 @@ export type Database = {
           thread_id: string
         }
         Update: {
-          body?: string
+          attachment_name?: string | null
+          attachment_path?: string | null
+          attachment_size?: number | null
+          attachment_type?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null
@@ -480,6 +492,10 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      user_can_access_thread: {
+        Args: { _thread_id: string; _user_id: string }
+        Returns: boolean
       }
     }
     Enums: {

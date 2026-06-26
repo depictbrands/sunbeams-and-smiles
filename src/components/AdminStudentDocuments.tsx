@@ -148,6 +148,7 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
         : `Guardado en el expediente (estudiante sin padre activado: ${ownerScope === "unassigned" ? "queda pendiente de mostrar" : ""}).`,
     });
     setTitles((t) => ({ ...t, [category]: "" }));
+    setPending((p) => ({ ...p, [category]: null }));
     loadDocs(selected.id);
   };
 

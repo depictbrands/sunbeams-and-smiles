@@ -37,6 +37,7 @@ const AdminStudents = () => {
   const [loading, setLoading] = useState(false);
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
+  const [newGroup, setNewGroup] = useState<string>("");
   const [search, setSearch] = useState("");
 
   useEffect(() => {

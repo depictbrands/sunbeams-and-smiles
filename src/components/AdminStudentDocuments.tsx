@@ -58,6 +58,9 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
     admision: "", medicamentos: "", vacunas: "", certificado_medico: "", otros: "",
   });
+  const [pending, setPending] = useState<Record<CategoryKey, File | null>>({
+    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
+  });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
     admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
   });
@@ -145,6 +148,7 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
         : `Guardado en el expediente (estudiante sin padre activado: ${ownerScope === "unassigned" ? "queda pendiente de mostrar" : ""}).`,
     });
     setTitles((t) => ({ ...t, [category]: "" }));
+    setPending((p) => ({ ...p, [category]: null }));
     loadDocs(selected.id);
   };
 
@@ -245,21 +249,48 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
                     accept="application/pdf,image/*"
                     className="hidden"
                     onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) handleUpload(key, f);
+                      const f = e.target.files?.[0] ?? null;
+                      setPending((p) => ({ ...p, [key]: f }));
                       e.target.value = "";
                     }}
                   />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    disabled={busy}
-                    onClick={() => inputRefs.current[key]?.click()}
-                  >
-                    {busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Subiendo…</> : <><Upload className="h-4 w-4" /> Subir archivo</>}
-                  </Button>
+                  {pending[key] && (
+                    <div className="flex items-center gap-2 text-xs bg-muted/50 rounded-lg px-2 py-1.5">
+                      <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <span className="flex-1 truncate">{pending[key]!.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setPending((p) => ({ ...p, [key]: null }))}
+                        className="p-1 hover:text-destructive"
+                        title="Quitar"
+                        disabled={busy}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      disabled={busy}
+                      onClick={() => inputRefs.current[key]?.click()}
+                    >
+                      <Upload className="h-4 w-4" /> {pending[key] ? "Cambiar archivo" : "Elegir archivo"}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      className="flex-1"
+                      disabled={busy || !pending[key]}
+                      onClick={() => pending[key] && handleUpload(key, pending[key]!)}
+                    >
+                      {busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Guardando…</> : <>Guardar</>}
+                    </Button>
+                  </div>
+
                 </div>
 
                 <ul className="space-y-1.5">

@@ -305,12 +305,25 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
                   ))}
                 </select>
               </div>
-              <div className="flex items-end">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={fPinned} onChange={(e) => setFPinned(e.target.checked)} />
-                  <span className="text-sm">Fijar arriba</span>
-                </label>
+              <div>
+                <Label htmlFor="an-group">Grupo</Label>
+                <select
+                  id="an-group"
+                  value={fGroup}
+                  onChange={(e) => setFGroup(e.target.value)}
+                  className="w-full h-10 px-3 rounded-md border bg-background"
+                >
+                  {GROUPS.map((g) => (
+                    <option key={g.value} value={g.value}>{g.label}</option>
+                  ))}
+                </select>
               </div>
+            </div>
+            <div className="flex items-center">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={fPinned} onChange={(e) => setFPinned(e.target.checked)} />
+                <span className="text-sm">Fijar arriba</span>
+              </label>
             </div>
             <div>
               <Label htmlFor="an-file">Adjunto (PDF o imagen, opcional)</Label>

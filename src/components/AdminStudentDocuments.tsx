@@ -55,6 +55,7 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
         .from("allowed_students")
         .select("id, student_number, student_name, group_name, parent_user_id")
         .eq("status", "active")
+        .not("parent_user_id", "is", null)
         .order("student_name", { ascending: true });
       setLoadingStudents(false);
       if (error) {

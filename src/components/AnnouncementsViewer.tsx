@@ -74,6 +74,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   const [loading, setLoading] = useState(true);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState<string>("all");
+  const [groupFilter, setGroupFilter] = useState<string>("all");
 
   // Editor state
   const [showForm, setShowForm] = useState(false);
@@ -81,6 +82,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
   const [fTitle, setFTitle] = useState("");
   const [fContent, setFContent] = useState("");
   const [fCategory, setFCategory] = useState("general");
+  const [fGroup, setFGroup] = useState("all");
   const [fPinned, setFPinned] = useState(false);
   const [fFile, setFFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);

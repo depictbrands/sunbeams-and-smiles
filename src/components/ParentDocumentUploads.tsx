@@ -17,7 +17,6 @@ type DocRow = {
 };
 
 const TYPES: { key: DocType; label: string; icon: typeof FileText; color: string; bg: string }[] = [
-  { key: "documentos_anuales", label: "Documentos Anuales", icon: FileText, color: "text-primary", bg: "bg-primary/15" },
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_salud", label: "Certificado de Salud", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
 ];

@@ -6,7 +6,41 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download } from "lucide-react";
+import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon } from "lucide-react";
+
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+const renderBodyWithLinks = (text: string, mine: boolean) => {
+  const parts = text.split(URL_REGEX);
+  return parts.map((part, i) => {
+    if (URL_REGEX.test(part)) {
+      URL_REGEX.lastIndex = 0;
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`underline break-all ${mine ? "text-primary-foreground" : "text-primary"}`}
+        >
+          {part}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
+const promptForLink = (): string | null => {
+  const url = window.prompt("Pega el enlace (ej: Google Drive, YouTube, Vimeo):", "https://");
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!/^https?:\/\//i.test(trimmed)) {
+    toast({ title: "Enlace inválido", description: "Debe empezar con http:// o https://", variant: "destructive" });
+    return null;
+  }
+  return trimmed;
+};
 
 type Profile = { user_id: string; display_name: string | null; email: string; avatar_url: string | null };
 

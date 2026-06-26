@@ -145,7 +145,7 @@ const ParentDocumentUploads = ({ userId }: { userId: string }) => {
               </div>
 
               <input
-                ref={(el) => (inputRefs.current[key] = el)}
+                ref={(el) => { inputRefs.current[key] = el; }}
                 type="file"
                 accept="application/pdf,image/*"
                 className="hidden"

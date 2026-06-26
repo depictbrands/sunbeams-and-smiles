@@ -107,12 +107,22 @@ Deno.serve(async (req) => {
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
-  const { data: student, error: stuErr } = await supabase
+  // Normalize: match on digits-only so "2026285" matches "2026-285", etc.
+  const digitsOnly = (s: string) => (s || "").replace(/\D+/g, "");
+  const submittedDigits = digitsOnly(studentNumber);
+
+  const { data: candidates, error: stuErr } = await supabase
     .from("allowed_students")
-    .select("id, parent_user_id, student_number")
-    .ilike("student_number", studentNumber)
-    .maybeSingle();
+    .select("id, parent_user_id, student_number");
   if (stuErr) return json(500, { error: "lookup_failed", detail: stuErr.message });
+
+  const student = (candidates || []).find((s: any) => {
+    const sn = (s.student_number || "").toString();
+    return (
+      sn.toLowerCase() === studentNumber.toLowerCase() ||
+      (submittedDigits && digitsOnly(sn) === submittedDigits)
+    );
+  });
   if (!student) return json(200, { ok: false, reason: "student_not_found", studentNumber });
 
   // Save submission JSON as a record for traceability.

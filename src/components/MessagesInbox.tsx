@@ -6,7 +6,41 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download } from "lucide-react";
+import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon } from "lucide-react";
+
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+const renderBodyWithLinks = (text: string, mine: boolean) => {
+  const parts = text.split(URL_REGEX);
+  return parts.map((part, i) => {
+    if (URL_REGEX.test(part)) {
+      URL_REGEX.lastIndex = 0;
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`underline break-all ${mine ? "text-primary-foreground" : "text-primary"}`}
+        >
+          {part}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
+const promptForLink = (): string | null => {
+  const url = window.prompt("Pega el enlace (ej: Google Drive, YouTube, Vimeo):", "https://");
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!/^https?:\/\//i.test(trimmed)) {
+    toast({ title: "Enlace inválido", description: "Debe empezar con http:// o https://", variant: "destructive" });
+    return null;
+  }
+  return trimmed;
+};
 
 type Profile = { user_id: string; display_name: string | null; email: string; avatar_url: string | null };
 
@@ -522,9 +556,22 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                     </button>
                   </div>
                 ) : (
-                  <Button type="button" variant="outline" size="sm" onClick={() => newFileInputRef.current?.click()}>
-                    <Paperclip className="h-4 w-4" /> Adjuntar archivo o foto
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={() => newFileInputRef.current?.click()}>
+                      <Paperclip className="h-4 w-4" /> Adjuntar archivo o foto
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const url = promptForLink();
+                        if (url) setBody((b) => (b ? `${b}\n${url}` : url));
+                      }}
+                    >
+                      <LinkIcon className="h-4 w-4" /> Agregar enlace (Drive, YouTube…)
+                    </Button>
+                  </div>
                 )}
               </div>
 
@@ -565,7 +612,7 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                       )}
                       <div className={`max-w-[75%] rounded-2xl px-4 py-2 ${mine ? "bg-primary text-primary-foreground" : "bg-muted text-ink"}`}>
                         {!mine && <div className="text-xs font-semibold opacity-70 mb-1">{nameOf(m.sender)}</div>}
-                        {m.body && <div className="text-sm whitespace-pre-wrap break-words">{m.body}</div>}
+                        {m.body && <div className="text-sm whitespace-pre-wrap break-words">{renderBodyWithLinks(m.body, mine)}</div>}
                         {renderAttachment(m, mine)}
                         <div className="text-[10px] mt-1 opacity-70">
                           {new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
@@ -612,6 +659,19 @@ const MessagesInbox = ({ userId, isStaff }: Props) => {
                   className="flex-shrink-0"
                 >
                   <Paperclip className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    const url = promptForLink();
+                    if (url) setBody((b) => (b ? `${b}\n${url}` : url));
+                  }}
+                  title="Agregar enlace (Google Drive, YouTube, etc.)"
+                  className="flex-shrink-0"
+                >
+                  <LinkIcon className="h-4 w-4" />
                 </Button>
                 <Textarea
                   value={body}

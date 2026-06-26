@@ -77,7 +77,8 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
         toast({ title: "Error", description: error.message, variant: "destructive" });
         return;
       }
-      setStudents((data ?? []) as Student[]);
+      const filtered = (data ?? []).filter((s: any) => !/preescolar\s*sonsoles/i.test(s.student_name ?? ""));
+      setStudents(filtered as Student[]);
     })();
   }, []);
 

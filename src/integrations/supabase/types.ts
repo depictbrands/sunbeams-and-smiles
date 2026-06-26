@@ -279,12 +279,14 @@ export type Database = {
       }
       parent_documents: {
         Row: {
+          category: string | null
           created_at: string
           document_type: Database["public"]["Enums"]["parent_document_type"]
           file_name: string
           file_path: string
           file_size: number | null
           id: string
+          jotform_submission_id: string | null
           mime_type: string | null
           student_id: string | null
           title: string | null
@@ -293,12 +295,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          category?: string | null
           created_at?: string
           document_type: Database["public"]["Enums"]["parent_document_type"]
           file_name: string
           file_path: string
           file_size?: number | null
           id?: string
+          jotform_submission_id?: string | null
           mime_type?: string | null
           student_id?: string | null
           title?: string | null
@@ -307,12 +311,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          category?: string | null
           created_at?: string
           document_type?: Database["public"]["Enums"]["parent_document_type"]
           file_name?: string
           file_path?: string
           file_size?: number | null
           id?: string
+          jotform_submission_id?: string | null
           mime_type?: string | null
           student_id?: string | null
           title?: string | null

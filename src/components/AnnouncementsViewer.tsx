@@ -144,14 +144,17 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
     }
 
     if (editingId) {
-      const update: Record<string, unknown> = {
+      const update: {
+        title: string; content: string | null; category: string; pinned: boolean;
+        attachment_path?: string | null; attachment_name?: string | null; attachment_mime?: string | null;
+      } = {
         title: fTitle.trim(), content: fContent.trim() || null,
         category: fCategory, pinned: fPinned,
       };
       if (attachment_path !== undefined) {
-        update.attachment_path = attachment_path;
-        update.attachment_name = attachment_name;
-        update.attachment_mime = attachment_mime;
+        update.attachment_path = attachment_path ?? null;
+        update.attachment_name = attachment_name ?? null;
+        update.attachment_mime = attachment_mime ?? null;
       }
       const { error } = await supabase.from("announcements").update(update).eq("id", editingId);
       if (error) toast({ title: "Error al guardar", description: error.message, variant: "destructive" });

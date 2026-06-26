@@ -375,6 +375,11 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
                         <Badge variant="outline" className={`text-xs ${categoryColor(a.category)}`}>
                           {CATEGORIES.find((c) => c.value === a.category)?.label ?? a.category}
                         </Badge>
+                        {a.audience_group && a.audience_group !== "all" && (
+                          <Badge variant="outline" className={`text-xs ${groupColor(a.audience_group)}`}>
+                            {GROUPS.find((g) => g.value === a.audience_group)?.label ?? a.audience_group}
+                          </Badge>
+                        )}
                         {!a.is_active && <Badge variant="outline" className="text-xs">Inactivo</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground mb-2">{fmtDate(a.published_at)}</p>

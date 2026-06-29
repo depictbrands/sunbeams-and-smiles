@@ -29,13 +29,14 @@ type DocRow = {
   jotform_submission_id: string | null;
 };
 
-type CategoryKey = "admision" | "medicamentos" | "vacunas" | "certificado_medico" | "otros";
+type CategoryKey = "admision" | "medicamentos" | "vacunas" | "certificado_medico" | "preceptorias" | "otros";
 
 const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; color: string; bg: string }[] = [
   { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
   { key: "medicamentos", label: "Autorización de medicamentos", icon: Pill, color: "text-azure", bg: "bg-azure/15" },
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
+  { key: "preceptorias", label: "Preceptorías", icon: Users, color: "text-violet-600", bg: "bg-violet-100" },
   { key: "otros", label: "Otros documentos", icon: Folder, color: "text-muted-foreground", bg: "bg-muted" },
 ];
 

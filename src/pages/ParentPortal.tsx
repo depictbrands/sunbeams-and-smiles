@@ -457,6 +457,25 @@ const ParentPortal = () => {
                 </p>
               </Card>
             </a>
+            <a
+              href="https://www.jotform.com/sign/261795397226066/invite/01kwa8dkw5071c27e9eb1a28ab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-violet-500 hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-violet-100 text-violet-600 mb-4">
+                  <FolderOpen className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Documento para completar expediente
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Completa y firma el documento requerido para el expediente del estudiante.
+                </p>
+              </Card>
+            </a>
           </div>
 
           {session && (

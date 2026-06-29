@@ -204,7 +204,12 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       .channel("messages-realtime")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (payload) => {
         const newMsg = payload.new as Message;
-        if (activeId && newMsg.thread_id === activeId) loadMessages(activeId);
+        if (activeId && newMsg.thread_id === activeId) {
+          loadMessages(activeId);
+          markSeen(activeId);
+        } else if (newMsg.sender_id !== userId) {
+          toast({ title: "Nuevo mensaje", description: "Tienes un mensaje sin leer." });
+        }
         loadThreads();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "message_threads" }, () => loadThreads())

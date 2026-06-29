@@ -216,8 +216,31 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   }, [activeId]);
 
   useEffect(() => {
-    if (activeId) loadMessages(activeId);
+    if (activeId) {
+      loadMessages(activeId);
+      markSeen(activeId);
+    }
   }, [activeId]);
+
+  const markSeen = (threadId: string) => {
+    setLastSeen((prev) => {
+      const next = { ...prev, [threadId]: Date.now() };
+      saveLastSeen(userId, next);
+      return next;
+    });
+  };
+
+  const isUnread = (t: Thread) => {
+    const seen = lastSeen[t.id] ?? 0;
+    return new Date(t.last_message_at).getTime() > seen;
+  };
+
+  const unreadCount = threads.filter(isUnread).length;
+
+  useEffect(() => {
+    onUnreadCountChange?.(unreadCount);
+  }, [unreadCount, onUnreadCountChange]);
+
 
   const handlePickFile = (file: File | null) => {
     if (!file) {

@@ -14,6 +14,7 @@ import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
 import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
+import AcademicYearCalendar from "@/components/AcademicYearCalendar";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
@@ -478,7 +479,18 @@ const ParentPortal = () => {
               Consulta, descarga o imprime el calendario oficial enviado por la escuela.
             </DialogDescription>
           </DialogHeader>
-          <SchoolCalendarViewer isAdmin={isStaff} />
+          <Tabs defaultValue="year" className="mt-2">
+            <TabsList className="rounded-full">
+              <TabsTrigger value="year" className="rounded-full">Vista anual</TabsTrigger>
+              <TabsTrigger value="pdf" className="rounded-full">Calendario PDF</TabsTrigger>
+            </TabsList>
+            <TabsContent value="year" className="mt-4">
+              <AcademicYearCalendar />
+            </TabsContent>
+            <TabsContent value="pdf" className="mt-4">
+              <SchoolCalendarViewer isAdmin={isStaff} />
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FileText, Download, FileSignature, Syringe, HeartPulse, Folder, Pill } from "lucide-react";
+import { FileText, Download, FileSignature, Syringe, HeartPulse, Folder, Pill, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 

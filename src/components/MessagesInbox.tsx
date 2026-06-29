@@ -117,7 +117,8 @@ const formatBytes = (n: number | null) => {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 };
 
-const MessagesInbox = ({ userId, isStaff }: Props) => {
+const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
+  const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);

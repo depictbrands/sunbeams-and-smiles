@@ -14,6 +14,7 @@ import Turnstile from "@/components/Turnstile";
 import ParentDocumentUploads from "@/components/ParentDocumentUploads";
 import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
+import AcademicYearCalendar from "@/components/AcademicYearCalendar";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).

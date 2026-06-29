@@ -42,6 +42,7 @@ const ParentPortal = () => {
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
 
   useEffect(() => {
     const prevTitle = document.title;
@@ -316,12 +317,19 @@ const ParentPortal = () => {
 
               <Tabs defaultValue="messages" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="messages"><MessageCircle className="h-4 w-4 mr-2" />Mensajes</TabsTrigger>
+                  <TabsTrigger value="messages">
+                    <MessageCircle className="h-4 w-4 mr-2" />Mensajes
+                    {unreadMessages > 0 && (
+                      <span className="ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-[11px] font-bold">
+                        {unreadMessages}
+                      </span>
+                    )}
+                  </TabsTrigger>
                   <TabsTrigger value="tuition"><CreditCard className="h-4 w-4 mr-2" />Recursos</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="messages" className="mt-6">
-                  <MessagesInbox userId={session.user.id} isStaff={isStaff} />
+                  <MessagesInbox userId={session.user.id} isStaff={isStaff} onUnreadCountChange={setUnreadMessages} />
                 </TabsContent>
 
                 <TabsContent value="tuition" className="mt-6">

@@ -57,13 +57,13 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [loadingDocs, setLoadingDocs] = useState(false);
   const [uploadingCat, setUploadingCat] = useState<CategoryKey | null>(null);
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
-    admision: "", medicamentos: "", vacunas: "", certificado_medico: "", otros: "",
+    admision: "", medicamentos: "", vacunas: "", certificado_medico: "", preceptorias: "", otros: "",
   });
   const [pending, setPending] = useState<Record<CategoryKey, File | null>>({
-    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
+    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
   });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
-    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, otros: null,
+    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
   });
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);

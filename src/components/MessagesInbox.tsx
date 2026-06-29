@@ -485,6 +485,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
           <div className="p-4 border-b flex items-center justify-between">
             <h3 className="font-bold text-ink flex items-center gap-2">
               <MessageCircle className="h-4 w-4" /> {isStaff ? "Bandeja" : "Mis mensajes"}
+              {unreadCount > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-[11px] font-bold">
+                  {unreadCount}
+                </span>
+              )}
             </h3>
             {!isStaff && (
               <Button size="sm" variant="hero" onClick={() => { setShowNew(true); setActiveId(null); }}>
@@ -500,6 +505,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
             )}
             {threads.map((t) => {
               const other = isStaff ? t.parent : t.teacher;
+              const unread = isUnread(t);
               return (
                 <button
                   key={t.id}
@@ -508,13 +514,21 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                     activeId === t.id ? "bg-accent" : ""
                   }`}
                 >
-                  <Avatar className="h-10 w-10 flex-shrink-0">
-                    {other?.avatar_url && <AvatarImage src={other.avatar_url} alt={nameOf(other)} />}
-                    <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(other)}</AvatarFallback>
-                  </Avatar>
+                  <div className="relative flex-shrink-0">
+                    <Avatar className="h-10 w-10">
+                      {other?.avatar_url && <AvatarImage src={other.avatar_url} alt={nameOf(other)} />}
+                      <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(other)}</AvatarFallback>
+                    </Avatar>
+                    {unread && (
+                      <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-destructive ring-2 ring-background" aria-label="Nuevo mensaje" />
+                    )}
+                  </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-sm text-ink truncate">{nameOf(other)}</div>
-                    <div className="text-xs text-muted-foreground truncate">{t.subject}</div>
+                    <div className={`text-sm text-ink truncate flex items-center gap-2 ${unread ? "font-extrabold" : "font-semibold"}`}>
+                      <span className="truncate">{nameOf(other)}</span>
+                      {unread && <span className="text-[10px] uppercase tracking-wide text-destructive font-bold">Nuevo</span>}
+                    </div>
+                    <div className={`text-xs truncate ${unread ? "text-ink font-medium" : "text-muted-foreground"}`}>{t.subject}</div>
                     <div className="text-[10px] text-muted-foreground mt-0.5">
                       {new Date(t.last_message_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
                     </div>
@@ -523,6 +537,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
               );
             })}
           </div>
+
         </div>
 
         {/* Main panel */}

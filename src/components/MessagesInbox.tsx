@@ -70,7 +70,26 @@ type Message = {
 interface Props {
   userId: string;
   isStaff: boolean;
+  onUnreadCountChange?: (count: number) => void;
 }
+
+const lastSeenKey = (userId: string) => `msg-last-seen-v1-${userId}`;
+const loadLastSeen = (userId: string): Record<string, number> => {
+  try {
+    const raw = localStorage.getItem(lastSeenKey(userId));
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+};
+const saveLastSeen = (userId: string, map: Record<string, number>) => {
+  try {
+    localStorage.setItem(lastSeenKey(userId), JSON.stringify(map));
+  } catch {
+    /* noop */
+  }
+};
+
 
 const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024; // 10 MB
 

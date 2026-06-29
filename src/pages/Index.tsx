@@ -185,7 +185,7 @@ const Index = () => {
             <a href="https://www.instagram.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-ink hover:text-primary hidden sm:inline-flex"><Instagram className="h-5 w-5" /></a>
             <a href="https://www.facebook.com/preschoolsonsoles" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-ink hover:text-secondary hidden sm:inline-flex"><Facebook className="h-5 w-5" /></a>
             <Button asChild variant="outlineWarm" size="lg" className="hidden lg:inline-flex">
-              <a href="https://form.jotform.com/261475088622866" target="_blank" rel="noopener noreferrer">Programa de verano 2026</a>
+              <a href="/portal-padres">Portal de Padres</a>
             </Button>
             <Button asChild variant="hero" size="lg" className="hidden sm:inline-flex rounded-full max-lg:bg-accent max-lg:text-accent-foreground max-lg:hover:bg-accent/90 max-lg:h-9 max-lg:px-4 max-lg:text-sm">
               <a href="#contacto">Visítanos</a>
@@ -223,7 +223,7 @@ const Index = () => {
                 <div className="mt-6 flex flex-col gap-3">
                   <SheetClose asChild>
                     <Button asChild variant="outlineWarm" size="lg" className="w-full">
-                      <a href="https://form.jotform.com/261475088622866" target="_blank" rel="noopener noreferrer">Programa de verano 2026</a>
+                      <a href="/portal-padres">Portal de Padres</a>
                     </Button>
                   </SheetClose>
                   <SheetClose asChild>

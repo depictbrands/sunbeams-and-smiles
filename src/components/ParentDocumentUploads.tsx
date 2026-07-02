@@ -17,6 +17,7 @@ type DocRow = {
 const CATEGORIES: { key: string; label: string; icon: typeof FileText; color: string; bg: string }[] = [
   { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
   { key: "medicamentos", label: "Autorización de medicamentos", icon: Pill, color: "text-azure", bg: "bg-azure/15" },
+  { key: "historial_medico", label: "Historial médico", icon: Stethoscope, color: "text-rose-600", bg: "bg-rose-100" },
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
   { key: "preceptorias", label: "Preceptorías", icon: Users, color: "text-violet-600", bg: "bg-violet-100" },

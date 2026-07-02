@@ -32,6 +32,8 @@ const STUDENT_FIELD_HINTS = ["estudiante", "student", "numero", "número", "id"]
 // Map Jotform formID (or Sign documentID) → expediente category.
 // Default (unknown form) → "admision" to preserve previous behavior.
 const FORM_CATEGORY_MAP: Record<string, string> = {
+  "261398147565064": "admision", // Solicitud de admisión (form original)
+  "261795577609071": "admision", // Solicitud de admisión (Jotform Sign)
   "261765113685058": "medicamentos", // Autorización Para Administrar Medicamentos (Jotform Sign)
   "261475647186064": "historial_medico", // Historial Médico
   "261795397226066": "expediente", // Documentos Para Completar Expediente (Jotform Sign)

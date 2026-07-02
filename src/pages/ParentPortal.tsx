@@ -401,7 +401,7 @@ const ParentPortal = () => {
           </DialogHeader>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
             <a
-              href="https://form.jotform.com/261398147565064"
+              href="https://www.jotform.com/sign/261795577609071/invite/01kwaec6bf9e98332378e3bfcd"
               target="_blank"
               rel="noopener noreferrer"
               className="group block"

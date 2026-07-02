@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, FileText, Trash2, Download, Loader2, AlertCircle, FileSignature, Syringe, HeartPulse, Folder, Pill, Users, Stethoscope } from "lucide-react";
+import { Upload, FileText, Trash2, Download, Loader2, AlertCircle, FileSignature, Syringe, HeartPulse, Folder, FolderOpen, Pill, Users, Stethoscope } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -29,7 +29,7 @@ type DocRow = {
   jotform_submission_id: string | null;
 };
 
-type CategoryKey = "admision" | "medicamentos" | "historial_medico" | "vacunas" | "certificado_medico" | "preceptorias" | "otros";
+type CategoryKey = "admision" | "medicamentos" | "historial_medico" | "vacunas" | "certificado_medico" | "preceptorias" | "expediente" | "otros";
 
 const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; color: string; bg: string }[] = [
   { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
@@ -38,6 +38,7 @@ const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; colo
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
   { key: "preceptorias", label: "Preceptorías", icon: Users, color: "text-violet-600", bg: "bg-violet-100" },
+  { key: "expediente", label: "Documentos para completar expediente", icon: FolderOpen, color: "text-violet-700", bg: "bg-violet-200" },
   { key: "otros", label: "Otros documentos", icon: Folder, color: "text-muted-foreground", bg: "bg-muted" },
 ];
 
@@ -58,13 +59,13 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [loadingDocs, setLoadingDocs] = useState(false);
   const [uploadingCat, setUploadingCat] = useState<CategoryKey | null>(null);
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
-    admision: "", medicamentos: "", historial_medico: "", vacunas: "", certificado_medico: "", preceptorias: "", otros: "",
+    admision: "", medicamentos: "", historial_medico: "", vacunas: "", certificado_medico: "", preceptorias: "", expediente: "", otros: "",
   });
   const [pending, setPending] = useState<Record<CategoryKey, File | null>>({
-    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
+    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, expediente: null, otros: null,
   });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
-    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
+    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, expediente: null, otros: null,
   });
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FileText, Download, FileSignature, Syringe, HeartPulse, Folder, Pill, Users, Stethoscope } from "lucide-react";
+import { FileText, Download, FileSignature, Syringe, HeartPulse, Folder, FolderOpen, Pill, Users, Stethoscope } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -21,6 +21,7 @@ const CATEGORIES: { key: string; label: string; icon: typeof FileText; color: st
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
   { key: "preceptorias", label: "Preceptorías", icon: Users, color: "text-violet-600", bg: "bg-violet-100" },
+  { key: "expediente", label: "Documentos para completar expediente", icon: FolderOpen, color: "text-violet-700", bg: "bg-violet-200" },
   { key: "otros", label: "Otros documentos", icon: Folder, color: "text-muted-foreground", bg: "bg-muted" },
 ];
 

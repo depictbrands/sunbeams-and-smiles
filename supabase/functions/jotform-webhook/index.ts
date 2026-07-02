@@ -34,12 +34,14 @@ const STUDENT_FIELD_HINTS = ["estudiante", "student", "numero", "número", "id"]
 const FORM_CATEGORY_MAP: Record<string, string> = {
   "261765113685058": "medicamentos", // Autorización Para Administrar Medicamentos (Jotform Sign)
   "261475647186064": "historial_medico", // Historial Médico
+  "261795397226066": "expediente", // Documentos Para Completar Expediente (Jotform Sign)
 };
 
 const CATEGORY_TITLES: Record<string, string> = {
   admision: "Solicitud de admisión (Jotform)",
   medicamentos: "Autorización para administrar medicamentos (Jotform)",
   historial_medico: "Historial médico (Jotform)",
+  expediente: "Documentos para completar expediente (Jotform)",
 };
 
 function pickStudentNumber(raw: Record<string, unknown>): string | null {

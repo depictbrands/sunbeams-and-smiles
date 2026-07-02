@@ -29,11 +29,12 @@ type DocRow = {
   jotform_submission_id: string | null;
 };
 
-type CategoryKey = "admision" | "medicamentos" | "vacunas" | "certificado_medico" | "preceptorias" | "otros";
+type CategoryKey = "admision" | "medicamentos" | "historial_medico" | "vacunas" | "certificado_medico" | "preceptorias" | "otros";
 
 const CATEGORIES: { key: CategoryKey; label: string; icon: typeof FileText; color: string; bg: string }[] = [
   { key: "admision", label: "Solicitud de admisión", icon: FileSignature, color: "text-primary", bg: "bg-primary/10" },
   { key: "medicamentos", label: "Autorización de medicamentos", icon: Pill, color: "text-azure", bg: "bg-azure/15" },
+  { key: "historial_medico", label: "Historial médico", icon: Stethoscope, color: "text-rose-600", bg: "bg-rose-100" },
   { key: "vacunas", label: "Vacunas", icon: Syringe, color: "text-leaf", bg: "bg-leaf/15" },
   { key: "certificado_medico", label: "Certificado médico", icon: HeartPulse, color: "text-accent", bg: "bg-accent/15" },
   { key: "preceptorias", label: "Preceptorías", icon: Users, color: "text-violet-600", bg: "bg-violet-100" },
@@ -57,13 +58,13 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
   const [loadingDocs, setLoadingDocs] = useState(false);
   const [uploadingCat, setUploadingCat] = useState<CategoryKey | null>(null);
   const [titles, setTitles] = useState<Record<CategoryKey, string>>({
-    admision: "", medicamentos: "", vacunas: "", certificado_medico: "", preceptorias: "", otros: "",
+    admision: "", medicamentos: "", historial_medico: "", vacunas: "", certificado_medico: "", preceptorias: "", otros: "",
   });
   const [pending, setPending] = useState<Record<CategoryKey, File | null>>({
-    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
+    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
   });
   const inputRefs = useRef<Record<CategoryKey, HTMLInputElement | null>>({
-    admision: null, medicamentos: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
+    admision: null, medicamentos: null, historial_medico: null, vacunas: null, certificado_medico: null, preceptorias: null, otros: null,
   });
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);

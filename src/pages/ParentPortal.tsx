@@ -476,6 +476,25 @@ const ParentPortal = () => {
                 </p>
               </Card>
             </a>
+            <a
+              href="https://form.jotform.com/261475647186064"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-rose-500 hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-100 text-rose-600 mb-4">
+                  <Stethoscope className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Historial Médico
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Completa el historial médico de tu hijo/a.
+                </p>
+              </Card>
+            </a>
           </div>
 
           {session && (

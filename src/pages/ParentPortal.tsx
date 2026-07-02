@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen } from "lucide-react";
+import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -473,6 +473,25 @@ const ParentPortal = () => {
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   Completa y firma el documento requerido para el expediente del estudiante.
+                </p>
+              </Card>
+            </a>
+            <a
+              href="https://form.jotform.com/261475647186064"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <Card className="p-6 rounded-2xl border-2 hover:border-rose-500 hover:shadow-soft transition-all h-full">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-100 text-rose-600 mb-4">
+                  <Stethoscope className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-ink mb-1 flex items-center gap-2">
+                  Historial Médico
+                  <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Completa el historial médico de tu hijo/a.
                 </p>
               </Card>
             </a>

@@ -64,7 +64,7 @@ const SobreCarousel = () => {
                   <p className="text-sm leading-relaxed text-ink">
                     {bioOpen ? bioFull : bioPeek}
                   </p>
-                  {moreBtn(bioOpen, () => setBioOpen((v) => !v))}
+                  {moreBtn(bioOpen, () => setBioOpen((v) => !v), "la trayectoria de Griselle")}
 
                   <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
                     {credsFull}
@@ -82,7 +82,7 @@ const SobreCarousel = () => {
                       )}
                     </p>
                   </div>
-                  {moreBtn(recogOpen, () => setRecogOpen((v) => !v))}
+                  {moreBtn(recogOpen, () => setRecogOpen((v) => !v), "el reconocimiento internacional de Griselle")}
 
 
                   <div className="mt-2 mb-4">

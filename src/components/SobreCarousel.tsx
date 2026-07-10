@@ -14,14 +14,15 @@ const SobreCarousel = () => {
   const [credsOpen, setCredsOpen] = useState(false);
   const [recogOpen, setRecogOpen] = useState(false);
 
-  const moreBtn = (open: boolean, onClick: () => void) => (
+  const moreBtn = (open: boolean, onClick: () => void, topic: string) => (
     <button
       type="button"
       onClick={onClick}
       className="inline-flex items-center gap-1.5 text-sm font-bold text-ink underline-offset-4 hover:underline mt-2 mb-4"
       aria-expanded={open}
+      aria-label={open ? `Leer menos sobre ${topic}` : `Leer más sobre ${topic}`}
     >
-      {open ? "Leer menos" : "Leer más"}
+      {open ? `Leer menos sobre ${topic}` : `Leer más sobre ${topic}`}
       <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
   );
@@ -63,7 +64,7 @@ const SobreCarousel = () => {
                   <p className="text-sm leading-relaxed text-ink">
                     {bioOpen ? bioFull : bioPeek}
                   </p>
-                  {moreBtn(bioOpen, () => setBioOpen((v) => !v))}
+                  {moreBtn(bioOpen, () => setBioOpen((v) => !v), "la trayectoria de Griselle")}
 
                   <div className="rounded-2xl bg-card/60 px-5 py-4 text-sm text-ink leading-snug">
                     {credsFull}
@@ -81,7 +82,7 @@ const SobreCarousel = () => {
                       )}
                     </p>
                   </div>
-                  {moreBtn(recogOpen, () => setRecogOpen((v) => !v))}
+                  {moreBtn(recogOpen, () => setRecogOpen((v) => !v), "el reconocimiento internacional de Griselle")}
 
 
                   <div className="mt-2 mb-4">
@@ -268,8 +269,8 @@ const SobreCarousel = () => {
         </CarouselItem>
 
       </CarouselContent>
-      <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CarouselPrevious className="left-3 opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Ver diapositiva anterior sobre Griselle" />
+      <CarouselNext className="right-3 opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Ver siguiente diapositiva sobre Griselle" />
     </Carousel>
   );
 };

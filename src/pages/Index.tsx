@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -139,8 +140,51 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Preescolar SonSoles | Sembrando valores en Puerto Rico</title>
+        <meta name="description" content="Preescolar SonSoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta." />
+        <link rel="canonical" href="https://preescolarsonsoles.com/" />
+        <meta property="og:title" content="Preescolar SonSoles | Sembrando valores en Puerto Rico" />
+        <meta property="og:description" content="Preescolar SonSoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta." />
+        <meta property="og:url" content="https://preescolarsonsoles.com/" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Preescolar SonSoles",
+          "url": "https://preescolarsonsoles.com/"
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": ["EducationalOrganization", "LocalBusiness"],
+          "name": "Preescolar SonSoles",
+          "url": "https://preescolarsonsoles.com/",
+          "telephone": "+1-787-993-5623",
+          "email": "preescolarsonsoles@gmail.com",
+          "image": "https://storage.googleapis.com/gpt-engineer-file-uploads/AFrwXipZM9auxyChYhclNMZotOx2/social-images/social-1778623740901-Foto_de_Nilda%F0%9F%8C%B7%F0%9F%92%97_6.webp",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto",
+            "addressLocality": "San Juan",
+            "addressRegion": "PR",
+            "postalCode": "00926",
+            "addressCountry": "PR"
+          },
+          "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "07:00",
+            "closes": "17:30"
+          }],
+          "sameAs": [
+            "https://www.instagram.com/preescolarsonsoles",
+            "https://www.facebook.com/preschoolsonsoles"
+          ]
+        })}</script>
+      </Helmet>
       {/* Announcement bar */}
       <div className="bg-accent text-accent-foreground text-center text-[11px] sm:text-sm font-bold py-2 px-3">
+
         <a
           href="https://wa.me/17879935623"
           target="_blank"
@@ -242,8 +286,7 @@ const Index = () => {
         </div>
       </header>
 
-
-
+      <main>
       {/* HERO */}
       <section
         id="top"
@@ -323,9 +366,9 @@ const Index = () => {
                 <MapPin className="h-4 w-4 text-primary" /> Cupey, cerca de Los Paseos
               </div>
             </div>
-            <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+            <p role="heading" aria-level={1} className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
-            </h1>
+            </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a></Button>
               <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce Preescolar SonSoles</a></Button>
@@ -466,13 +509,13 @@ const Index = () => {
                             {a.popupImages.map((src: string, idx: number) => (
                               <CarouselItem key={idx}>
                                 <div className="w-full aspect-square rounded-2xl overflow-hidden">
-                                  <img src={src} alt={`${a.title} ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                                  <img src={src} alt={`Niños de Preescolar SonSoles en actividades de ${a.popupLabel || a.title} — foto ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                                 </div>
                               </CarouselItem>
                             ))}
                           </CarouselContent>
-                          <CarouselPrevious className="left-2" />
-                          <CarouselNext className="right-2" />
+                          <CarouselPrevious className="left-2" aria-label={`Ver foto anterior de ${a.popupLabel || a.title}`} />
+                          <CarouselNext className="right-2" aria-label={`Ver siguiente foto de ${a.popupLabel || a.title}`} />
                         </Carousel>
                         <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.popupLabel || a.title}</DialogTitle>
                         <DialogDescription className="sr-only">{a.popupLabel || a.title}</DialogDescription>
@@ -681,6 +724,8 @@ const Index = () => {
       </section>
 
       {/* FOOTER */}
+      </main>
+
       <footer className="bg-ink text-ink-foreground py-12">
         <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           <div>

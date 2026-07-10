@@ -17,3 +17,5 @@ Disallow: /portal-padres
 User-agent: *
 Allow: /
 Disallow: /portal-padres
+
+Sitemap: https://preescolarsonsoles.com/sitemap.xml

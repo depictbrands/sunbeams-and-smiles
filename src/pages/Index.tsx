@@ -242,8 +242,7 @@ const Index = () => {
         </div>
       </header>
 
-
-
+      <main>
       {/* HERO */}
       <section
         id="top"
@@ -323,9 +322,9 @@ const Index = () => {
                 <MapPin className="h-4 w-4 text-primary" /> Cupey, cerca de Los Paseos
               </div>
             </div>
-            <h1 className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+            <p role="heading" aria-level={1} className="text-5xl sm:text-6xl leading-[1.05] text-white mb-6 lg:text-6xl" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
               Sembrando excelencia en el corazón de la familia puertorriqueña.
-            </h1>
+            </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="hero" size="xl"><a href="https://calendly.com/preescolarsonsoles" target="_blank" rel="noopener noreferrer">Agenda un tour</a></Button>
               <Button asChild variant="outlineWarm" size="xl"><a href="#sobre">Conoce Preescolar SonSoles</a></Button>
@@ -466,13 +465,13 @@ const Index = () => {
                             {a.popupImages.map((src: string, idx: number) => (
                               <CarouselItem key={idx}>
                                 <div className="w-full aspect-square rounded-2xl overflow-hidden">
-                                  <img src={src} alt={`${a.title} ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                                  <img src={src} alt={`Niños de Preescolar SonSoles en actividades de ${a.popupLabel || a.title} — foto ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                                 </div>
                               </CarouselItem>
                             ))}
                           </CarouselContent>
-                          <CarouselPrevious className="left-2" />
-                          <CarouselNext className="right-2" />
+                          <CarouselPrevious className="left-2" aria-label={`Ver foto anterior de ${a.popupLabel || a.title}`} />
+                          <CarouselNext className="right-2" aria-label={`Ver siguiente foto de ${a.popupLabel || a.title}`} />
                         </Carousel>
                         <DialogTitle className="text-3xl sm:text-4xl font-bold text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>{a.popupLabel || a.title}</DialogTitle>
                         <DialogDescription className="sr-only">{a.popupLabel || a.title}</DialogDescription>
@@ -681,6 +680,8 @@ const Index = () => {
       </section>
 
       {/* FOOTER */}
+      </main>
+
       <footer className="bg-ink text-ink-foreground py-12">
         <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           <div>

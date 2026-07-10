@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -139,8 +140,51 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Preescolar SonSoles | Sembrando valores en Puerto Rico</title>
+        <meta name="description" content="Preescolar SonSoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta." />
+        <link rel="canonical" href="https://preescolarsonsoles.com/" />
+        <meta property="og:title" content="Preescolar SonSoles | Sembrando valores en Puerto Rico" />
+        <meta property="og:description" content="Preescolar SonSoles en San Juan, Puerto Rico. Programa para edades 2 a 4 años. Educación personalizada, valores y alegría. Matrícula abierta." />
+        <meta property="og:url" content="https://preescolarsonsoles.com/" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Preescolar SonSoles",
+          "url": "https://preescolarsonsoles.com/"
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": ["EducationalOrganization", "LocalBusiness"],
+          "name": "Preescolar SonSoles",
+          "url": "https://preescolarsonsoles.com/",
+          "telephone": "+1-787-993-5623",
+          "email": "preescolarsonsoles@gmail.com",
+          "image": "https://storage.googleapis.com/gpt-engineer-file-uploads/AFrwXipZM9auxyChYhclNMZotOx2/social-images/social-1778623740901-Foto_de_Nilda%F0%9F%8C%B7%F0%9F%92%97_6.webp",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Carretera 176 Km 4.2, Esquina Pío Baroja, Cupey Alto",
+            "addressLocality": "San Juan",
+            "addressRegion": "PR",
+            "postalCode": "00926",
+            "addressCountry": "PR"
+          },
+          "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "07:00",
+            "closes": "17:30"
+          }],
+          "sameAs": [
+            "https://www.instagram.com/preescolarsonsoles",
+            "https://www.facebook.com/preschoolsonsoles"
+          ]
+        })}</script>
+      </Helmet>
       {/* Announcement bar */}
       <div className="bg-accent text-accent-foreground text-center text-[11px] sm:text-sm font-bold py-2 px-3">
+
         <a
           href="https://wa.me/17879935623"
           target="_blank"

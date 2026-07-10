@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 
 const photos: { name: string; w: number; h: number }[] = [
@@ -23,6 +24,15 @@ const photos: { name: string; w: number; h: number }[] = [
 const Galeria = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Galería de fotos | Preescolar SonSoles Puerto Rico</title>
+        <meta name="description" content="Recorre la galería del Preescolar SonSoles en Cupey, San Juan: espacios, actividades diarias y la alegría de nuestros niños de 2 a 4 años." />
+        <link rel="canonical" href="https://preescolarsonsoles.com/galeria" />
+        <meta property="og:title" content="Galería de fotos | Preescolar SonSoles" />
+        <meta property="og:description" content="Recorre la galería del Preescolar SonSoles en Cupey, San Juan: espacios, actividades diarias y la alegría de nuestros niños." />
+        <meta property="og:url" content="https://preescolarsonsoles.com/galeria" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between py-4">
           <Link to="/" className="inline-flex items-center gap-2 text-ink hover:text-primary font-semibold">
@@ -35,7 +45,7 @@ const Galeria = () => {
         </div>
       </header>
 
-      <section className="container py-12 sm:py-16">
+      <main className="container py-12 sm:py-16">
         <div className="mb-10 sm:mb-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
           <div>
             <span className="inline-block bg-muted text-ink text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
@@ -77,7 +87,7 @@ const Galeria = () => {
             );
           })}
         </div>
-      </section>
+      </main>
     </div>
   );
 };

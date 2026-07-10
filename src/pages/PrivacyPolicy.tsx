@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Shield, ArrowLeft, Mail, MapPin, Phone } from "lucide-react";
 import logo from "@/assets/logo.gif";
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Política de Privacidad | Preescolar SonSoles</title>
+        <meta name="description" content="Cómo Preescolar SonSoles recopila, usa y protege la información de las familias. Conoce tus derechos como padre, madre o tutor." />
+        <link rel="canonical" href="https://preescolarsonsoles.com/privacidad" />
+        <meta property="og:title" content="Política de Privacidad | Preescolar SonSoles" />
+        <meta property="og:description" content="Cómo Preescolar SonSoles recopila, usa y protege la información de las familias." />
+        <meta property="og:url" content="https://preescolarsonsoles.com/privacidad" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {/* Nav */}
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between py-3">

@@ -1,0 +1,2 @@
+UPDATE public.allowed_students SET parent_user_id = '4fdb40c8-8bdc-47ec-8425-ca880d8dd68d' WHERE id = '1a2664f6-ddcb-4309-836d-a750b984b735';
+UPDATE public.parent_documents SET user_id = '4fdb40c8-8bdc-47ec-8425-ca880d8dd68d' WHERE user_id = 'a3a0e563-85e0-4205-84dc-14b854adca35';

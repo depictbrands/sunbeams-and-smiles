@@ -46,16 +46,31 @@ const CATEGORY_TITLES: Record<string, string> = {
   expediente: "Documentos para completar expediente (Jotform)",
 };
 
+// Collect every string value in the submission (Jotform Sign nests answers in
+// objects/arrays, so a flat key scan is not enough).
+function collectStrings(val: unknown, out: string[] = []): string[] {
+  if (typeof val === "string") {
+    if (val.trim()) out.push(val.trim());
+  } else if (Array.isArray(val)) {
+    val.forEach((v) => collectStrings(v, out));
+  } else if (val && typeof val === "object") {
+    Object.values(val as Record<string, unknown>).forEach((v) => collectStrings(v, out));
+  }
+  return out;
+}
+
 function pickStudentNumber(raw: Record<string, unknown>): string | null {
   // Jotform `rawRequest` keys look like "q5_studentNumber" / "q12_numeroDe".
   for (const [k, v] of Object.entries(raw)) {
     const key = k.toLowerCase();
     if (STUDENT_FIELD_HINTS.some((h) => key.includes(h))) {
-      if (typeof v === "string" && v.trim()) return v.trim();
+      const found = collectStrings(v);
+      if (found.length) return found[0];
     }
   }
   return null;
 }
+
 
 function collectFileUrls(raw: Record<string, unknown>): string[] {
   const urls: string[] = [];
@@ -106,30 +121,63 @@ Deno.serve(async (req) => {
 
   const category = FORM_CATEGORY_MAP[formId] ?? "admision";
 
-  const studentNumber = pickStudentNumber(raw);
-  if (!studentNumber) {
-    return json(200, { ok: false, reason: "no_student_number_in_submission", submissionId });
-  }
+  console.log("jotform-webhook received", {
+    formId,
+    submissionId,
+    category,
+    rawKeys: Object.keys(raw),
+  });
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
   // Normalize: match on digits-only so "2026285" matches "2026-285", etc.
   const digitsOnly = (s: string) => (s || "").replace(/\D+/g, "");
-  const submittedDigits = digitsOnly(studentNumber);
 
   const { data: candidates, error: stuErr } = await supabase
     .from("allowed_students")
     .select("id, parent_user_id, student_number");
   if (stuErr) return json(500, { error: "lookup_failed", detail: stuErr.message });
 
-  const student = (candidates || []).find((s: any) => {
-    const sn = (s.student_number || "").toString();
-    return (
-      sn.toLowerCase() === studentNumber.toLowerCase() ||
-      (submittedDigits && digitsOnly(sn) === submittedDigits)
-    );
+  const matchStudent = (value: string) => {
+    const d = digitsOnly(value);
+    return (candidates || []).find((s: any) => {
+      const sn = (s.student_number || "").toString();
+      return (
+        sn.toLowerCase() === value.toLowerCase() ||
+        (d.length >= 4 && digitsOnly(sn) === d)
+      );
+    });
+  };
+
+  // 1) Preferred: a field whose label hints at "estudiante"/"student"/"número".
+  let studentNumber = pickStudentNumber(raw);
+  let student = studentNumber ? matchStudent(studentNumber) : undefined;
+
+  // 2) Fallback: scan every value in the submission for a known student number.
+  if (!student) {
+    for (const value of collectStrings(raw)) {
+      const found = matchStudent(value);
+      if (found) {
+        student = found;
+        studentNumber = value;
+        break;
+      }
+    }
+  }
+
+  if (!student) {
+    console.log("jotform-webhook: student not found", { formId, submissionId, studentNumber });
+    return json(200, { ok: false, reason: "student_not_found", studentNumber, submissionId });
+  }
+
+  console.log("jotform-webhook: matched student", {
+    submissionId,
+    studentId: student.id,
+    studentNumber,
+    linkedToParent: !!student.parent_user_id,
   });
-  if (!student) return json(200, { ok: false, reason: "student_not_found", studentNumber });
+
+
 
   // Save submission JSON as a record for traceability.
   const ts = Date.now();
@@ -162,9 +210,35 @@ Deno.serve(async (req) => {
     } catch (_e) { /* skip individual file failures */ }
   }
 
+  // Jotform Sign documents have no "uploads/" URL — fetch the signed PDF directly.
+  if (JOTFORM_API_KEY && submissionId && !records.some((r) => r.mime.includes("pdf"))) {
+    const pdfEndpoints = [
+      `https://www.jotform.com/pdf-submission/${submissionId}?download=1&apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      `https://api.jotform.com/submission/${submissionId}/pdf?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&download=1`,
+    ];
+    for (const endpoint of pdfEndpoints) {
+      try {
+        const res = await fetch(endpoint);
+        const mime = res.headers.get("content-type") ?? "";
+        if (!res.ok || !mime.includes("pdf")) continue;
+        const buf = new Uint8Array(await res.arrayBuffer());
+        const name = `${submissionId}.pdf`;
+        const path = `${baseDir}/${name}`;
+        const { error: upErr } = await supabase.storage
+          .from("parent-documents")
+          .upload(path, buf, { contentType: "application/pdf", upsert: false });
+        if (!upErr) {
+          records.push({ path, name, size: buf.byteLength, mime: "application/pdf" });
+          break;
+        }
+      } catch (_e) { /* try next endpoint */ }
+    }
+  }
+
+
   // Insert one parent_documents row per stored file.
   for (const r of records) {
-    await supabase.from("parent_documents").insert({
+    const { error: insErr } = await supabase.from("parent_documents").insert({
       user_id: student.parent_user_id,
       document_type: "admin_assigned",
       file_path: r.path,
@@ -176,7 +250,10 @@ Deno.serve(async (req) => {
       category,
       jotform_submission_id: submissionId || null,
     });
+    if (insErr) console.error("jotform-webhook: insert failed", { path: r.path, error: insErr.message });
   }
+  console.log("jotform-webhook: stored documents", { submissionId, saved: records.length, category });
+
 
   return json(200, {
     ok: true,

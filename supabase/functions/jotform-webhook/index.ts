@@ -46,16 +46,31 @@ const CATEGORY_TITLES: Record<string, string> = {
   expediente: "Documentos para completar expediente (Jotform)",
 };
 
+// Collect every string value in the submission (Jotform Sign nests answers in
+// objects/arrays, so a flat key scan is not enough).
+function collectStrings(val: unknown, out: string[] = []): string[] {
+  if (typeof val === "string") {
+    if (val.trim()) out.push(val.trim());
+  } else if (Array.isArray(val)) {
+    val.forEach((v) => collectStrings(v, out));
+  } else if (val && typeof val === "object") {
+    Object.values(val as Record<string, unknown>).forEach((v) => collectStrings(v, out));
+  }
+  return out;
+}
+
 function pickStudentNumber(raw: Record<string, unknown>): string | null {
   // Jotform `rawRequest` keys look like "q5_studentNumber" / "q12_numeroDe".
   for (const [k, v] of Object.entries(raw)) {
     const key = k.toLowerCase();
     if (STUDENT_FIELD_HINTS.some((h) => key.includes(h))) {
-      if (typeof v === "string" && v.trim()) return v.trim();
+      const found = collectStrings(v);
+      if (found.length) return found[0];
     }
   }
   return null;
 }
+
 
 function collectFileUrls(raw: Record<string, unknown>): string[] {
   const urls: string[] = [];

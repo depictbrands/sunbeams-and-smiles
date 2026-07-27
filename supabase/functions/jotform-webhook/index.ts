@@ -211,18 +211,37 @@ Deno.serve(async (req) => {
   }
 
   // Jotform Sign documents have no "uploads/" URL — fetch the signed PDF directly.
-  if (JOTFORM_API_KEY && submissionId && !records.some((r) => r.mime.includes("pdf"))) {
+  const signedUrl = typeof (raw as any).signedDocumentURL === "string" ? (raw as any).signedDocumentURL : "";
+  const signedId = String((raw as any).signedDocumentID ?? (raw as any).documentID ?? "");
+  const signedTitle = String((raw as any).signedDocumentTitle ?? "").trim();
+  const pdfId = submissionId || signedId;
+
+  if (!records.some((r) => r.mime.includes("pdf"))) {
     const pdfEndpoints = [
-      `https://www.jotform.com/pdf-submission/${submissionId}?download=1&apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
-      `https://api.jotform.com/submission/${submissionId}/pdf?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&download=1`,
+      ...(signedUrl
+        ? [
+            JOTFORM_API_KEY
+              ? `${signedUrl}${signedUrl.includes("?") ? "&" : "?"}apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`
+              : signedUrl,
+          ]
+        : []),
+      ...(JOTFORM_API_KEY && pdfId
+        ? [
+            `https://www.jotform.com/pdf-submission/${pdfId}?download=1&apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+            `https://api.jotform.com/submission/${pdfId}/pdf?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&download=1`,
+          ]
+        : []),
     ];
     for (const endpoint of pdfEndpoints) {
       try {
-        const res = await fetch(endpoint);
+        const res = await fetch(endpoint, { redirect: "follow" });
         const mime = res.headers.get("content-type") ?? "";
-        if (!res.ok || !mime.includes("pdf")) continue;
+        if (!res.ok || !mime.includes("pdf")) {
+          console.log("jotform-webhook: pdf endpoint skipped", { endpoint: endpoint.split("?")[0], status: res.status, mime });
+          continue;
+        }
         const buf = new Uint8Array(await res.arrayBuffer());
-        const name = `${submissionId}.pdf`;
+        const name = `${(signedTitle || CATEGORY_TITLES[category] || "documento").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g, "")}.pdf`;
         const path = `${baseDir}/${name}`;
         const { error: upErr } = await supabase.storage
           .from("parent-documents")
@@ -231,9 +250,13 @@ Deno.serve(async (req) => {
           records.push({ path, name, size: buf.byteLength, mime: "application/pdf" });
           break;
         }
-      } catch (_e) { /* try next endpoint */ }
+        console.error("jotform-webhook: pdf upload failed", upErr.message);
+      } catch (e) {
+        console.log("jotform-webhook: pdf endpoint error", String(e));
+      }
     }
   }
+
 
 
   // Insert one parent_documents row per stored file.

@@ -121,30 +121,63 @@ Deno.serve(async (req) => {
 
   const category = FORM_CATEGORY_MAP[formId] ?? "admision";
 
-  const studentNumber = pickStudentNumber(raw);
-  if (!studentNumber) {
-    return json(200, { ok: false, reason: "no_student_number_in_submission", submissionId });
-  }
+  console.log("jotform-webhook received", {
+    formId,
+    submissionId,
+    category,
+    rawKeys: Object.keys(raw),
+  });
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
   // Normalize: match on digits-only so "2026285" matches "2026-285", etc.
   const digitsOnly = (s: string) => (s || "").replace(/\D+/g, "");
-  const submittedDigits = digitsOnly(studentNumber);
 
   const { data: candidates, error: stuErr } = await supabase
     .from("allowed_students")
     .select("id, parent_user_id, student_number");
   if (stuErr) return json(500, { error: "lookup_failed", detail: stuErr.message });
 
-  const student = (candidates || []).find((s: any) => {
-    const sn = (s.student_number || "").toString();
-    return (
-      sn.toLowerCase() === studentNumber.toLowerCase() ||
-      (submittedDigits && digitsOnly(sn) === submittedDigits)
-    );
+  const matchStudent = (value: string) => {
+    const d = digitsOnly(value);
+    return (candidates || []).find((s: any) => {
+      const sn = (s.student_number || "").toString();
+      return (
+        sn.toLowerCase() === value.toLowerCase() ||
+        (d.length >= 4 && digitsOnly(sn) === d)
+      );
+    });
+  };
+
+  // 1) Preferred: a field whose label hints at "estudiante"/"student"/"número".
+  let studentNumber = pickStudentNumber(raw);
+  let student = studentNumber ? matchStudent(studentNumber) : undefined;
+
+  // 2) Fallback: scan every value in the submission for a known student number.
+  if (!student) {
+    for (const value of collectStrings(raw)) {
+      const found = matchStudent(value);
+      if (found) {
+        student = found;
+        studentNumber = value;
+        break;
+      }
+    }
+  }
+
+  if (!student) {
+    console.log("jotform-webhook: student not found", { formId, submissionId, studentNumber });
+    return json(200, { ok: false, reason: "student_not_found", studentNumber, submissionId });
+  }
+
+  console.log("jotform-webhook: matched student", {
+    submissionId,
+    studentId: student.id,
+    studentNumber,
+    linkedToParent: !!student.parent_user_id,
   });
-  if (!student) return json(200, { ok: false, reason: "student_not_found", studentNumber });
+
+
 
   // Save submission JSON as a record for traceability.
   const ts = Date.now();

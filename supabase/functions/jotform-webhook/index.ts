@@ -210,6 +210,32 @@ Deno.serve(async (req) => {
     } catch (_e) { /* skip individual file failures */ }
   }
 
+  // Jotform Sign documents have no "uploads/" URL — fetch the signed PDF directly.
+  if (JOTFORM_API_KEY && submissionId && !records.some((r) => r.mime.includes("pdf"))) {
+    const pdfEndpoints = [
+      `https://www.jotform.com/pdf-submission/${submissionId}?download=1&apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      `https://api.jotform.com/submission/${submissionId}/pdf?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&download=1`,
+    ];
+    for (const endpoint of pdfEndpoints) {
+      try {
+        const res = await fetch(endpoint);
+        const mime = res.headers.get("content-type") ?? "";
+        if (!res.ok || !mime.includes("pdf")) continue;
+        const buf = new Uint8Array(await res.arrayBuffer());
+        const name = `${submissionId}.pdf`;
+        const path = `${baseDir}/${name}`;
+        const { error: upErr } = await supabase.storage
+          .from("parent-documents")
+          .upload(path, buf, { contentType: "application/pdf", upsert: false });
+        if (!upErr) {
+          records.push({ path, name, size: buf.byteLength, mime: "application/pdf" });
+          break;
+        }
+      } catch (_e) { /* try next endpoint */ }
+    }
+  }
+
+
   // Insert one parent_documents row per stored file.
   for (const r of records) {
     await supabase.from("parent_documents").insert({

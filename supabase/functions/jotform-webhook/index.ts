@@ -238,7 +238,7 @@ Deno.serve(async (req) => {
 
   // Insert one parent_documents row per stored file.
   for (const r of records) {
-    await supabase.from("parent_documents").insert({
+    const { error: insErr } = await supabase.from("parent_documents").insert({
       user_id: student.parent_user_id,
       document_type: "admin_assigned",
       file_path: r.path,
@@ -250,7 +250,10 @@ Deno.serve(async (req) => {
       category,
       jotform_submission_id: submissionId || null,
     });
+    if (insErr) console.error("jotform-webhook: insert failed", { path: r.path, error: insErr.message });
   }
+  console.log("jotform-webhook: stored documents", { submissionId, saved: records.length, category });
+
 
   return json(200, {
     ok: true,

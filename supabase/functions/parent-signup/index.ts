@@ -6,14 +6,16 @@ const BodySchema = z.object({
   email: z.string().trim().email().max(255),
   password: z.string().min(6).max(72),
   displayName: z.string().trim().min(1).max(100),
-  studentNumber: z.string().trim().min(1).max(50),
-  studentName: z.string().trim().min(1).max(150),
+  studentNumber: z.string().trim().max(50).default(""),
+  studentName: z.string().trim().max(150).default(""),
   captchaToken: z.string().min(1).max(4096),
   redirectTo: z.string().url().max(500).optional(),
 });
 
 const VERIFY_ERROR =
   "No pudimos verificar este número de estudiante. Por favor contacta a la administración de SonSoles.";
+const STUDENT_REQUIRED_ERROR =
+  "Los padres, madres y tutores deben ingresar el nombre y número del estudiante. Las maestras autorizadas pueden dejarlos en blanco.";
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -72,28 +74,47 @@ Deno.serve(async (req) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const admin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    // 2. Verify the student number belongs to an active enrolled student whose name matches.
-    const { data: student, error: studentError } = await admin
-      .from("allowed_students")
-      .select("id, student_name, status, parent_user_id")
-      .eq("student_number", studentNumber)
+    // 2. Pre-authorized teachers do not need student details. Parents still do.
+    const normalizedEmail = email.toLowerCase();
+    const { data: teacherInvite, error: inviteError } = await admin
+      .from("teacher_invites")
+      .select("id")
+      .ilike("email", normalizedEmail)
       .maybeSingle();
-
-    if (studentError) {
-      console.error("Student lookup error:", studentError);
+    if (inviteError) {
+      console.error("Teacher authorization lookup error:", inviteError);
       return json({ success: false, error: "Error del servidor. Intenta más tarde." }, 200);
     }
-    if (!student || student.status !== "active") {
-      return json({ success: false, error: VERIFY_ERROR }, 200);
-    }
-    if (!student.student_name || normalizeName(student.student_name) !== normalizeName(studentName)) {
-      return json({ success: false, error: VERIFY_ERROR }, 200);
-    }
-    if (student.parent_user_id) {
-      return json({
-        success: false,
-        error: "Este estudiante ya está vinculado a una cuenta de padre/madre. Contacta a la administración de SonSoles.",
-      }, 200);
+    const isAuthorizedTeacher = Boolean(teacherInvite);
+
+    let student: { id: string; student_name: string | null; status: string; parent_user_id: string | null } | null = null;
+    if (!isAuthorizedTeacher) {
+      if (!studentNumber || !studentName) {
+        return json({ success: false, error: STUDENT_REQUIRED_ERROR }, 200);
+      }
+      const { data: matchedStudent, error: studentError } = await admin
+        .from("allowed_students")
+        .select("id, student_name, status, parent_user_id")
+        .eq("student_number", studentNumber)
+        .maybeSingle();
+
+      if (studentError) {
+        console.error("Student lookup error:", studentError);
+        return json({ success: false, error: "Error del servidor. Intenta más tarde." }, 200);
+      }
+      student = matchedStudent;
+      if (!student || student.status !== "active") {
+        return json({ success: false, error: VERIFY_ERROR }, 200);
+      }
+      if (!student.student_name || normalizeName(student.student_name) !== normalizeName(studentName)) {
+        return json({ success: false, error: VERIFY_ERROR }, 200);
+      }
+      if (student.parent_user_id) {
+        return json({
+          success: false,
+          error: "Este estudiante ya está vinculado a una cuenta de padre/madre. Contacta a la administración de SonSoles.",
+        }, 200);
+      }
     }
 
     // 3. Create the account as UNVERIFIED — the parent must confirm via email.
@@ -113,18 +134,20 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "No se pudo crear la cuenta. Intenta de nuevo." }, 200);
     }
 
-    // 4. Link the verified parent to the student record.
-    const { error: linkError } = await admin
-      .from("allowed_students")
-      .update({ parent_user_id: created.user.id })
-      .eq("id", student.id)
-      .is("parent_user_id", null);
+    // 4. Link parent accounts to their verified student. Teacher accounts skip this step.
+    if (student) {
+      const { error: linkError } = await admin
+        .from("allowed_students")
+        .update({ parent_user_id: created.user.id })
+        .eq("id", student.id)
+        .is("parent_user_id", null);
 
-    if (linkError) {
-      console.error("Failed to link parent to student:", linkError);
-      // Roll back the auth user so they can retry cleanly.
-      await admin.auth.admin.deleteUser(created.user.id);
-      return json({ success: false, error: "No se pudo vincular el estudiante. Intenta de nuevo." }, 200);
+      if (linkError) {
+        console.error("Failed to link parent to student:", linkError);
+        // Roll back the auth user so they can retry cleanly.
+        await admin.auth.admin.deleteUser(created.user.id);
+        return json({ success: false, error: "No se pudo vincular el estudiante. Intenta de nuevo." }, 200);
+      }
     }
 
     // 5. Trigger the built-in confirmation email for the new unverified user.

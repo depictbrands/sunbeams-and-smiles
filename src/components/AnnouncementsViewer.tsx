@@ -24,10 +24,14 @@ interface Announcement {
   pinned: boolean;
   is_active: boolean;
   created_at: string;
+  created_by: string | null;
 }
 
 interface Props {
   isAdmin: boolean;
+  /** Teachers can publish and manage their own announcements */
+  canPublish?: boolean;
+  currentUserId?: string;
 }
 
 const BUCKET = "announcement-files";
@@ -38,6 +42,7 @@ const CATEGORIES = [
   { value: "evento", label: "Evento" },
   { value: "academico", label: "Académico" },
   { value: "urgente", label: "Urgente" },
+  { value: "newsletter", label: "Newsletter" },
 ];
 
 const GROUPS = [
@@ -61,6 +66,7 @@ const categoryColor = (cat: string) => {
     case "urgente": return "bg-red-100 text-red-700 border-red-200";
     case "evento": return "bg-blue-100 text-blue-700 border-blue-200";
     case "academico": return "bg-violet-100 text-violet-700 border-violet-200";
+    case "newsletter": return "bg-teal-100 text-teal-700 border-teal-200";
     case "recordatorio": return "bg-amber-100 text-amber-700 border-amber-200";
     default: return "bg-slate-100 text-slate-700 border-slate-200";
   }
@@ -69,7 +75,10 @@ const categoryColor = (cat: string) => {
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("es-PR", { year: "numeric", month: "long", day: "numeric" });
 
-const AnnouncementsViewer = ({ isAdmin }: Props) => {
+const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Props) => {
+  const canCreate = isAdmin || canPublish;
+  const canManage = (a: Announcement) =>
+    isAdmin || (canPublish && !!currentUserId && a.created_by === currentUserId);
   const [items, setItems] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
@@ -221,7 +230,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
     else { toast({ title: "Eliminado" }); load(); }
   };
 
-  const visibleItems = (isAdmin ? items : items.filter((i) => i.is_active))
+  const visibleItems = (canCreate ? items : items.filter((i) => i.is_active))
     .filter((i) => filter === "all" || i.category === filter)
     .filter((i) => groupFilter === "all" || i.audience_group === groupFilter || i.audience_group === "all");
 
@@ -265,7 +274,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
               </button>
             ))}
           </div>
-          {isAdmin && (
+          {canCreate && (
             <Button
               onClick={() => { if (showForm) { resetForm(); } setShowForm((v) => !v); }}
               size="sm"
@@ -277,7 +286,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
         </div>
       </div>
 
-      {isAdmin && showForm && (
+      {canCreate && showForm && (
         <Card className="p-5 rounded-2xl border-2">
           <h4 className="font-bold text-ink mb-3">
             {editingId ? "Editar anuncio" : "Nuevo anuncio"}
@@ -387,7 +396,7 @@ const AnnouncementsViewer = ({ isAdmin }: Props) => {
                         <p className="text-sm text-foreground whitespace-pre-wrap">{a.content}</p>
                       )}
                     </div>
-                    {isAdmin && (
+                    {canManage(a) && (
                       <div className="flex gap-1 shrink-0">
                         <Button variant="ghost" size="sm" onClick={() => togglePin(a)} title={a.pinned ? "Desfijar" : "Fijar"}>
                           {a.pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}

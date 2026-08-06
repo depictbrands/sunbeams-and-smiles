@@ -544,7 +544,7 @@ const ParentPortal = () => {
               Comunicados oficiales de la escuela. Los anuncios fijados aparecen primero.
             </DialogDescription>
           </DialogHeader>
-          <AnnouncementsViewer isAdmin={isAdmin} />
+          <AnnouncementsViewer isAdmin={isAdmin} canPublish={isStaff} currentUserId={session?.user.id} />
         </DialogContent>
       </Dialog>
     </div>

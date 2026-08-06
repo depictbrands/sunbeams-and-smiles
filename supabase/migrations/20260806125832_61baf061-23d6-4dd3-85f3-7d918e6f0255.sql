@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.grant_teacher_role_from_invite() FROM PUBLIC, anon, authenticated;

@@ -263,13 +263,12 @@ const ParentPortal = () => {
                 <TabsContent value="signup">
                   <form onSubmit={handleSignup} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-semibold text-ink mb-2">Su nombre completo (padre/madre/tutor)</label>
+                      <label className="block text-sm font-semibold text-ink mb-2">Su nombre completo</label>
                       <Input required value={signupName} onChange={(e) => setSignupName(e.target.value)} maxLength={100} className="h-12 rounded-xl" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Nombre completo del estudiante</label>
                       <Input
-                        required
                         value={signupStudentName}
                         onChange={(e) => setSignupStudentName(e.target.value)}
                         maxLength={150}
@@ -280,7 +279,6 @@ const ParentPortal = () => {
                     <div>
                       <label className="block text-sm font-semibold text-ink mb-2">Número de estudiante</label>
                       <Input
-                        required
                         value={signupStudentNumber}
                         onChange={(e) => setSignupStudentNumber(e.target.value)}
                         maxLength={50}
@@ -288,7 +286,7 @@ const ParentPortal = () => {
                         className="h-12 rounded-xl"
                       />
                       <p className="text-xs text-muted-foreground mt-1.5">
-                        Solo los padres de estudiantes inscritos pueden crear una cuenta. Encuentra el número de tu hijo/a en su documentación o contáctanos.
+                        Requerido para padres, madres y tutores. Las maestras previamente autorizadas pueden dejar ambos campos del estudiante en blanco.
                       </p>
                     </div>
                     <div>

@@ -73,8 +73,9 @@ const ParentPortal = () => {
 
   const checkStaff = async (uid: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
-    const staff = (data ?? []).some((r) => r.role === "teacher" || r.role === "admin");
-    setIsStaff(staff);
+    const roles = (data ?? []).map((r) => r.role);
+    setIsStaff(roles.includes("teacher") || roles.includes("admin"));
+    setIsAdmin(roles.includes("admin"));
   };
 
   const handleSignup = async (e: React.FormEvent) => {

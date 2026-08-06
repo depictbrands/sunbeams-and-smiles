@@ -528,7 +528,7 @@ const ParentPortal = () => {
               <AcademicYearCalendar />
             </TabsContent>
             <TabsContent value="pdf" className="mt-4">
-              <SchoolCalendarViewer isAdmin={isStaff} />
+              <SchoolCalendarViewer isAdmin={isAdmin} />
             </TabsContent>
           </Tabs>
         </DialogContent>

@@ -318,7 +318,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Elige una maestra", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
-    const teacherId = teachers[0]?.user_id ?? null;
+    const teacherId = resolveTeacherId(selectedContact);
     setLoading(true);
     const subjectWithContact = `[Para: ${selectedContact}] ${newSubject.trim()}`.slice(0, 200);
     const { data: thread, error } = await supabase

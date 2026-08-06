@@ -418,6 +418,14 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
       return;
     }
+    // Staff replying to an unassigned thread takes ownership so it stays private to her
+    if (isStaff && activeThread && !activeThread.assigned_teacher_id) {
+      await supabase
+        .from("message_threads")
+        .update({ assigned_teacher_id: userId })
+        .eq("id", activeId);
+    }
+
     if (activeThread) {
       const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
       const cleanSubject = activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, "");

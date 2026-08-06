@@ -419,7 +419,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       return;
     }
     // Staff replying to an unassigned thread takes ownership so it stays private to her
-    if (isStaff && activeThread && !activeThread.assigned_teacher_id) {
+    if (isStaff && activeThread && !activeThread.assigned_teacher_id && teachers.some((t) => t.user_id === userId)) {
       await supabase
         .from("message_threads")
         .update({ assigned_teacher_id: userId })

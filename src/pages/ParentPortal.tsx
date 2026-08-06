@@ -40,6 +40,7 @@ const ParentPortal = () => {
   const [tuitionUrl, setTuitionUrl] = useState<string | null>(null);
 
   const [isStaff, setIsStaff] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
@@ -72,8 +73,9 @@ const ParentPortal = () => {
 
   const checkStaff = async (uid: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
-    const staff = (data ?? []).some((r) => r.role === "teacher" || r.role === "admin");
-    setIsStaff(staff);
+    const roles = (data ?? []).map((r) => r.role);
+    setIsStaff(roles.includes("teacher") || roles.includes("admin"));
+    setIsAdmin(roles.includes("admin"));
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -369,7 +371,7 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Anuncios</h3>
                       <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
-                    {isStaff && (
+                    {isAdmin && (
                       <Card
                         className="p-5 rounded-2xl border-2 border-primary/40 bg-primary/5 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
                         onClick={() => navigate("/admin/estudiantes")}
@@ -526,7 +528,7 @@ const ParentPortal = () => {
               <AcademicYearCalendar />
             </TabsContent>
             <TabsContent value="pdf" className="mt-4">
-              <SchoolCalendarViewer isAdmin={isStaff} />
+              <SchoolCalendarViewer isAdmin={isAdmin} />
             </TabsContent>
           </Tabs>
         </DialogContent>
@@ -542,7 +544,7 @@ const ParentPortal = () => {
               Comunicados oficiales de la escuela. Los anuncios fijados aparecen primero.
             </DialogDescription>
           </DialogHeader>
-          <AnnouncementsViewer isAdmin={isStaff} />
+          <AnnouncementsViewer isAdmin={isAdmin} />
         </DialogContent>
       </Dialog>
     </div>

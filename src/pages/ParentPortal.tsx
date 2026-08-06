@@ -335,16 +335,19 @@ const ParentPortal = () => {
 
                 <TabsContent value="tuition" className="mt-6">
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card
-                      className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
-                      onClick={handleOpenPagos}
-                    >
-                      <Receipt className="h-6 w-6 text-leaf mb-3" />
-                      <h3 className="font-bold text-ink mb-1">Pagos</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {portalLoading ? "Abriendo…" : "Pagar matrícula"}
-                      </p>
-                    </Card>
+                    {(!isStaff || isAdmin) && (
+                      <Card
+                        className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
+                        onClick={handleOpenPagos}
+                      >
+                        <Receipt className="h-6 w-6 text-leaf mb-3" />
+                        <h3 className="font-bold text-ink mb-1">Pagos</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {portalLoading ? "Abriendo…" : "Pagar matrícula"}
+                        </p>
+                      </Card>
+                    )}
+
                     <Card
                       className="p-5 rounded-2xl border-2 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
                       onClick={() => setCalendarOpen(true)}

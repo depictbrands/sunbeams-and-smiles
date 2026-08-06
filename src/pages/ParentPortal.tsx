@@ -40,6 +40,7 @@ const ParentPortal = () => {
   const [tuitionUrl, setTuitionUrl] = useState<string | null>(null);
 
   const [isStaff, setIsStaff] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);

@@ -150,6 +150,23 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
+  // Match the picked staff name to a real teacher account so the thread stays private to her
+  const resolveTeacherId = (contactName: string): string | null => {
+    const aliases: Record<string, string[]> = {
+      bea: ["bea", "beatriz"],
+      nay: ["nay", "nayda", "delma"],
+      griselle: ["griselle", "grisel"],
+    };
+    const key = contactName.trim().toLowerCase();
+    const candidates = aliases[key] ?? [key];
+    const match = teachers.find((t) => {
+      const name = (t.display_name || "").toLowerCase();
+      return candidates.some((c) => name.split(/\s+/).includes(c) || name.startsWith(c));
+    });
+    return match?.user_id ?? null;
+  };
+
+
   const loadThreads = async () => {
     const { data: threadsData, error } = await supabase
       .from("message_threads")

@@ -100,13 +100,13 @@ const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 
 const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
+  { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora" },
   { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg" },
   { name: "Zuania", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg" },
   { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg" },
   { name: "Nay", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
   { name: "Keisy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
-  { name: "Adriana", role: "Asistente Administradora", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },
 ];
 

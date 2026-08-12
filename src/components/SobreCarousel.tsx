@@ -5,6 +5,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
+import nildaPhoto from "@/assets/subdirectora-Nilda.png.asset.json";
+import delmaPhoto from "@/assets/consultora-Delma.jpg.asset.json";
 
 
 const SobreCarousel = () => {

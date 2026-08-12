@@ -5,6 +5,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import Autoplay from "embla-carousel-autoplay";
 import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
+import nildaPhoto from "@/assets/subdirectora-Nilda.png.asset.json";
+import delmaPhoto from "@/assets/consultora-Delma.jpg.asset.json";
 
 
 const SobreCarousel = () => {
@@ -129,15 +131,41 @@ const SobreCarousel = () => {
           <div className="rounded-3xl shadow-soft overflow-hidden h-full overflow-y-auto sm:overflow-hidden" style={{ background: "#9B6BD1" }}>
             <div className="p-8 sm:p-14 lg:p-16 flex flex-col gap-10 items-center text-ink lg:min-h-[560px] sm:h-full max-w-5xl mx-auto">
               {(() => {
-                const teachers: { src?: string; name: string }[] = [
-                  { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana" },
+                const mainTeachers: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Bea.jpeg", name: "Bea" },
-                  { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
-                  { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
-                  { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
-                  { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
+                  { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
                 ];
+                const assistants: { src?: string; name: string }[] = [
+                  { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
+                  { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
+                  { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
+                ];
+                const teachers = [...mainTeachers, ...assistants];
+                const bubble = (t: { src?: string; name: string }, role: string) => (
+                  <div className="flex flex-col items-center gap-2">
+                    {t.src ? (
+                      <img
+                        src={t.src}
+                        alt={`${role} ${t.name}`}
+                        loading="lazy"
+                        width={400}
+                        height={400}
+                        className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                        style={{ borderColor: "#D4B5F0" }}
+                      />
+                    ) : (
+                      <div
+                        className="w-full aspect-square rounded-full border-4 shadow-md flex items-center justify-center text-3xl sm:text-4xl font-bold text-white"
+                        style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
+                        aria-label={`${role} ${t.name}`}
+                      >
+                        {t.name.charAt(0)}
+                      </div>
+                    )}
+                    <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
+                  </div>
+                );
                 return (
                   <>
                     {/* Mobile: nested carousel, one circle at a time */}
@@ -167,6 +195,9 @@ const SobreCarousel = () => {
                                   </div>
                                 )}
                                 <span className="text-base font-bold text-white tracking-wide">{t.name}</span>
+                                <span className="text-xs uppercase tracking-[0.14em] text-white/80">
+                                  {i < mainTeachers.length ? "Maestra" : "Asistente de maestra"}
+                                </span>
                               </div>
                             </CarouselItem>
                           ))}
@@ -181,36 +212,29 @@ const SobreCarousel = () => {
                         Cada maestra acompaña el desarrollo individual del niño respetando su ritmo, personalidad y proceso de aprendizaje.
                       </h3>
                     </div>
-                    {/* Tablet/Desktop: grid 4 per row */}
-                    <div className="hidden sm:grid grid-cols-4 gap-4 items-start w-full max-w-3xl mx-auto">
-                      {teachers.map((t, i) => (
-                        <div key={i} className="flex flex-col items-center gap-2">
-                          {t.src ? (
-                            <img
-                              src={t.src}
-                              alt={`Maestra ${t.name}`}
-                              loading="lazy"
-                              width={400}
-                              height={400}
-                              className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
-                              style={{ borderColor: "#D4B5F0" }}
-                            />
-                          ) : (
-                            <div
-                              className="w-full aspect-square rounded-full border-4 shadow-md flex items-center justify-center text-3xl sm:text-4xl font-bold text-white"
-                              style={{ borderColor: "#D4B5F0", backgroundColor: "#A98AD0" }}
-                              aria-label={`Maestra ${t.name}`}
-                            >
-                              {t.name.charAt(0)}
-                            </div>
-                          )}
-                          <span className="text-sm font-bold text-white tracking-wide text-center">{t.name}</span>
+                    {/* Tablet/Desktop: teachers row, then assistants row */}
+                    <div className="hidden sm:flex flex-col gap-8 w-full max-w-2xl mx-auto">
+                      <div>
+                        <p className="text-center text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-white mb-3">Maestras</p>
+                        <div className="grid grid-cols-3 gap-6 items-start">
+                          {mainTeachers.map((t, i) => (
+                            <div key={i}>{bubble(t, "Maestra")}</div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+                      <div>
+                        <p className="text-center text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-white mb-3">Asistentes de maestra</p>
+                        <div className="grid grid-cols-3 gap-6 items-start">
+                          {assistants.map((t, i) => (
+                            <div key={i}>{bubble(t, "Asistente de maestra")}</div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </>
                 );
               })()}
+
             </div>
           </div>
         </CarouselItem>
@@ -225,9 +249,28 @@ const SobreCarousel = () => {
               <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                 Un equipo que cuida cada detalle
               </h3>
-              <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
-                {"\n"}
-              </p>
+              <div className="grid grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mx-auto mt-2">
+                {[
+                  { src: nildaPhoto.url, name: "Nilda", role: "Subdirectora" },
+                  { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana", role: "Administración" },
+                  { src: delmaPhoto.url, name: "Delma", role: "Consultora Educación" },
+                ].map((p) => (
+                  <div key={p.name} className="flex flex-col items-center gap-2">
+                    <img
+                      src={p.src}
+                      alt={`${p.name}, ${p.role} de Preescolar SonSoles`}
+                      loading="lazy"
+                      width={400}
+                      height={400}
+                      className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                      style={{ borderColor: "#B7E0B7" }}
+                    />
+                    <span className="text-sm sm:text-base font-bold text-white tracking-wide text-center">{p.name}</span>
+                    <span className="text-[11px] sm:text-xs uppercase tracking-[0.14em] text-white/85 text-center">{p.role}</span>
+                  </div>
+                ))}
+              </div>
+
             </div>
           </div>
         </CarouselItem>

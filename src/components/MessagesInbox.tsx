@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon } from "lucide-react";
+import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 
@@ -101,7 +102,7 @@ const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
-  { name: "Nilda", role: "Subdirectora" },
+  { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
   { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg" },
   { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg" },
   { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },

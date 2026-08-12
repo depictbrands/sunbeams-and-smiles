@@ -247,9 +247,28 @@ const SobreCarousel = () => {
               <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                 Un equipo que cuida cada detalle
               </h3>
-              <p className="text-base sm:text-lg leading-relaxed text-slate-50 max-w-2xl">
-                {"\n"}
-              </p>
+              <div className="grid grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mx-auto mt-2">
+                {[
+                  { src: nildaPhoto.url, name: "Nilda", role: "Subdirectora" },
+                  { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana", role: "Administración" },
+                  { src: delmaPhoto.url, name: "Delma", role: "Consultora Educación" },
+                ].map((p) => (
+                  <div key={p.name} className="flex flex-col items-center gap-2">
+                    <img
+                      src={p.src}
+                      alt={`${p.name}, ${p.role} de Preescolar SonSoles`}
+                      loading="lazy"
+                      width={400}
+                      height={400}
+                      className="w-full aspect-square rounded-full object-cover border-4 shadow-md"
+                      style={{ borderColor: "#B7E0B7" }}
+                    />
+                    <span className="text-sm sm:text-base font-bold text-white tracking-wide text-center">{p.name}</span>
+                    <span className="text-[11px] sm:text-xs uppercase tracking-[0.14em] text-white/85 text-center">{p.role}</span>
+                  </div>
+                ))}
+              </div>
+
             </div>
           </div>
         </CarouselItem>

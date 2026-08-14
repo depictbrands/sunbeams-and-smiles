@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen, Stethoscope } from "lucide-react";
+import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen, Stethoscope, Apple, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";

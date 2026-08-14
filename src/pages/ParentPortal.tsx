@@ -44,6 +44,8 @@ const ParentPortal = () => {
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [horarioOpen, setHorarioOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
 
   useEffect(() => {

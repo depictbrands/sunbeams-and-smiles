@@ -578,7 +578,7 @@ const ParentPortal = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Apple className="h-12 w-12 text-leaf mb-4" />
+            <Apple className="h-12 w-12 text-destructive mb-4" />
             <p className="text-muted-foreground">
               El menú estará disponible próximamente. La escuela lo publicará aquí.
             </p>

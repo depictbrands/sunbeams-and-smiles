@@ -375,10 +375,10 @@ const ParentPortal = () => {
                       <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
                     <Card
-                      className="p-5 rounded-2xl border-2 hover:border-leaf hover:shadow-soft transition-all cursor-pointer"
+                      className="p-5 rounded-2xl border-2 hover:border-destructive hover:shadow-soft transition-all cursor-pointer"
                       onClick={() => setMenuOpen(true)}
                     >
-                      <Apple className="h-6 w-6 text-leaf mb-3" />
+                      <Apple className="h-6 w-6 text-destructive mb-3" />
                       <h3 className="font-bold text-ink mb-1">Menú</h3>
                       <p className="text-sm text-muted-foreground">Alimentación diaria</p>
                     </Card>
@@ -578,7 +578,7 @@ const ParentPortal = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Apple className="h-12 w-12 text-leaf mb-4" />
+            <Apple className="h-12 w-12 text-destructive mb-4" />
             <p className="text-muted-foreground">
               El menú estará disponible próximamente. La escuela lo publicará aquí.
             </p>

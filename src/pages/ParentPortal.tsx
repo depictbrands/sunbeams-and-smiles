@@ -374,6 +374,22 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Anuncios</h3>
                       <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-leaf hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setMenuOpen(true)}
+                    >
+                      <Apple className="h-6 w-6 text-leaf mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Menú</h3>
+                      <p className="text-sm text-muted-foreground">Alimentación diaria</p>
+                    </Card>
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-accent hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setHorarioOpen(true)}
+                    >
+                      <Clock className="h-6 w-6 text-accent mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Horario</h3>
+                      <p className="text-sm text-muted-foreground">Horario escolar</p>
+                    </Card>
                     {isAdmin && (
                       <Card
                         className="p-5 rounded-2xl border-2 border-primary/40 bg-primary/5 hover:border-primary hover:shadow-soft transition-all cursor-pointer"

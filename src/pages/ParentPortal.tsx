@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen, Stethoscope } from "lucide-react";
+import { Lock, ArrowLeft, CreditCard, Calendar, FileText, Megaphone, MessageCircle, LogOut, UserPlus, LogIn, Receipt, ExternalLink, ClipboardList, HeartHandshake, Pill, FolderOpen, Stethoscope, Apple, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -44,6 +44,8 @@ const ParentPortal = () => {
   const [formsOpen, setFormsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [horarioOpen, setHorarioOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
 
   useEffect(() => {
@@ -372,6 +374,22 @@ const ParentPortal = () => {
                       <h3 className="font-bold text-ink mb-1">Anuncios</h3>
                       <p className="text-sm text-muted-foreground">Comunicados de la escuela</p>
                     </Card>
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-leaf hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setMenuOpen(true)}
+                    >
+                      <Apple className="h-6 w-6 text-leaf mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Menú</h3>
+                      <p className="text-sm text-muted-foreground">Alimentación diaria</p>
+                    </Card>
+                    <Card
+                      className="p-5 rounded-2xl border-2 hover:border-accent hover:shadow-soft transition-all cursor-pointer"
+                      onClick={() => setHorarioOpen(true)}
+                    >
+                      <Clock className="h-6 w-6 text-accent mb-3" />
+                      <h3 className="font-bold text-ink mb-1">Horario</h3>
+                      <p className="text-sm text-muted-foreground">Horario escolar</p>
+                    </Card>
                     {isAdmin && (
                       <Card
                         className="p-5 rounded-2xl border-2 border-primary/40 bg-primary/5 hover:border-primary hover:shadow-soft transition-all cursor-pointer"
@@ -546,6 +564,44 @@ const ParentPortal = () => {
             </DialogDescription>
           </DialogHeader>
           <AnnouncementsViewer isAdmin={isAdmin} canPublish={isStaff} currentUserId={session?.user.id} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Menú
+            </DialogTitle>
+            <DialogDescription>
+              Consulta el menú de alimentación semanal del preescolar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Apple className="h-12 w-12 text-leaf mb-4" />
+            <p className="text-muted-foreground">
+              El menú estará disponible próximamente. La escuela lo publicará aquí.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={horarioOpen} onOpenChange={setHorarioOpen}>
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Horario
+            </DialogTitle>
+            <DialogDescription>
+              Consulta el horario escolar oficial.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Clock className="h-12 w-12 text-accent mb-4" />
+            <p className="text-muted-foreground">
+              El horario estará disponible próximamente. La escuela lo publicará aquí.
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

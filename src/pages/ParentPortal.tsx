@@ -566,6 +566,44 @@ const ParentPortal = () => {
           <AnnouncementsViewer isAdmin={isAdmin} canPublish={isStaff} currentUserId={session?.user.id} />
         </DialogContent>
       </Dialog>
+
+      <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Menú
+            </DialogTitle>
+            <DialogDescription>
+              Consulta el menú de alimentación semanal del preescolar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Apple className="h-12 w-12 text-leaf mb-4" />
+            <p className="text-muted-foreground">
+              El menú estará disponible próximamente. La escuela lo publicará aquí.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={horarioOpen} onOpenChange={setHorarioOpen}>
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-ink" style={{ fontFamily: "'ChildsPlayground', cursive" }}>
+              Horario
+            </DialogTitle>
+            <DialogDescription>
+              Consulta el horario escolar oficial.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Clock className="h-12 w-12 text-accent mb-4" />
+            <p className="text-muted-foreground">
+              El horario estará disponible próximamente. La escuela lo publicará aquí.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

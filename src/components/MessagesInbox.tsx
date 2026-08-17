@@ -758,7 +758,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                   <ArrowLeft className="h-5 w-5" />
                 </button>
                 {(() => {
-                  const other = isStaff ? activeThread.parent : activeThread.teacher;
+                  const other = otherOf(activeThread);
                   return (
                     <Avatar className="h-10 w-10">
                       {other?.avatar_url && <AvatarImage src={other.avatar_url} alt={nameOf(other)} />}
@@ -767,7 +767,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                   );
                 })()}
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-ink truncate">{nameOf(isStaff ? activeThread.parent : activeThread.teacher)}</div>
+                  <div className="font-bold text-ink truncate">{nameOf(otherOf(activeThread))}</div>
+
                   <div className="text-xs text-muted-foreground truncate">{activeThread.subject}</div>
                 </div>
               </div>

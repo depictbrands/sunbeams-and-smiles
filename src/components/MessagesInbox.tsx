@@ -117,12 +117,13 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: st
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
   { name: "Delma", role: "Consultora Educación", avatar: delmaAsset.url },
-  { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg" },
-  { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg" },
-  { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg" },
-  { name: "Zuania", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg" },
-  { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
-  { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
+  { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg", groups: ["prekinder"] },
+  { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg", groups: ["maternal"] },
+  { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", groups: ["preescolar"] },
+  { name: "Zuania", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg", groups: ["prekinder"] },
+  { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg", groups: ["maternal"] },
+  { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg", groups: ["preescolar"] },
+
 ];
 
 

@@ -588,11 +588,14 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                 </span>
               )}
             </h3>
-            {!isStaff && (
-              <Button size="sm" variant="hero" onClick={() => { setShowNew(true); setActiveId(null); }}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="hero"
+              onClick={() => { setShowNew(true); setActiveId(null); }}
+              title={isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
           <div className="overflow-y-auto max-h-[450px]">
             {threads.length === 0 && (
@@ -601,7 +604,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
               </p>
             )}
             {threads.map((t) => {
-              const other = isStaff ? t.parent : t.teacher;
+              const other = otherOf(t);
+
               const unread = isUnread(t);
               return (
                 <button

@@ -381,11 +381,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       return;
     }
     if (!selectedContact) {
-      toast({ title: "Elige una maestra", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
+      toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
     const contact = STAFF_CONTACTS.find((c) => c.name === selectedContact);
-    if (contact && !canMessageContact(contact)) {
+    if (!isStaff && contact && !canMessageContact(contact)) {
       toast({
         title: "No es posible enviar este mensaje",
         description: `Tu mensaje no puede enviarse porque ${contact.name} no atiende el grupo de tu estudiante. Escribe a la administración (${OFFICE_PHONE}) o selecciona a la maestra de tu grupo.`,
@@ -395,8 +395,18 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     }
 
     const teacherId = resolveTeacherId(selectedContact);
+    if (isStaff && !teacherId) {
+      toast({
+        title: "Cuenta no encontrada",
+        description: `${selectedContact} aún no tiene cuenta activa en el portal, por lo que no podría ver el mensaje.`,
+        variant: "destructive",
+      });
+      return;
+    }
     setLoading(true);
-    const subjectWithContact = `[Para: ${selectedContact}] ${newSubject.trim()}`.slice(0, 200);
+    const prefix = isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`;
+    const subjectWithContact = `${prefix} ${newSubject.trim()}`.slice(0, 200);
+
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({

@@ -504,7 +504,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
           bodyText: notifyBody,
           threadId: activeId,
         });
-      } else {
+      } else if (!activeThread.subject.startsWith("[Interno")) {
         try {
           const { data: prof } = await supabase
             .from("profiles")

@@ -445,12 +445,15 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Error", description: msgErr.message, variant: "destructive" });
       return;
     }
-    notifySchool({
-      teacherName: selectedContact,
-      subject: newSubject.trim(),
-      bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
-      threadId: thread.id,
-    });
+    if (!isStaff) {
+      notifySchool({
+        teacherName: selectedContact,
+        subject: newSubject.trim(),
+        bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
+        threadId: thread.id,
+      });
+    }
+
     setNewSubject("");
     setBody("");
     setSelectedContact("");

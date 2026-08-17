@@ -16,6 +16,7 @@ import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
 import AcademicYearCalendar from "@/components/AcademicYearCalendar";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
+import horarioPdf from "@/assets/horarios-costos-2026-2027.pdf.asset.json";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";
@@ -593,14 +594,27 @@ const ParentPortal = () => {
               Horario
             </DialogTitle>
             <DialogDescription>
-              Consulta el horario escolar oficial.
+              Horarios y costos del año escolar 2026-2027.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Clock className="h-12 w-12 text-accent mb-4" />
-            <p className="text-muted-foreground">
-              El horario estará disponible próximamente. La escuela lo publicará aquí.
-            </p>
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <a href={horarioPdf.url} target="_blank" rel="noopener noreferrer">
+                  <Clock className="h-4 w-4 mr-1.5 text-accent" /> Abrir en pestaña
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <a href={horarioPdf.url} download="Horarios-y-Costos-2026-2027.pdf">
+                  Descargar
+                </a>
+              </Button>
+            </div>
+            <iframe
+              src={horarioPdf.url}
+              title="Horarios y Costos 2026-2027"
+              className="w-full h-[70vh] rounded-2xl border-2 border-border bg-card"
+            />
           </div>
         </DialogContent>
       </Dialog>

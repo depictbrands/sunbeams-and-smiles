@@ -100,7 +100,19 @@ const initialOf = (p?: Profile | null) =>
 
 const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 
-const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
+const OFFICE_PHONE = "787-993-5623";
+const OFFICE_EMAIL = "preescolarsonsoles@gmail.com";
+
+const AUTO_REPLY_TEXT =
+  "Gracias por comunicarse con Preescolar Sonsoles. Su mensaje fue recibido y le responderemos al finalizar el horario de clases. " +
+  `Si se trata de un asunto urgente, favor de comunicarse con la oficina administrativa al ${OFFICE_PHONE} o escribir a ${OFFICE_EMAIL}.`;
+
+const normalizeGroup = (g?: string | null) =>
+  (g ?? "").toLowerCase().replace(/[^a-z]/g, "");
+
+// Grupos que atiende cada maestra. Si no tiene grupos definidos (administración),
+// puede recibir mensajes de cualquier familia.
+const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: string[] }[] = [
   { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
@@ -112,6 +124,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
   { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
 ];
+
 
 const formatBytes = (n: number | null) => {
   if (!n) return "";
@@ -131,6 +144,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
+  const [myGroups, setMyGroups] = useState<string[]>([]);
+
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -152,6 +167,34 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       .select("user_id, display_name, avatar_url");
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
+
+  // Grupos de los estudiantes activos de este padre
+  const loadMyGroups = async () => {
+    if (isStaff) return;
+    const { data } = await supabase
+      .from("allowed_students")
+      .select("group_name, status")
+      .eq("parent_user_id", userId);
+    setMyGroups(
+      Array.from(
+        new Set(
+          (data ?? [])
+            .filter((s) => s.status === "active")
+            .map((s) => normalizeGroup(s.group_name))
+            .filter(Boolean),
+        ),
+      ),
+    );
+  };
+
+  // ¿Puede este padre escribirle a esta persona del staff?
+  const canMessageContact = (c: { groups?: string[] }) => {
+    if (!c.groups || c.groups.length === 0) return true;
+    if (myGroups.length === 0) return true;
+    return c.groups.some((g) => myGroups.includes(normalizeGroup(g)));
+  };
+
+
 
   // Match the picked staff name to a real teacher account so the thread stays private to her
   const resolveTeacherId = (contactName: string): string | null => {
@@ -220,6 +263,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   useEffect(() => {
     loadThreads();
     loadTeachers();
+    loadMyGroups();
+
     const channel = supabase
       .channel("messages-realtime")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (payload) => {
@@ -338,6 +383,16 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Elige una maestra", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
+    const contact = STAFF_CONTACTS.find((c) => c.name === selectedContact);
+    if (contact && !canMessageContact(contact)) {
+      toast({
+        title: "No es posible enviar este mensaje",
+        description: `Tu mensaje no puede enviarse porque ${contact.name} no atiende el grupo de tu estudiante. Escribe a la administración (${OFFICE_PHONE}) o selecciona a la maestra de tu grupo.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     const teacherId = resolveTeacherId(selectedContact);
     setLoading(true);
     const subjectWithContact = `[Para: ${selectedContact}] ${newSubject.trim()}`.slice(0, 200);
@@ -582,6 +637,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                 <div className="grid sm:grid-cols-2 gap-2">
                   {STAFF_CONTACTS.map((c) => {
                     const selected = selectedContact === c.name;
+                    const allowed = canMessageContact(c);
                     return (
                       <button
                         key={c.name}
@@ -589,7 +645,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                         onClick={() => setSelectedContact(c.name)}
                         className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
                           selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
-                        }`}
+                        } ${allowed ? "" : "opacity-60"}`}
                       >
                         <Avatar className="h-11 w-11">
                           {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
@@ -600,11 +656,25 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                         <div className="min-w-0 flex-1">
                           <div className="font-semibold text-ink truncate">{c.name}</div>
                           <div className="text-xs text-muted-foreground truncate">{c.role}</div>
+                          {!allowed && (
+                            <div className="text-[11px] text-destructive font-semibold">Otro grupo</div>
+                          )}
                         </div>
                       </button>
                     );
                   })}
                 </div>
+                {selectedContact && !canMessageContact(STAFF_CONTACTS.find((c) => c.name === selectedContact) ?? {}) && (
+                  <div className="mt-2 rounded-xl border-2 border-destructive/40 bg-destructive/10 p-3 text-sm text-ink">
+                    Tu mensaje no podrá enviarse porque <strong>{selectedContact}</strong> no atiende el grupo de tu
+                    estudiante. Selecciona a la maestra de tu grupo o comunícate con la administración al{" "}
+                    <a href={`tel:${OFFICE_PHONE.replace(/-/g, "")}`} className="underline font-semibold">
+                      {OFFICE_PHONE}
+                    </a>
+                    .
+                  </div>
+                )}
+
               </div>
 
               <div>
@@ -707,6 +777,18 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                     </div>
                   );
                 })}
+                {!isStaff && messages.length > 0 && messages[messages.length - 1].sender_id === userId && (
+                  <div className="flex gap-2 justify-start">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                      <AvatarFallback className="bg-leaf/20 text-leaf text-xs font-bold">S</AvatarFallback>
+                    </Avatar>
+                    <div className="max-w-[75%] rounded-2xl px-4 py-2 bg-muted text-ink border border-dashed">
+                      <div className="text-xs font-semibold opacity-70 mb-1">Respuesta automática</div>
+                      <div className="text-sm whitespace-pre-wrap break-words">{AUTO_REPLY_TEXT}</div>
+                    </div>
+                  </div>
+                )}
+
               </div>
               {pendingFile && (
                 <div className="px-3 pt-2">

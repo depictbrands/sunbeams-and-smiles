@@ -777,6 +777,18 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                     </div>
                   );
                 })}
+                {!isStaff && messages.length > 0 && messages[messages.length - 1].sender_id === userId && (
+                  <div className="flex gap-2 justify-start">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                      <AvatarFallback className="bg-leaf/20 text-leaf text-xs font-bold">S</AvatarFallback>
+                    </Avatar>
+                    <div className="max-w-[75%] rounded-2xl px-4 py-2 bg-muted text-ink border border-dashed">
+                      <div className="text-xs font-semibold opacity-70 mb-1">Respuesta automática</div>
+                      <div className="text-sm whitespace-pre-wrap break-words">{AUTO_REPLY_TEXT}</div>
+                    </div>
+                  </div>
+                )}
+
               </div>
               {pendingFile && (
                 <div className="px-3 pt-2">

@@ -100,7 +100,19 @@ const initialOf = (p?: Profile | null) =>
 
 const nameOf = (p?: Profile | null) => p?.display_name || p?.email || "Usuario";
 
-const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
+const OFFICE_PHONE = "787-993-5623";
+const OFFICE_EMAIL = "preescolarsonsoles@gmail.com";
+
+const AUTO_REPLY_TEXT =
+  "Gracias por comunicarse con Preescolar Sonsoles. Su mensaje fue recibido y le responderemos al finalizar el horario de clases. " +
+  `Si se trata de un asunto urgente, favor de comunicarse con la oficina administrativa al ${OFFICE_PHONE} o escribir a ${OFFICE_EMAIL}.`;
+
+const normalizeGroup = (g?: string | null) =>
+  (g ?? "").toLowerCase().replace(/[^a-z]/g, "");
+
+// Grupos que atiende cada maestra. Si no tiene grupos definidos (administración),
+// puede recibir mensajes de cualquier familia.
+const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: string[] }[] = [
   { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
@@ -112,6 +124,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string }[] = [
   { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg" },
   { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg" },
 ];
+
 
 const formatBytes = (n: number | null) => {
   if (!n) return "";

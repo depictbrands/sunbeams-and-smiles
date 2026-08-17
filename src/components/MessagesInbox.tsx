@@ -647,17 +647,25 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
 
         {/* Main panel */}
         <div className="flex flex-col">
-          {showNew && !isStaff ? (
+          {showNew ? (
             <div className="p-6 space-y-4">
               <button onClick={() => setShowNew(false)} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground">
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
-              <h3 className="font-bold text-ink">Nuevo mensaje</h3>
+              <h3 className="font-bold text-ink">{isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}</h3>
+              {isStaff && (
+                <p className="text-xs text-muted-foreground">
+                  Este mensaje es solo para el personal. Únicamente tú, la persona que elijas y la administración podrán verlo.
+                </p>
+              )}
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
                 <div className="grid sm:grid-cols-2 gap-2">
-                  {STAFF_CONTACTS.filter((c) => isStaff || canMessageContact(c)).map((c) => {
+                  {STAFF_CONTACTS.filter((c) =>
+                    isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
+                  ).map((c) => {
+
                     const selected = selectedContact === c.name;
                     return (
                       <button

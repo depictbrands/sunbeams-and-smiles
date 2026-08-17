@@ -381,11 +381,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       return;
     }
     if (!selectedContact) {
-      toast({ title: "Elige una maestra", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
+      toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
     const contact = STAFF_CONTACTS.find((c) => c.name === selectedContact);
-    if (contact && !canMessageContact(contact)) {
+    if (!isStaff && contact && !canMessageContact(contact)) {
       toast({
         title: "No es posible enviar este mensaje",
         description: `Tu mensaje no puede enviarse porque ${contact.name} no atiende el grupo de tu estudiante. Escribe a la administración (${OFFICE_PHONE}) o selecciona a la maestra de tu grupo.`,
@@ -395,8 +395,18 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     }
 
     const teacherId = resolveTeacherId(selectedContact);
+    if (isStaff && !teacherId) {
+      toast({
+        title: "Cuenta no encontrada",
+        description: `${selectedContact} aún no tiene cuenta activa en el portal, por lo que no podría ver el mensaje.`,
+        variant: "destructive",
+      });
+      return;
+    }
     setLoading(true);
-    const subjectWithContact = `[Para: ${selectedContact}] ${newSubject.trim()}`.slice(0, 200);
+    const prefix = isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`;
+    const subjectWithContact = `${prefix} ${newSubject.trim()}`.slice(0, 200);
+
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({
@@ -435,12 +445,15 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Error", description: msgErr.message, variant: "destructive" });
       return;
     }
-    notifySchool({
-      teacherName: selectedContact,
-      subject: newSubject.trim(),
-      bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
-      threadId: thread.id,
-    });
+    if (!isStaff) {
+      notifySchool({
+        teacherName: selectedContact,
+        subject: newSubject.trim(),
+        bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
+        threadId: thread.id,
+      });
+    }
+
     setNewSubject("");
     setBody("");
     setSelectedContact("");
@@ -491,7 +504,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
           bodyText: notifyBody,
           threadId: activeId,
         });
-      } else {
+      } else if (!activeThread.subject.startsWith("[Interno")) {
         try {
           const { data: prof } = await supabase
             .from("profiles")
@@ -528,6 +541,10 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   };
 
   const activeThread = threads.find((t) => t.id === activeId);
+
+  // La otra persona de la conversación: si yo la inicié, es el destinatario.
+  const otherOf = (t: Thread) => (t.parent_id === userId ? t.teacher : t.parent);
+
 
   const renderAttachment = (m: Message, mine: boolean) => {
     if (!m.attachment_path) return null;
@@ -575,11 +592,14 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                 </span>
               )}
             </h3>
-            {!isStaff && (
-              <Button size="sm" variant="hero" onClick={() => { setShowNew(true); setActiveId(null); }}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="hero"
+              onClick={() => { setShowNew(true); setActiveId(null); }}
+              title={isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
           <div className="overflow-y-auto max-h-[450px]">
             {threads.length === 0 && (
@@ -588,7 +608,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
               </p>
             )}
             {threads.map((t) => {
-              const other = isStaff ? t.parent : t.teacher;
+              const other = otherOf(t);
+
               const unread = isUnread(t);
               return (
                 <button
@@ -626,17 +647,25 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
 
         {/* Main panel */}
         <div className="flex flex-col">
-          {showNew && !isStaff ? (
+          {showNew ? (
             <div className="p-6 space-y-4">
               <button onClick={() => setShowNew(false)} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground">
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
-              <h3 className="font-bold text-ink">Nuevo mensaje</h3>
+              <h3 className="font-bold text-ink">{isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}</h3>
+              {isStaff && (
+                <p className="text-xs text-muted-foreground">
+                  Este mensaje es solo para el personal. Únicamente tú, la persona que elijas y la administración podrán verlo.
+                </p>
+              )}
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
                 <div className="grid sm:grid-cols-2 gap-2">
-                  {STAFF_CONTACTS.filter((c) => isStaff || canMessageContact(c)).map((c) => {
+                  {STAFF_CONTACTS.filter((c) =>
+                    isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
+                  ).map((c) => {
+
                     const selected = selectedContact === c.name;
                     return (
                       <button
@@ -729,7 +758,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                   <ArrowLeft className="h-5 w-5" />
                 </button>
                 {(() => {
-                  const other = isStaff ? activeThread.parent : activeThread.teacher;
+                  const other = otherOf(activeThread);
                   return (
                     <Avatar className="h-10 w-10">
                       {other?.avatar_url && <AvatarImage src={other.avatar_url} alt={nameOf(other)} />}
@@ -738,7 +767,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                   );
                 })()}
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-ink truncate">{nameOf(isStaff ? activeThread.parent : activeThread.teacher)}</div>
+                  <div className="font-bold text-ink truncate">{nameOf(otherOf(activeThread))}</div>
+
                   <div className="text-xs text-muted-foreground truncate">{activeThread.subject}</div>
                 </div>
               </div>

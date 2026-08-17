@@ -381,6 +381,16 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Elige una maestra", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
+    const contact = STAFF_CONTACTS.find((c) => c.name === selectedContact);
+    if (contact && !canMessageContact(contact)) {
+      toast({
+        title: "No es posible enviar este mensaje",
+        description: `Tu mensaje no puede enviarse porque ${contact.name} no atiende el grupo de tu estudiante. Escribe a la administración (${OFFICE_PHONE}) o selecciona a la maestra de tu grupo.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     const teacherId = resolveTeacherId(selectedContact);
     setLoading(true);
     const subjectWithContact = `[Para: ${selectedContact}] ${newSubject.trim()}`.slice(0, 200);

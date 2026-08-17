@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Authenticated view teacher role rows" ON public.user_roles;

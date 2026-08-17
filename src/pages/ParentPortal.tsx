@@ -16,6 +16,7 @@ import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
 import AcademicYearCalendar from "@/components/AcademicYearCalendar";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
+import horarioPdf from "@/assets/horarios-costos-2026-2027.pdf.asset.json";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
 const TURNSTILE_SITE_KEY = "0x4AAAAAADrE9iXiCRrwNCMe";

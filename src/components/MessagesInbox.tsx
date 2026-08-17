@@ -542,6 +542,10 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
 
   const activeThread = threads.find((t) => t.id === activeId);
 
+  // La otra persona de la conversación: si yo la inicié, es el destinatario.
+  const otherOf = (t: Thread) => (t.parent_id === userId ? t.teacher : t.parent);
+
+
   const renderAttachment = (m: Message, mine: boolean) => {
     if (!m.attachment_path) return null;
     const url = signedUrls[m.attachment_path];

@@ -168,6 +168,34 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
+  // Grupos de los estudiantes activos de este padre
+  const loadMyGroups = async () => {
+    if (isStaff) return;
+    const { data } = await supabase
+      .from("allowed_students")
+      .select("group_name, status")
+      .eq("parent_user_id", userId);
+    setMyGroups(
+      Array.from(
+        new Set(
+          (data ?? [])
+            .filter((s) => s.status === "active")
+            .map((s) => normalizeGroup(s.group_name))
+            .filter(Boolean),
+        ),
+      ),
+    );
+  };
+
+  // ¿Puede este padre escribirle a esta persona del staff?
+  const canMessageContact = (c: { groups?: string[] }) => {
+    if (!c.groups || c.groups.length === 0) return true;
+    if (myGroups.length === 0) return true;
+    return c.groups.some((g) => myGroups.includes(normalizeGroup(g)));
+  };
+
+
+
   // Match the picked staff name to a real teacher account so the thread stays private to her
   const resolveTeacherId = (contactName: string): string | null => {
     const aliases: Record<string, string[]> = {

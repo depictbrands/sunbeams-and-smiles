@@ -263,6 +263,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   useEffect(() => {
     loadThreads();
     loadTeachers();
+    loadMyGroups();
+
     const channel = supabase
       .channel("messages-realtime")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (payload) => {

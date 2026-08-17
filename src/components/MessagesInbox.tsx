@@ -144,6 +144,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
+  const [myGroups, setMyGroups] = useState<string[]>([]);
+
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
   const scrollRef = useRef<HTMLDivElement>(null);

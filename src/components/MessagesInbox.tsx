@@ -636,9 +636,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
                 <div className="grid sm:grid-cols-2 gap-2">
-                  {STAFF_CONTACTS.map((c) => {
+                  {STAFF_CONTACTS.filter((c) => isStaff || canMessageContact(c)).map((c) => {
                     const selected = selectedContact === c.name;
-                    const allowed = canMessageContact(c);
                     return (
                       <button
                         key={c.name}
@@ -646,7 +645,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                         onClick={() => setSelectedContact(c.name)}
                         className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
                           selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
-                        } ${allowed ? "" : "opacity-60"}`}
+                        }`}
                       >
                         <Avatar className="h-11 w-11">
                           {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
@@ -657,24 +656,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
                         <div className="min-w-0 flex-1">
                           <div className="font-semibold text-ink truncate">{c.name}</div>
                           <div className="text-xs text-muted-foreground truncate">{c.role}</div>
-                          {!allowed && (
-                            <div className="text-[11px] text-destructive font-semibold">Otro grupo</div>
-                          )}
                         </div>
                       </button>
                     );
                   })}
                 </div>
-                {selectedContact && !canMessageContact(STAFF_CONTACTS.find((c) => c.name === selectedContact) ?? {}) && (
-                  <div className="mt-2 rounded-xl border-2 border-destructive/40 bg-destructive/10 p-3 text-sm text-ink">
-                    Tu mensaje no podrá enviarse porque <strong>{selectedContact}</strong> no atiende el grupo de tu
-                    estudiante. Selecciona a la maestra de tu grupo o comunícate con la administración al{" "}
-                    <a href={`tel:${OFFICE_PHONE.replace(/-/g, "")}`} className="underline font-semibold">
-                      {OFFICE_PHONE}
-                    </a>
-                    .
-                  </div>
-                )}
 
               </div>
 

@@ -496,6 +496,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     setNewSubject("");
     setBody("");
     setSelectedContact("");
+    setSelectedParentId("");
     setPendingFile(null);
     setShowNew(false);
     setActiveId(thread.id);

@@ -468,16 +468,17 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     }
     setLoading(true);
     const subjectWithContact = toParent
-      ? newSubject.trim().slice(0, 200)
+      ? `[${selectedStudent!.studentName}] ${newSubject.trim()}`.slice(0, 200)
       : `${isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`} ${newSubject.trim()}`.slice(0, 200);
 
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({
         subject: subjectWithContact,
-        parent_id: toParent ? selectedParentId : userId,
+        parent_id: toParent ? selectedStudent!.parentUserId : userId,
         assigned_teacher_id: teacherId,
       })
+
       .select()
       .single();
     if (error || !thread) {

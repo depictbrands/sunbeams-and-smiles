@@ -692,46 +692,107 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
               <button onClick={() => setShowNew(false)} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground">
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
-              <h3 className="font-bold text-ink">{isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}</h3>
-              {isStaff && (
+              <h3 className="font-bold text-ink">
+                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a una familia" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+              </h3>
+              {isAdmin && (
+                <div className="inline-flex rounded-xl border-2 p-1 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => { setRecipientMode("staff"); setSelectedParentId(""); }}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+                      recipientMode === "staff" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    Personal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setRecipientMode("parent"); setSelectedContact(""); }}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+                      recipientMode === "parent" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    Familias
+                  </button>
+                </div>
+              )}
+              {isStaff && !(isAdmin && recipientMode === "parent") && (
                 <p className="text-xs text-muted-foreground">
                   Este mensaje es solo para el personal. Únicamente tú, la persona que elijas y la administración podrán verlo.
+                </p>
+              )}
+              {isAdmin && recipientMode === "parent" && (
+                <p className="text-xs text-muted-foreground">
+                  La familia recibirá este mensaje en su portal y podrá responderte directamente.
                 </p>
               )}
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
-                <div className="grid sm:grid-cols-2 gap-2">
-                  {STAFF_CONTACTS.filter((c) =>
-                    isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
-                  ).map((c) => {
-
-                    const selected = selectedContact === c.name;
-                    return (
-                      <button
-                        key={c.name}
-                        type="button"
-                        onClick={() => setSelectedContact(c.name)}
-                        className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
-                          selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
-                        }`}
-                      >
-                        <Avatar className="h-11 w-11">
-                          {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
-                          <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
-                            {c.name.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-semibold text-ink truncate">{c.name}</div>
-                          <div className="text-xs text-muted-foreground truncate">{c.role}</div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
+                {isAdmin && recipientMode === "parent" ? (
+                  parents.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Aún no hay familias con cuenta activa vinculada a un estudiante.
+                    </p>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                      {parents.map((p) => {
+                        const selected = selectedParentId === p.user_id;
+                        return (
+                          <button
+                            key={p.user_id}
+                            type="button"
+                            onClick={() => setSelectedParentId(p.user_id)}
+                            className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
+                              selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
+                            }`}
+                          >
+                            <Avatar className="h-11 w-11">
+                              {p.avatar_url && <AvatarImage src={p.avatar_url} alt={nameOf(p)} className="object-cover" />}
+                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(p)}</AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-semibold text-ink truncate">{nameOf(p)}</div>
+                              <div className="text-xs text-muted-foreground truncate">{p.email}</div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {STAFF_CONTACTS.filter((c) =>
+                      isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
+                    ).map((c) => {
+                      const selected = selectedContact === c.name;
+                      return (
+                        <button
+                          key={c.name}
+                          type="button"
+                          onClick={() => setSelectedContact(c.name)}
+                          className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
+                            selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
+                          }`}
+                        >
+                          <Avatar className="h-11 w-11">
+                            {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
+                            <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
+                              {c.name.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-ink truncate">{c.name}</div>
+                            <div className="text-xs text-muted-foreground truncate">{c.role}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
+
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-1 block">Asunto</label>

@@ -175,6 +175,32 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
+  // Familias con estudiante activo (solo administración)
+  const loadParents = async () => {
+    if (!isAdmin) return;
+    const { data: students } = await supabase
+      .from("allowed_students")
+      .select("parent_user_id, status, student_name")
+      .not("parent_user_id", "is", null);
+    const ids = Array.from(
+      new Set(
+        (students ?? [])
+          .filter((s) => s.status === "active" && s.parent_user_id)
+          .map((s) => s.parent_user_id as string),
+      ),
+    ).filter((id) => id !== userId);
+    if (!ids.length) {
+      setParents([]);
+      return;
+    }
+    const map = await fetchProfiles(ids);
+    setParents(
+      Array.from(map.values()).sort((a, b) => nameOf(a).localeCompare(nameOf(b))),
+    );
+  };
+
+
+
   // Grupos de los estudiantes activos de este padre
   const loadMyGroups = async () => {
     if (isStaff) return;

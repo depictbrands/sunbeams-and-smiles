@@ -756,34 +756,41 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 {isAdmin && recipientMode === "parent" ? (
                   parents.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
-                      Aún no hay familias con cuenta activa vinculada a un estudiante.
+                      Aún no hay estudiantes activos con cuenta vinculada.
                     </p>
                   ) : (
                     <div className="grid sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
                       {parents.map((p) => {
-                        const selected = selectedParentId === p.user_id;
+                        const selected = selectedParentId === p.id;
                         return (
                           <button
-                            key={p.user_id}
+                            key={p.id}
                             type="button"
-                            onClick={() => setSelectedParentId(p.user_id)}
+                            onClick={() => setSelectedParentId(p.id)}
                             className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
                               selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
                             }`}
                           >
                             <Avatar className="h-11 w-11">
-                              {p.avatar_url && <AvatarImage src={p.avatar_url} alt={nameOf(p)} className="object-cover" />}
-                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(p)}</AvatarFallback>
+                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
+                                {p.studentName.charAt(0).toUpperCase()}
+                              </AvatarFallback>
                             </Avatar>
                             <div className="min-w-0 flex-1">
-                              <div className="font-semibold text-ink truncate">{nameOf(p)}</div>
-                              <div className="text-xs text-muted-foreground truncate">{p.email}</div>
+                              <div className="font-semibold text-ink truncate">{p.studentName}</div>
+                              <div className="text-xs text-muted-foreground truncate">
+                                {p.studentNumber}{p.groupName ? ` · ${p.groupName}` : ""}
+                              </div>
+                              {p.parentName && (
+                                <div className="text-xs text-muted-foreground truncate">{p.parentName}</div>
+                              )}
                             </div>
                           </button>
                         );
                       })}
                     </div>
                   )
+
                 ) : (
                   <div className="grid sm:grid-cols-2 gap-2">
                     {STAFF_CONTACTS.filter((c) =>

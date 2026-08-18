@@ -72,6 +72,7 @@ type Message = {
 interface Props {
   userId: string;
   isStaff: boolean;
+  isAdmin?: boolean;
   onUnreadCountChange?: (count: number) => void;
 }
 

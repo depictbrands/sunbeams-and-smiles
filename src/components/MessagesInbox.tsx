@@ -437,10 +437,12 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       return;
     }
     const toParent = isAdmin && recipientMode === "parent";
-    if (toParent && !selectedParentId) {
-      toast({ title: "Elige una familia", description: "Selecciona a qué familia enviarle el mensaje.", variant: "destructive" });
+    const selectedStudent = parents.find((p) => p.id === selectedParentId);
+    if (toParent && !selectedStudent) {
+      toast({ title: "Elige un estudiante", description: "Selecciona el estudiante al que quieres enviar el mensaje.", variant: "destructive" });
       return;
     }
+
     if (!toParent && !selectedContact) {
       toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;

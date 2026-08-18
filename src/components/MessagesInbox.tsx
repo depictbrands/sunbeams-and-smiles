@@ -72,6 +72,7 @@ type Message = {
 interface Props {
   userId: string;
   isStaff: boolean;
+  isAdmin?: boolean;
   onUnreadCountChange?: (count: number) => void;
 }
 
@@ -134,7 +135,7 @@ const formatBytes = (n: number | null) => {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 };
 
-const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
+const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
   const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -146,6 +147,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
   const [myGroups, setMyGroups] = useState<string[]>([]);
+  const [parents, setParents] = useState<Profile[]>([]);
+  const [recipientMode, setRecipientMode] = useState<"staff" | "parent">("staff");
+  const [selectedParentId, setSelectedParentId] = useState<string>("");
+
+
 
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
@@ -168,6 +174,32 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       .select("user_id, display_name, avatar_url");
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
+
+  // Familias con estudiante activo (solo administración)
+  const loadParents = async () => {
+    if (!isAdmin) return;
+    const { data: students } = await supabase
+      .from("allowed_students")
+      .select("parent_user_id, status, student_name")
+      .not("parent_user_id", "is", null);
+    const ids = Array.from(
+      new Set(
+        (students ?? [])
+          .filter((s) => s.status === "active" && s.parent_user_id)
+          .map((s) => s.parent_user_id as string),
+      ),
+    ).filter((id) => id !== userId);
+    if (!ids.length) {
+      setParents([]);
+      return;
+    }
+    const map = await fetchProfiles(ids);
+    setParents(
+      Array.from(map.values()).sort((a, b) => nameOf(a).localeCompare(nameOf(b))),
+    );
+  };
+
+
 
   // Grupos de los estudiantes activos de este padre
   const loadMyGroups = async () => {
@@ -265,6 +297,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     loadThreads();
     loadTeachers();
     loadMyGroups();
+    loadParents();
 
     const channel = supabase
       .channel("messages-realtime")
@@ -380,7 +413,12 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       toast({ title: "Falta información", description: "Agrega un asunto y un mensaje o adjunto.", variant: "destructive" });
       return;
     }
-    if (!selectedContact) {
+    const toParent = isAdmin && recipientMode === "parent";
+    if (toParent && !selectedParentId) {
+      toast({ title: "Elige una familia", description: "Selecciona a qué familia enviarle el mensaje.", variant: "destructive" });
+      return;
+    }
+    if (!toParent && !selectedContact) {
       toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
@@ -394,8 +432,8 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       return;
     }
 
-    const teacherId = resolveTeacherId(selectedContact);
-    if (isStaff && !teacherId) {
+    const teacherId = toParent ? userId : resolveTeacherId(selectedContact);
+    if (!toParent && isStaff && !teacherId) {
       toast({
         title: "Cuenta no encontrada",
         description: `${selectedContact} aún no tiene cuenta activa en el portal, por lo que no podría ver el mensaje.`,
@@ -404,14 +442,15 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
       return;
     }
     setLoading(true);
-    const prefix = isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`;
-    const subjectWithContact = `${prefix} ${newSubject.trim()}`.slice(0, 200);
+    const subjectWithContact = toParent
+      ? newSubject.trim().slice(0, 200)
+      : `${isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`} ${newSubject.trim()}`.slice(0, 200);
 
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({
         subject: subjectWithContact,
-        parent_id: userId,
+        parent_id: toParent ? selectedParentId : userId,
         assigned_teacher_id: teacherId,
       })
       .select()
@@ -457,6 +496,7 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
     setNewSubject("");
     setBody("");
     setSelectedContact("");
+    setSelectedParentId("");
     setPendingFile(null);
     setShowNew(false);
     setActiveId(thread.id);
@@ -652,46 +692,107 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
               <button onClick={() => setShowNew(false)} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground">
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
-              <h3 className="font-bold text-ink">{isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}</h3>
-              {isStaff && (
+              <h3 className="font-bold text-ink">
+                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a una familia" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+              </h3>
+              {isAdmin && (
+                <div className="inline-flex rounded-xl border-2 p-1 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => { setRecipientMode("staff"); setSelectedParentId(""); }}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+                      recipientMode === "staff" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    Personal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setRecipientMode("parent"); setSelectedContact(""); }}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+                      recipientMode === "parent" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    Familias
+                  </button>
+                </div>
+              )}
+              {isStaff && !(isAdmin && recipientMode === "parent") && (
                 <p className="text-xs text-muted-foreground">
                   Este mensaje es solo para el personal. Únicamente tú, la persona que elijas y la administración podrán verlo.
+                </p>
+              )}
+              {isAdmin && recipientMode === "parent" && (
+                <p className="text-xs text-muted-foreground">
+                  La familia recibirá este mensaje en su portal y podrá responderte directamente.
                 </p>
               )}
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
-                <div className="grid sm:grid-cols-2 gap-2">
-                  {STAFF_CONTACTS.filter((c) =>
-                    isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
-                  ).map((c) => {
-
-                    const selected = selectedContact === c.name;
-                    return (
-                      <button
-                        key={c.name}
-                        type="button"
-                        onClick={() => setSelectedContact(c.name)}
-                        className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
-                          selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
-                        }`}
-                      >
-                        <Avatar className="h-11 w-11">
-                          {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
-                          <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
-                            {c.name.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-semibold text-ink truncate">{c.name}</div>
-                          <div className="text-xs text-muted-foreground truncate">{c.role}</div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
+                {isAdmin && recipientMode === "parent" ? (
+                  parents.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Aún no hay familias con cuenta activa vinculada a un estudiante.
+                    </p>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                      {parents.map((p) => {
+                        const selected = selectedParentId === p.user_id;
+                        return (
+                          <button
+                            key={p.user_id}
+                            type="button"
+                            onClick={() => setSelectedParentId(p.user_id)}
+                            className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
+                              selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
+                            }`}
+                          >
+                            <Avatar className="h-11 w-11">
+                              {p.avatar_url && <AvatarImage src={p.avatar_url} alt={nameOf(p)} className="object-cover" />}
+                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(p)}</AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-semibold text-ink truncate">{nameOf(p)}</div>
+                              <div className="text-xs text-muted-foreground truncate">{p.email}</div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {STAFF_CONTACTS.filter((c) =>
+                      isStaff ? resolveTeacherId(c.name) !== userId : canMessageContact(c),
+                    ).map((c) => {
+                      const selected = selectedContact === c.name;
+                      return (
+                        <button
+                          key={c.name}
+                          type="button"
+                          onClick={() => setSelectedContact(c.name)}
+                          className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
+                            selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
+                          }`}
+                        >
+                          <Avatar className="h-11 w-11">
+                            {c.avatar && <AvatarImage src={c.avatar} alt={c.name} className="object-cover" />}
+                            <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
+                              {c.name.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-ink truncate">{c.name}</div>
+                            <div className="text-xs text-muted-foreground truncate">{c.role}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
+
 
               <div>
                 <label className="text-sm font-semibold text-ink mb-1 block">Asunto</label>

@@ -117,7 +117,7 @@ const TeacherInbox = () => {
                 </div>
               </div>
               <ProfileEditor userId={session.user.id} />
-              <MessagesInbox userId={session.user.id} isStaff={true} />
+              <MessagesInbox userId={session.user.id} isStaff={true} isAdmin={isAdmin} />
             </div>
           ) : (
             <p className="text-center text-muted-foreground">Cargando…</p>

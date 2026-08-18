@@ -135,6 +135,17 @@ const formatBytes = (n: number | null) => {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 };
 
+type StudentRecipient = {
+  id: string;
+  parentUserId: string;
+  studentName: string;
+  studentNumber: string;
+  groupName: string | null;
+  parentName: string;
+  parentEmail: string;
+};
+
+
 const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
   const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
   const [threads, setThreads] = useState<Thread[]>([]);

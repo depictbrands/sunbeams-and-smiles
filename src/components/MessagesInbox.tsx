@@ -175,29 +175,41 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
-  // Familias con estudiante activo (solo administración)
+  // Estudiantes activos con cuenta vinculada (solo administración)
   const loadParents = async () => {
     if (!isAdmin) return;
     const { data: students } = await supabase
       .from("allowed_students")
-      .select("parent_user_id, status, student_name")
+      .select("id, parent_user_id, status, student_name, student_number, group_name")
       .not("parent_user_id", "is", null);
-    const ids = Array.from(
-      new Set(
-        (students ?? [])
-          .filter((s) => s.status === "active" && s.parent_user_id)
-          .map((s) => s.parent_user_id as string),
-      ),
-    ).filter((id) => id !== userId);
-    if (!ids.length) {
+    const rows = (students ?? []).filter(
+      (s) => s.status === "active" && s.parent_user_id && s.parent_user_id !== userId,
+    );
+    if (!rows.length) {
       setParents([]);
       return;
     }
-    const map = await fetchProfiles(ids);
+    const map = await fetchProfiles(
+      Array.from(new Set(rows.map((s) => s.parent_user_id as string))),
+    );
     setParents(
-      Array.from(map.values()).sort((a, b) => nameOf(a).localeCompare(nameOf(b))),
+      rows
+        .map((s) => {
+          const prof = map.get(s.parent_user_id as string);
+          return {
+            id: s.id as string,
+            parentUserId: s.parent_user_id as string,
+            studentName: (s.student_name as string) || `Estudiante ${s.student_number}`,
+            studentNumber: s.student_number as string,
+            groupName: (s.group_name as string) || null,
+            parentName: prof ? nameOf(prof) : "",
+            parentEmail: prof?.email ?? "",
+          } as StudentRecipient;
+        })
+        .sort((a, b) => a.studentName.localeCompare(b.studentName)),
     );
   };
+
 
 
 

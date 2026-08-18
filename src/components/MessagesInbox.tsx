@@ -719,7 +719,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
               <h3 className="font-bold text-ink">
-                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a una familia" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a un estudiante" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
               </h3>
               {isAdmin && (
                 <div className="inline-flex rounded-xl border-2 p-1 gap-1">
@@ -739,7 +739,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                       recipientMode === "parent" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
                     }`}
                   >
-                    Familias
+                    Estudiantes
                   </button>
                 </div>
               )}
@@ -750,7 +750,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
               )}
               {isAdmin && recipientMode === "parent" && (
                 <p className="text-xs text-muted-foreground">
-                  La familia recibirá este mensaje en su portal y podrá responderte directamente.
+                  La familia del estudiante recibirá este mensaje en su portal y podrá responderte directamente.
                 </p>
               )}
 

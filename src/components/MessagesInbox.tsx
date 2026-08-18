@@ -413,7 +413,12 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       toast({ title: "Falta información", description: "Agrega un asunto y un mensaje o adjunto.", variant: "destructive" });
       return;
     }
-    if (!selectedContact) {
+    const toParent = isAdmin && recipientMode === "parent";
+    if (toParent && !selectedParentId) {
+      toast({ title: "Elige una familia", description: "Selecciona a qué familia enviarle el mensaje.", variant: "destructive" });
+      return;
+    }
+    if (!toParent && !selectedContact) {
       toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
     }
@@ -427,8 +432,8 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       return;
     }
 
-    const teacherId = resolveTeacherId(selectedContact);
-    if (isStaff && !teacherId) {
+    const teacherId = toParent ? userId : resolveTeacherId(selectedContact);
+    if (!toParent && isStaff && !teacherId) {
       toast({
         title: "Cuenta no encontrada",
         description: `${selectedContact} aún no tiene cuenta activa en el portal, por lo que no podría ver el mensaje.`,
@@ -437,14 +442,15 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       return;
     }
     setLoading(true);
-    const prefix = isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`;
-    const subjectWithContact = `${prefix} ${newSubject.trim()}`.slice(0, 200);
+    const subjectWithContact = toParent
+      ? newSubject.trim().slice(0, 200)
+      : `${isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`} ${newSubject.trim()}`.slice(0, 200);
 
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({
         subject: subjectWithContact,
-        parent_id: userId,
+        parent_id: toParent ? selectedParentId : userId,
         assigned_teacher_id: teacherId,
       })
       .select()

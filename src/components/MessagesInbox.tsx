@@ -135,7 +135,7 @@ const formatBytes = (n: number | null) => {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 };
 
-const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
+const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
   const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -147,6 +147,11 @@ const MessagesInbox = ({ userId, isStaff, onUnreadCountChange }: Props) => {
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
   const [myGroups, setMyGroups] = useState<string[]>([]);
+  const [parents, setParents] = useState<Profile[]>([]);
+  const [recipientMode, setRecipientMode] = useState<"staff" | "parent">("staff");
+  const [selectedParentId, setSelectedParentId] = useState<string>("");
+
+
 
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});

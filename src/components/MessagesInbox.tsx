@@ -158,7 +158,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
   const [myGroups, setMyGroups] = useState<string[]>([]);
-  const [parents, setParents] = useState<Profile[]>([]);
+  const [parents, setParents] = useState<StudentRecipient[]>([]);
   const [recipientMode, setRecipientMode] = useState<"staff" | "parent">("staff");
   const [selectedParentId, setSelectedParentId] = useState<string>("");
 

@@ -333,7 +333,7 @@ const ParentPortal = () => {
                 </TabsList>
 
                 <TabsContent value="messages" className="mt-6">
-                  <MessagesInbox userId={session.user.id} isStaff={isStaff} onUnreadCountChange={setUnreadMessages} />
+                  <MessagesInbox userId={session.user.id} isStaff={isStaff} isAdmin={isAdmin} onUnreadCountChange={setUnreadMessages} />
                 </TabsContent>
 
                 <TabsContent value="tuition" className="mt-6">

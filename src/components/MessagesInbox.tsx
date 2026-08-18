@@ -297,6 +297,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     loadThreads();
     loadTeachers();
     loadMyGroups();
+    loadParents();
 
     const channel = supabase
       .channel("messages-realtime")

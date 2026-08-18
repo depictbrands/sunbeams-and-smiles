@@ -135,6 +135,17 @@ const formatBytes = (n: number | null) => {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 };
 
+type StudentRecipient = {
+  id: string;
+  parentUserId: string;
+  studentName: string;
+  studentNumber: string;
+  groupName: string | null;
+  parentName: string;
+  parentEmail: string;
+};
+
+
 const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
   const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -147,7 +158,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const [teachers, setTeachers] = useState<Profile[]>([]);
   const [selectedContact, setSelectedContact] = useState<string>("");
   const [myGroups, setMyGroups] = useState<string[]>([]);
-  const [parents, setParents] = useState<Profile[]>([]);
+  const [parents, setParents] = useState<StudentRecipient[]>([]);
   const [recipientMode, setRecipientMode] = useState<"staff" | "parent">("staff");
   const [selectedParentId, setSelectedParentId] = useState<string>("");
 
@@ -175,29 +186,41 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
 
-  // Familias con estudiante activo (solo administración)
+  // Estudiantes activos con cuenta vinculada (solo administración)
   const loadParents = async () => {
     if (!isAdmin) return;
     const { data: students } = await supabase
       .from("allowed_students")
-      .select("parent_user_id, status, student_name")
+      .select("id, parent_user_id, status, student_name, student_number, group_name")
       .not("parent_user_id", "is", null);
-    const ids = Array.from(
-      new Set(
-        (students ?? [])
-          .filter((s) => s.status === "active" && s.parent_user_id)
-          .map((s) => s.parent_user_id as string),
-      ),
-    ).filter((id) => id !== userId);
-    if (!ids.length) {
+    const rows = (students ?? []).filter(
+      (s) => s.status === "active" && s.parent_user_id && s.parent_user_id !== userId,
+    );
+    if (!rows.length) {
       setParents([]);
       return;
     }
-    const map = await fetchProfiles(ids);
+    const map = await fetchProfiles(
+      Array.from(new Set(rows.map((s) => s.parent_user_id as string))),
+    );
     setParents(
-      Array.from(map.values()).sort((a, b) => nameOf(a).localeCompare(nameOf(b))),
+      rows
+        .map((s) => {
+          const prof = map.get(s.parent_user_id as string);
+          return {
+            id: s.id as string,
+            parentUserId: s.parent_user_id as string,
+            studentName: (s.student_name as string) || `Estudiante ${s.student_number}`,
+            studentNumber: s.student_number as string,
+            groupName: (s.group_name as string) || null,
+            parentName: prof ? nameOf(prof) : "",
+            parentEmail: prof?.email ?? "",
+          } as StudentRecipient;
+        })
+        .sort((a, b) => a.studentName.localeCompare(b.studentName)),
     );
   };
+
 
 
 
@@ -414,10 +437,12 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       return;
     }
     const toParent = isAdmin && recipientMode === "parent";
-    if (toParent && !selectedParentId) {
-      toast({ title: "Elige una familia", description: "Selecciona a qué familia enviarle el mensaje.", variant: "destructive" });
+    const selectedStudent = parents.find((p) => p.id === selectedParentId);
+    if (toParent && !selectedStudent) {
+      toast({ title: "Elige un estudiante", description: "Selecciona el estudiante al que quieres enviar el mensaje.", variant: "destructive" });
       return;
     }
+
     if (!toParent && !selectedContact) {
       toast({ title: "Elige un destinatario", description: "Selecciona a quién enviarle el mensaje.", variant: "destructive" });
       return;
@@ -443,16 +468,17 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     }
     setLoading(true);
     const subjectWithContact = toParent
-      ? newSubject.trim().slice(0, 200)
+      ? `[${selectedStudent!.studentName}] ${newSubject.trim()}`.slice(0, 200)
       : `${isStaff ? `[Interno · Para: ${selectedContact}]` : `[Para: ${selectedContact}]`} ${newSubject.trim()}`.slice(0, 200);
 
     const { data: thread, error } = await supabase
       .from("message_threads")
       .insert({
         subject: subjectWithContact,
-        parent_id: toParent ? selectedParentId : userId,
+        parent_id: toParent ? selectedStudent!.parentUserId : userId,
         assigned_teacher_id: teacherId,
       })
+
       .select()
       .single();
     if (error || !thread) {
@@ -693,7 +719,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 <ArrowLeft className="h-4 w-4" /> Volver
               </button>
               <h3 className="font-bold text-ink">
-                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a una familia" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
+                {isAdmin && recipientMode === "parent" ? "Nuevo mensaje a un estudiante" : isStaff ? "Nuevo mensaje interno" : "Nuevo mensaje"}
               </h3>
               {isAdmin && (
                 <div className="inline-flex rounded-xl border-2 p-1 gap-1">
@@ -713,7 +739,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                       recipientMode === "parent" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent/50"
                     }`}
                   >
-                    Familias
+                    Estudiantes
                   </button>
                 </div>
               )}
@@ -724,7 +750,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
               )}
               {isAdmin && recipientMode === "parent" && (
                 <p className="text-xs text-muted-foreground">
-                  La familia recibirá este mensaje en su portal y podrá responderte directamente.
+                  La familia del estudiante recibirá este mensaje en su portal y podrá responderte directamente.
                 </p>
               )}
 
@@ -733,34 +759,41 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 {isAdmin && recipientMode === "parent" ? (
                   parents.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
-                      Aún no hay familias con cuenta activa vinculada a un estudiante.
+                      Aún no hay estudiantes activos con cuenta vinculada.
                     </p>
                   ) : (
                     <div className="grid sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
                       {parents.map((p) => {
-                        const selected = selectedParentId === p.user_id;
+                        const selected = selectedParentId === p.id;
                         return (
                           <button
-                            key={p.user_id}
+                            key={p.id}
                             type="button"
-                            onClick={() => setSelectedParentId(p.user_id)}
+                            onClick={() => setSelectedParentId(p.id)}
                             className={`w-full rounded-2xl border-2 p-3 text-left transition-colors flex items-center gap-3 ${
                               selected ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-accent/50"
                             }`}
                           >
                             <Avatar className="h-11 w-11">
-                              {p.avatar_url && <AvatarImage src={p.avatar_url} alt={nameOf(p)} className="object-cover" />}
-                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">{initialOf(p)}</AvatarFallback>
+                              <AvatarFallback className="bg-primary/15 text-primary text-sm font-bold">
+                                {p.studentName.charAt(0).toUpperCase()}
+                              </AvatarFallback>
                             </Avatar>
                             <div className="min-w-0 flex-1">
-                              <div className="font-semibold text-ink truncate">{nameOf(p)}</div>
-                              <div className="text-xs text-muted-foreground truncate">{p.email}</div>
+                              <div className="font-semibold text-ink truncate">{p.studentName}</div>
+                              <div className="text-xs text-muted-foreground truncate">
+                                {p.studentNumber}{p.groupName ? ` · ${p.groupName}` : ""}
+                              </div>
+                              {p.parentName && (
+                                <div className="text-xs text-muted-foreground truncate">{p.parentName}</div>
+                              )}
                             </div>
                           </button>
                         );
                       })}
                     </div>
                   )
+
                 ) : (
                   <div className="grid sm:grid-cols-2 gap-2">
                     {STAFF_CONTACTS.filter((c) =>

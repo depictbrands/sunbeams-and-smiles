@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon, Check, CheckCheck } from "lucide-react";
 import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaAsset from "@/assets/consultora-Delma.jpg.asset.json";
+import mariaAsset from "@/assets/asistente-Maria.jpg.asset.json";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 

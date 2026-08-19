@@ -443,6 +443,19 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     }
   };
 
+  // Aviso por email a la otra persona de la conversación (maestra o familia)
+  const notifyRecipient = async (threadId: string, bodyText: string) => {
+    try {
+      await supabase.functions.invoke("notify-thread-recipient", {
+        body: { threadId, body: bodyText },
+      });
+    } catch (e) {
+      console.warn("Recipient email notification failed", e);
+    }
+  };
+
+
+
   const createThread = async () => {
     if (!newSubject.trim() || (!body.trim() && !pendingFile)) {
       toast({ title: "Falta información", description: "Agrega un asunto y un mensaje o adjunto.", variant: "destructive" });
@@ -522,11 +535,13 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       toast({ title: "Error", description: msgErr.message, variant: "destructive" });
       return;
     }
+    const notifyText = msgText || (pendingFile ? `📎 ${pendingFile.name}` : "");
+    notifyRecipient(thread.id, notifyText);
     if (!isStaff) {
       notifySchool({
         teacherName: selectedContact,
         subject: newSubject.trim(),
-        bodyText: msgText || (pendingFile ? `📎 ${pendingFile.name}` : ""),
+        bodyText: notifyText,
         threadId: thread.id,
       });
     }
@@ -575,6 +590,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
       const cleanSubject = activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, "");
       const notifyBody = replyText || (pendingFile ? `📎 ${pendingFile.name}` : "");
+      notifyRecipient(activeId, notifyBody);
       if (!isStaff) {
         notifySchool({
           teacherName,

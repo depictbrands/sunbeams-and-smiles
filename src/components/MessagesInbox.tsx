@@ -120,6 +120,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: st
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
   { name: "Delma", role: "Consultora Educación", avatar: delmaAsset.url },
+  { name: "Denisse", role: "Administración" },
   { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg", groups: ["prekinder"] },
   { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg", groups: ["maternal"] },
   { name: "Esmeralda", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", groups: ["preescolar"] },

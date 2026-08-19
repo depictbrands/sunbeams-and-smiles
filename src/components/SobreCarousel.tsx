@@ -226,9 +226,9 @@ const SobreCarousel = () => {
                       </div>
                       <div>
                         <p className="text-center text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-white mb-3">Asistentes de maestra</p>
-                        <div className="grid grid-cols-3 gap-6 items-start">
+                        <div className="grid grid-cols-4 gap-4 items-start max-w-xl mx-auto">
                           {assistants.map((t, i) => (
-                            <div key={i}>{bubble(t, "Asistente de maestra")}</div>
+                            <div key={i} className="max-w-28 mx-auto w-full">{bubble(t, "Asistente de maestra")}</div>
                           ))}
                         </div>
                       </div>

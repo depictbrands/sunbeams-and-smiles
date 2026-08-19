@@ -113,6 +113,70 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
 
   useEffect(() => { load(); }, [load]);
 
+  // Acuses de lectura
+  const [readCounts, setReadCounts] = useState<Record<string, number>>({});
+  const [readersFor, setReadersFor] = useState<Announcement | null>(null);
+  const [readers, setReaders] = useState<{ name: string; read_at: string }[]>([]);
+  const [readersLoading, setReadersLoading] = useState(false);
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      const ids = items.map((i) => i.id);
+      if (canCreate) {
+        const { data } = await supabase
+          .from("announcement_reads")
+          .select("announcement_id")
+          .in("announcement_id", ids);
+        if (cancelled) return;
+        const counts: Record<string, number> = {};
+        (data ?? []).forEach((r: { announcement_id: string }) => {
+          counts[r.announcement_id] = (counts[r.announcement_id] ?? 0) + 1;
+        });
+        setReadCounts(counts);
+      } else if (currentUserId) {
+        const rows = items
+          .filter((i) => i.is_active)
+          .map((i) => ({ announcement_id: i.id, user_id: currentUserId }));
+        if (rows.length > 0) {
+          await supabase
+            .from("announcement_reads")
+            .upsert(rows, { onConflict: "announcement_id,user_id", ignoreDuplicates: true });
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [items, canCreate, currentUserId]);
+
+  const openReaders = async (a: Announcement) => {
+    setReadersFor(a);
+    setReaders([]);
+    setReadersLoading(true);
+    const { data } = await supabase
+      .from("announcement_reads")
+      .select("user_id, read_at")
+      .eq("announcement_id", a.id)
+      .order("read_at", { ascending: false });
+    const rows = (data ?? []) as { user_id: string; read_at: string }[];
+    const userIds = rows.map((r) => r.user_id);
+    let names = new Map<string, string>();
+    if (userIds.length > 0) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, display_name, email")
+        .in("user_id", userIds);
+      names = new Map(
+        (profs ?? []).map((p: { user_id: string; display_name: string | null; email: string }) => [
+          p.user_id,
+          p.display_name || p.email,
+        ]),
+      );
+    }
+    setReaders(rows.map((r) => ({ name: names.get(r.user_id) ?? "Usuario", read_at: r.read_at })));
+    setReadersLoading(false);
+  };
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -127,6 +191,7 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
     })();
     return () => { cancelled = true; };
   }, [items]);
+
 
   const resetForm = () => {
     setEditingId(null);

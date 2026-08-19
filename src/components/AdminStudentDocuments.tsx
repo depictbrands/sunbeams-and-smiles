@@ -70,23 +70,37 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
 
   const selected = useMemo(() => students.find((s) => s.id === selectedId) ?? null, [students, selectedId]);
 
+  const loadStudents = async () => {
+    setLoadingStudents(true);
+    const { data, error } = await supabase
+      .from("allowed_students")
+      .select("id, student_number, student_name, group_name, parent_user_id")
+      .eq("status", "active")
+      .order("student_name", { ascending: true });
+    setLoadingStudents(false);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    const filtered = (data ?? []).filter((s: any) => !/preescolar\s*sonsoles/i.test(s.student_name ?? ""));
+    setStudents(filtered as Student[]);
+  };
+
   useEffect(() => {
-    (async () => {
-      setLoadingStudents(true);
-      const { data, error } = await supabase
-        .from("allowed_students")
-        .select("id, student_number, student_name, group_name, parent_user_id")
-        .eq("status", "active")
-        .order("student_name", { ascending: true });
-      setLoadingStudents(false);
-      if (error) {
-        toast({ title: "Error", description: error.message, variant: "destructive" });
-        return;
-      }
-      const filtered = (data ?? []).filter((s: any) => !/preescolar\s*sonsoles/i.test(s.student_name ?? ""));
-      setStudents(filtered as Student[]);
-    })();
+    let cancelled = false;
+    // Only query once the auth session is restored, otherwise RLS returns no rows.
+    supabase.auth.getSession().then(({ data }) => {
+      if (!cancelled && data.session) loadStudents();
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
+      if (!cancelled && s) loadStudents();
+    });
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
+
 
   const loadDocs = async (studentId: string) => {
     setLoadingDocs(true);

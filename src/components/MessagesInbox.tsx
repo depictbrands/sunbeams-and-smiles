@@ -62,6 +62,8 @@ type Message = {
   sender_id: string;
   body: string | null;
   created_at: string;
+  read_at?: string | null;
+
   attachment_path: string | null;
   attachment_name: string | null;
   attachment_type: string | null;

@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon } from "lucide-react";
+import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon, Check, CheckCheck } from "lucide-react";
 import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaAsset from "@/assets/consultora-Delma.jpg.asset.json";
 

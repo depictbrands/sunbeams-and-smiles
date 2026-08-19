@@ -456,7 +456,19 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
                         )}
                         {!a.is_active && <Badge variant="outline" className="text-xs">Inactivo</Badge>}
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2">{fmtDate(a.published_at)}</p>
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <p className="text-xs text-muted-foreground">{fmtDate(a.published_at)}</p>
+                        {canManage(a) && (
+                          <button
+                            onClick={() => openReaders(a)}
+                            className="text-xs inline-flex items-center gap-1 text-primary hover:underline"
+                          >
+                            <CheckCheck className="h-3.5 w-3.5" />
+                            Leído por {readCounts[a.id] ?? 0}
+                          </button>
+                        )}
+                      </div>
+
                       {a.content && (
                         <p className="text-sm text-foreground whitespace-pre-wrap">{a.content}</p>
                       )}

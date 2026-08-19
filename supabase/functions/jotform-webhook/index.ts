@@ -87,6 +87,71 @@ function collectFileUrls(raw: Record<string, unknown>): string[] {
   return [...new Set(urls)];
 }
 
+
+// ---------- Security helpers ----------
+
+// Only these hosts may ever receive an outbound request carrying JOTFORM_API_KEY.
+const ALLOWED_JOTFORM_HOSTS = [
+  "jotform.com",
+  "jotform.us",
+  "jotform.io",
+  "jotformeu.com",
+  "jotformz.com",
+  "jotformpro.com",
+];
+
+function isAllowedJotformUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    if (u.protocol !== "https:") return false;
+    const host = u.hostname.toLowerCase();
+    return ALLOWED_JOTFORM_HOSTS.some((d) => host === d || host.endsWith(`.${d}`));
+  } catch {
+    return false;
+  }
+}
+
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+// Authenticate the caller: either a shared secret (token query param / header)
+// or proof that the submission really exists in this Jotform account.
+async function authenticateRequest(
+  req: Request,
+  apiKey: string | undefined,
+  submissionId: string,
+  signedId: string,
+): Promise<boolean> {
+  const expected = Deno.env.get("JOTFORM_WEBHOOK_TOKEN");
+  if (expected) {
+    const url = new URL(req.url);
+    const provided = url.searchParams.get("token") ?? req.headers.get("x-webhook-token") ?? "";
+    if (provided && timingSafeEqual(provided, expected)) return true;
+  }
+
+  if (!apiKey) return false;
+
+  const ids = [submissionId, signedId].filter(Boolean);
+  for (const id of ids) {
+    if (!/^[A-Za-z0-9_-]{4,64}$/.test(id)) continue;
+    const endpoints = [
+      `https://api.jotform.com/submission/${id}?apiKey=${encodeURIComponent(apiKey)}`,
+      `https://api.jotform.com/sign/documents/${id}?apiKey=${encodeURIComponent(apiKey)}`,
+    ];
+    for (const endpoint of endpoints) {
+      try {
+        const res = await fetch(endpoint);
+        if (res.ok) return true;
+      } catch (_e) { /* try next */ }
+    }
+  }
+  return false;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json(405, { error: "method_not_allowed" });
@@ -117,6 +182,16 @@ Deno.serve(async (req) => {
     }
   } catch (e) {
     return json(400, { error: "bad_payload", detail: String(e) });
+  }
+
+  const signedUrlRaw = typeof (raw as any).signedDocumentURL === "string" ? (raw as any).signedDocumentURL : "";
+  const signedDocId = String((raw as any).signedDocumentID ?? (raw as any).documentID ?? formId ?? "");
+
+  // Reject forged/unauthenticated submissions before touching the database or storage.
+  const authenticated = await authenticateRequest(req, JOTFORM_API_KEY, submissionId, signedDocId);
+  if (!authenticated) {
+    console.warn("jotform-webhook: unauthenticated request rejected", { formId, submissionId });
+    return json(401, { error: "unauthorized" });
   }
 
   const category = FORM_CATEGORY_MAP[formId] ?? "admision";
@@ -195,6 +270,10 @@ Deno.serve(async (req) => {
   // Download Jotform-attached files.
   const fileUrls = collectFileUrls(raw);
   for (const url of fileUrls) {
+    if (!isAllowedJotformUrl(url)) {
+      console.warn("jotform-webhook: skipped non-Jotform file url");
+      continue;
+    }
     try {
       const fetchUrl = JOTFORM_API_KEY ? `${url}${url.includes("?") ? "&" : "?"}apiKey=${encodeURIComponent(JOTFORM_API_KEY)}` : url;
       const res = await fetch(fetchUrl);
@@ -211,7 +290,7 @@ Deno.serve(async (req) => {
   }
 
   // Jotform Sign documents have no "uploads/" URL — fetch the signed PDF directly.
-  const signedUrl = typeof (raw as any).signedDocumentURL === "string" ? (raw as any).signedDocumentURL : "";
+  const signedUrl = isAllowedJotformUrl(signedUrlRaw) ? signedUrlRaw : "";
   const signedId = String((raw as any).signedDocumentID ?? (raw as any).documentID ?? "");
   const signedTitle = String((raw as any).signedDocumentTitle ?? "").trim();
   const pdfId = submissionId || signedId;

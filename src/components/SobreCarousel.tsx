@@ -7,6 +7,7 @@ import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
 import nildaPhoto from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaPhoto from "@/assets/consultora-Delma.jpg.asset.json";
+import mariaPhoto from "@/assets/asistente-Maria.jpg.asset.json";
 
 
 const SobreCarousel = () => {
@@ -140,6 +141,7 @@ const SobreCarousel = () => {
                   { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
                   { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
+                  { src: mariaPhoto.url, name: "Maria" },
                 ];
                 const teachers = [...mainTeachers, ...assistants];
                 const bubble = (t: { src?: string; name: string }, role: string) => (

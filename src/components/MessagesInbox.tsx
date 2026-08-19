@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon, Check, CheckCheck } from "lucide-react";
 import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaAsset from "@/assets/consultora-Delma.jpg.asset.json";
+import mariaAsset from "@/assets/asistente-Maria.jpg.asset.json";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 
@@ -127,6 +128,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: st
   { name: "Zuania", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg", groups: ["prekinder"] },
   { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg", groups: ["maternal"] },
   { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg", groups: ["preescolar"] },
+  { name: "Maria", role: "Asistente de maestra", avatar: mariaAsset.url, groups: ["maternal"] },
 
 ];
 

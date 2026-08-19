@@ -590,6 +590,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       const teacherName = activeThread.subject.match(/^\[Para:\s*([^\]]+)\]/)?.[1]?.trim() || "Maestra";
       const cleanSubject = activeThread.subject.replace(/^\[Para:[^\]]+\]\s*/, "");
       const notifyBody = replyText || (pendingFile ? `📎 ${pendingFile.name}` : "");
+      notifyRecipient(activeId, notifyBody);
       if (!isStaff) {
         notifySchool({
           teacherName,

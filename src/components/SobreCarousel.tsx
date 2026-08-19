@@ -139,7 +139,7 @@ const SobreCarousel = () => {
                 ];
                 const assistants: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
-                  { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
+                  { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nai" },
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
                   { src: mariaPhoto.url, name: "Maria" },
                 ];

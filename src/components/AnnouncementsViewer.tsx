@@ -521,7 +521,32 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
           })}
         </ul>
       )}
+
+      <Dialog open={!!readersFor} onOpenChange={(o) => { if (!o) setReadersFor(null); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Quién leyó este anuncio</DialogTitle>
+          </DialogHeader>
+          {readersLoading ? (
+            <div className="py-8 flex justify-center"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+          ) : readers.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">Todavía nadie lo ha abierto.</p>
+          ) : (
+            <ul className="divide-y max-h-72 overflow-y-auto">
+              {readers.map((r, i) => (
+                <li key={i} className="py-2 flex items-center justify-between gap-3 text-sm">
+                  <span className="truncate">{r.name}</span>
+                  <span className="text-xs text-muted-foreground shrink-0">
+                    {new Date(r.read_at).toLocaleString("es-PR", { dateStyle: "short", timeStyle: "short" })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 };
 

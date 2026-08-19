@@ -7,6 +7,8 @@ project_id = "vedsjxbkjicejfxmicfs"
     verify_jwt = false
   [functions.handle-email-unsubscribe]
     verify_jwt = false
+  [functions.notify-parent-document]
+    verify_jwt = true
   [functions.notify-thread-recipient]
     verify_jwt = true
   [functions.preview-transactional-email]

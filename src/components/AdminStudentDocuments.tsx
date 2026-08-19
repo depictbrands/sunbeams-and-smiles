@@ -144,10 +144,22 @@ const AdminStudentDocuments = ({ adminUserId }: { adminUserId: string }) => {
       toast({ title: "Error", description: insErr.message, variant: "destructive" });
       return;
     }
+    const catLabel = CATEGORIES.find((c) => c.key === category)?.label ?? "Documento";
+    if (selected.parent_user_id) {
+      supabase.functions
+        .invoke("notify-parent-document", {
+          body: {
+            studentId: selected.id,
+            categoryLabel: catLabel,
+            documentTitle: titles[category].trim() || catLabel,
+          },
+        })
+        .catch(() => {});
+    }
     toast({
       title: "Archivo guardado",
       description: selected.parent_user_id
-        ? "Visible para el padre del estudiante."
+        ? "Visible para el padre del estudiante. Se le envió un aviso por email."
         : `Guardado en el expediente (estudiante sin padre activado: ${ownerScope === "unassigned" ? "queda pendiente de mostrar" : ""}).`,
     });
     setTitles((t) => ({ ...t, [category]: "" }));

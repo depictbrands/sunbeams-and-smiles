@@ -533,24 +533,6 @@ export type Database = {
         }
         Relationships: []
       }
-      teacher_profiles_public: {
-        Row: {
-          avatar_url: string | null
-          display_name: string | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          display_name?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          display_name?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
     }
     Functions: {
       delete_email: {
@@ -568,6 +550,14 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      list_teacher_directory: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          display_name: string
+          user_id: string
+        }[]
       }
       move_to_dlq: {
         Args: {

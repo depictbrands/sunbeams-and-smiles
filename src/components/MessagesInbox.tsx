@@ -933,9 +933,22 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                         {!mine && <div className="text-xs font-semibold opacity-70 mb-1">{nameOf(m.sender)}</div>}
                         {m.body && <div className="text-sm whitespace-pre-wrap break-words">{renderBodyWithLinks(m.body, mine)}</div>}
                         {renderAttachment(m, mine)}
-                        <div className="text-[10px] mt-1 opacity-70">
-                          {new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
+                        <div className="text-[10px] mt-1 opacity-70 flex items-center gap-1 justify-end">
+                          <span>{new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}</span>
+                          {mine && (
+                            m.read_at ? (
+                              <span className="flex items-center gap-0.5">
+                                <CheckCheck className="h-3 w-3" />
+                                Visto {new Date(m.read_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-0.5">
+                                <Check className="h-3 w-3" /> Enviado
+                              </span>
+                            )
+                          )}
                         </div>
+
                       </div>
                     </div>
                   );

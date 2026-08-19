@@ -1,0 +1,1 @@
+INSERT INTO public.teacher_invites (email, full_name, role) VALUES ('adriana@preescolarsonsoles.com', 'Adriana Espino Firpi', 'admin') ON CONFLICT DO NOTHING;

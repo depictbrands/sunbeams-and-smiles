@@ -140,6 +140,7 @@ const SobreCarousel = () => {
                   { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },
                   { src: "/teacher-profile-pictures/maestra-Nay.jpeg", name: "Nay" },
                   { src: "/teacher-profile-pictures/maestra-Keisy.jpeg", name: "Keisy" },
+                  { src: mariaPhoto.url, name: "Maria" },
                 ];
                 const teachers = [...mainTeachers, ...assistants];
                 const bubble = (t: { src?: string; name: string }, role: string) => (

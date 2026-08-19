@@ -127,6 +127,7 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: st
   { name: "Zuania", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg", groups: ["prekinder"] },
   { name: "Nay", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Nay.jpeg", groups: ["maternal"] },
   { name: "Keisy", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Keisy.jpeg", groups: ["preescolar"] },
+  { name: "Maria", role: "Asistente de maestra", avatar: mariaAsset.url, groups: ["maternal"] },
 
 ];
 

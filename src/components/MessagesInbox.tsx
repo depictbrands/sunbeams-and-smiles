@@ -182,11 +182,10 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   };
 
   const loadTeachers = async () => {
-    const { data } = await supabase
-      .from("teacher_profiles_public" as any)
-      .select("user_id, display_name, avatar_url");
+    const { data } = await supabase.rpc("list_teacher_directory" as any);
     setTeachers(((data ?? []) as any[]).map((p) => ({ ...p, email: "" })) as Profile[]);
   };
+
 
   // Estudiantes activos con cuenta vinculada (solo administración)
   const loadParents = async () => {

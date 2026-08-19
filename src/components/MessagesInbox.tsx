@@ -286,13 +286,23 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const loadMessages = async (threadId: string) => {
     const { data } = await supabase
       .from("messages")
-      .select("id, thread_id, sender_id, body, created_at, attachment_path, attachment_name, attachment_type, attachment_size")
+      .select("id, thread_id, sender_id, body, created_at, read_at, attachment_path, attachment_name, attachment_type, attachment_size")
       .eq("thread_id", threadId)
       .order("created_at", { ascending: true });
     const msgs = (data ?? []) as Message[];
     const ids = Array.from(new Set(msgs.map((m) => m.sender_id)));
     const map = await fetchProfiles(ids);
     setMessages(msgs.map((m) => ({ ...m, sender: map.get(m.sender_id) })));
+
+    // Acuse de recibo: marcar como leídos los mensajes de la otra parte
+    const unreadFromOthers = msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id);
+    if (unreadFromOthers.length > 0) {
+      await supabase
+        .from("messages")
+        .update({ read_at: new Date().toISOString() })
+        .in("id", unreadFromOthers);
+    }
+
 
     // Sign URLs for any attachments we haven't signed yet
     const toSign = msgs

@@ -7,6 +7,7 @@ import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
 import nildaPhoto from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaPhoto from "@/assets/consultora-Delma.jpg.asset.json";
+import mariaPhoto from "@/assets/asistente-Maria.jpg.asset.json";
 
 
 const SobreCarousel = () => {

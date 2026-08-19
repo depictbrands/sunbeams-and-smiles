@@ -443,6 +443,19 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     }
   };
 
+  // Aviso por email a la otra persona de la conversación (maestra o familia)
+  const notifyRecipient = async (threadId: string, bodyText: string) => {
+    try {
+      await supabase.functions.invoke("notify-thread-recipient", {
+        body: { threadId, body: bodyText },
+      });
+    } catch (e) {
+      console.warn("Recipient email notification failed", e);
+    }
+  };
+
+
+
   const createThread = async () => {
     if (!newSubject.trim() || (!body.trim() && !pendingFile)) {
       toast({ title: "Falta información", description: "Agrega un asunto y un mensaje o adjunto.", variant: "destructive" });

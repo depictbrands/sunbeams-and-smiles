@@ -164,6 +164,8 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const [selectedContact, setSelectedContact] = useState<string>("");
   const [myGroups, setMyGroups] = useState<string[]>([]);
   const [parents, setParents] = useState<StudentRecipient[]>([]);
+  const [loadingParents, setLoadingParents] = useState(false);
+  const [parentsError, setParentsError] = useState(false);
   const [recipientMode, setRecipientMode] = useState<"staff" | "parent">("staff");
   const [selectedParentId, setSelectedParentId] = useState<string>("");
 
@@ -192,16 +194,28 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
 
   // Estudiantes activos con cuenta vinculada (solo administración)
   const loadParents = async () => {
-    if (!isAdmin) return;
-    const { data: students } = await supabase
+    if (!isAdmin) {
+      setParents([]);
+      return;
+    }
+    setLoadingParents(true);
+    setParentsError(false);
+    const { data: students, error } = await supabase
       .from("allowed_students")
       .select("id, parent_user_id, status, student_name, student_number, group_name")
       .not("parent_user_id", "is", null);
+    if (error) {
+      setParents([]);
+      setParentsError(true);
+      setLoadingParents(false);
+      return;
+    }
     const rows = (students ?? []).filter(
       (s) => s.status === "active" && s.parent_user_id && s.parent_user_id !== userId,
     );
     if (!rows.length) {
       setParents([]);
+      setLoadingParents(false);
       return;
     }
     const map = await fetchProfiles(
@@ -223,7 +237,14 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         })
         .sort((a, b) => a.studentName.localeCompare(b.studentName)),
     );
+    setLoadingParents(false);
   };
+
+  useEffect(() => {
+    loadParents();
+    // Reload when the asynchronous role check resolves or the signed-in user changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin, userId]);
 
 
 
@@ -334,7 +355,6 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     loadThreads();
     loadTeachers();
     loadMyGroups();
-    loadParents();
 
     const channel = supabase
       .channel("messages-realtime")
@@ -787,7 +807,16 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
               <div>
                 <label className="text-sm font-semibold text-ink mb-2 block">Para</label>
                 {isAdmin && recipientMode === "parent" ? (
-                  parents.length === 0 ? (
+                  loadingParents ? (
+                    <p className="text-sm text-muted-foreground">Cargando estudiantes…</p>
+                  ) : parentsError ? (
+                    <div className="space-y-2">
+                      <p className="text-sm text-destructive">No se pudo cargar la lista de estudiantes.</p>
+                      <Button type="button" variant="outline" size="sm" onClick={loadParents}>
+                        Intentar de nuevo
+                      </Button>
+                    </div>
+                  ) : parents.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
                       Aún no hay estudiantes activos con cuenta vinculada.
                     </p>

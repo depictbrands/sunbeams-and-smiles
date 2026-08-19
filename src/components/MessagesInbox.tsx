@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon } from "lucide-react";
+import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon, Check, CheckCheck } from "lucide-react";
 import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaAsset from "@/assets/consultora-Delma.jpg.asset.json";
 
@@ -62,6 +62,8 @@ type Message = {
   sender_id: string;
   body: string | null;
   created_at: string;
+  read_at?: string | null;
+
   attachment_path: string | null;
   attachment_name: string | null;
   attachment_type: string | null;
@@ -286,13 +288,23 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const loadMessages = async (threadId: string) => {
     const { data } = await supabase
       .from("messages")
-      .select("id, thread_id, sender_id, body, created_at, attachment_path, attachment_name, attachment_type, attachment_size")
+      .select("id, thread_id, sender_id, body, created_at, read_at, attachment_path, attachment_name, attachment_type, attachment_size")
       .eq("thread_id", threadId)
       .order("created_at", { ascending: true });
     const msgs = (data ?? []) as Message[];
     const ids = Array.from(new Set(msgs.map((m) => m.sender_id)));
     const map = await fetchProfiles(ids);
     setMessages(msgs.map((m) => ({ ...m, sender: map.get(m.sender_id) })));
+
+    // Acuse de recibo: marcar como leídos los mensajes de la otra parte
+    const unreadFromOthers = msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id);
+    if (unreadFromOthers.length > 0) {
+      await supabase
+        .from("messages")
+        .update({ read_at: new Date().toISOString() })
+        .in("id", unreadFromOthers);
+    }
+
 
     // Sign URLs for any attachments we haven't signed yet
     const toSign = msgs
@@ -921,9 +933,22 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                         {!mine && <div className="text-xs font-semibold opacity-70 mb-1">{nameOf(m.sender)}</div>}
                         {m.body && <div className="text-sm whitespace-pre-wrap break-words">{renderBodyWithLinks(m.body, mine)}</div>}
                         {renderAttachment(m, mine)}
-                        <div className="text-[10px] mt-1 opacity-70">
-                          {new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
+                        <div className="text-[10px] mt-1 opacity-70 flex items-center gap-1 justify-end">
+                          <span>{new Date(m.created_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}</span>
+                          {mine && (
+                            m.read_at ? (
+                              <span className="flex items-center gap-0.5">
+                                <CheckCheck className="h-3 w-3" />
+                                Visto {new Date(m.read_at).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-0.5">
+                                <Check className="h-3 w-3" /> Enviado
+                              </span>
+                            )
+                          )}
                         </div>
+
                       </div>
                     </div>
                   );

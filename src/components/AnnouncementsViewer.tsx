@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import {
-  Download, Upload, Trash2, Eye, EyeOff, Loader2, FileText, Pin, PinOff, Pencil, Plus, X,
+  Download, Upload, Trash2, Eye, EyeOff, Loader2, FileText, Pin, PinOff, Pencil, Plus, X, CheckCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -113,6 +114,70 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
 
   useEffect(() => { load(); }, [load]);
 
+  // Acuses de lectura
+  const [readCounts, setReadCounts] = useState<Record<string, number>>({});
+  const [readersFor, setReadersFor] = useState<Announcement | null>(null);
+  const [readers, setReaders] = useState<{ name: string; read_at: string }[]>([]);
+  const [readersLoading, setReadersLoading] = useState(false);
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      const ids = items.map((i) => i.id);
+      if (canCreate) {
+        const { data } = await supabase
+          .from("announcement_reads")
+          .select("announcement_id")
+          .in("announcement_id", ids);
+        if (cancelled) return;
+        const counts: Record<string, number> = {};
+        (data ?? []).forEach((r: { announcement_id: string }) => {
+          counts[r.announcement_id] = (counts[r.announcement_id] ?? 0) + 1;
+        });
+        setReadCounts(counts);
+      } else if (currentUserId) {
+        const rows = items
+          .filter((i) => i.is_active)
+          .map((i) => ({ announcement_id: i.id, user_id: currentUserId }));
+        if (rows.length > 0) {
+          await supabase
+            .from("announcement_reads")
+            .upsert(rows, { onConflict: "announcement_id,user_id", ignoreDuplicates: true });
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [items, canCreate, currentUserId]);
+
+  const openReaders = async (a: Announcement) => {
+    setReadersFor(a);
+    setReaders([]);
+    setReadersLoading(true);
+    const { data } = await supabase
+      .from("announcement_reads")
+      .select("user_id, read_at")
+      .eq("announcement_id", a.id)
+      .order("read_at", { ascending: false });
+    const rows = (data ?? []) as { user_id: string; read_at: string }[];
+    const userIds = rows.map((r) => r.user_id);
+    let names = new Map<string, string>();
+    if (userIds.length > 0) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, display_name, email")
+        .in("user_id", userIds);
+      names = new Map(
+        (profs ?? []).map((p: { user_id: string; display_name: string | null; email: string }) => [
+          p.user_id,
+          p.display_name || p.email,
+        ]),
+      );
+    }
+    setReaders(rows.map((r) => ({ name: names.get(r.user_id) ?? "Usuario", read_at: r.read_at })));
+    setReadersLoading(false);
+  };
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -127,6 +192,7 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
     })();
     return () => { cancelled = true; };
   }, [items]);
+
 
   const resetForm = () => {
     setEditingId(null);
@@ -391,7 +457,19 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
                         )}
                         {!a.is_active && <Badge variant="outline" className="text-xs">Inactivo</Badge>}
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2">{fmtDate(a.published_at)}</p>
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <p className="text-xs text-muted-foreground">{fmtDate(a.published_at)}</p>
+                        {canManage(a) && (
+                          <button
+                            onClick={() => openReaders(a)}
+                            className="text-xs inline-flex items-center gap-1 text-primary hover:underline"
+                          >
+                            <CheckCheck className="h-3.5 w-3.5" />
+                            Leído por {readCounts[a.id] ?? 0}
+                          </button>
+                        )}
+                      </div>
+
                       {a.content && (
                         <p className="text-sm text-foreground whitespace-pre-wrap">{a.content}</p>
                       )}
@@ -443,7 +521,32 @@ const AnnouncementsViewer = ({ isAdmin, canPublish = false, currentUserId }: Pro
           })}
         </ul>
       )}
+
+      <Dialog open={!!readersFor} onOpenChange={(o) => { if (!o) setReadersFor(null); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Quién leyó este anuncio</DialogTitle>
+          </DialogHeader>
+          {readersLoading ? (
+            <div className="py-8 flex justify-center"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+          ) : readers.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">Todavía nadie lo ha abierto.</p>
+          ) : (
+            <ul className="divide-y max-h-72 overflow-y-auto">
+              {readers.map((r, i) => (
+                <li key={i} className="py-2 flex items-center justify-between gap-3 text-sm">
+                  <span className="truncate">{r.name}</span>
+                  <span className="text-xs text-muted-foreground shrink-0">
+                    {new Date(r.read_at).toLocaleString("es-PR", { dateStyle: "short", timeStyle: "short" })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 };
 

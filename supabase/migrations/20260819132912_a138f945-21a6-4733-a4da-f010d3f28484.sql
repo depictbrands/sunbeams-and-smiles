@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.list_teacher_directory() TO service_role;

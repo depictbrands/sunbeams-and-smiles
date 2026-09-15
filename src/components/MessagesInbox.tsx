@@ -389,6 +389,13 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
 
   const unreadCount = threads.filter(isUnread).length;
 
+  const sortedThreads = [...threads].sort((a, b) => {
+    const ua = isUnread(a) ? 1 : 0;
+    const ub = isUnread(b) ? 1 : 0;
+    if (ua !== ub) return ub - ua;
+    return new Date(b.last_message_at ?? 0).getTime() - new Date(a.last_message_at ?? 0).getTime();
+  });
+
   useEffect(() => {
     onUnreadCountChange?.(unreadCount);
   }, [unreadCount, onUnreadCountChange]);

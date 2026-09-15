@@ -111,7 +111,7 @@ Deno.serve(async (req) => {
   if (!authorized) return json(401, { error: "unauthorized" });
 
   let requestedForms: string[] = Object.keys(FORM_CATEGORY_MAP);
-  let diag = false;
+  let diag: boolean | string = false;
   try {
     const body = await req.json();
     if (Array.isArray(body?.formIds) && body.formIds.length) {

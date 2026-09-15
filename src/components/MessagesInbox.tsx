@@ -136,7 +136,7 @@ type StudentRecipient = {
 
 
 const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
-  const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
+  const [unreadThreadIds, setUnreadThreadIds] = useState<Set<string>>(new Set());
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);

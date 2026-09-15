@@ -281,8 +281,8 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   const resolveTeacherId = (contactName: string): string | null => {
     const aliases: Record<string, string[]> = {
       bea: ["bea", "beatriz"],
-      nay: ["nay", "nayda", "delma"],
-      griselle: ["griselle", "grisel"],
+      nay: ["nay", "nayda"],
+      griselle: ["griselle", "grisel", "sonsoles"],
     };
     const key = contactName.trim().toLowerCase();
     const candidates = aliases[key] ?? [key];

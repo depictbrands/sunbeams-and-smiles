@@ -1,4 +1,8 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
+
+const TEMPLATE_NAME = 'portal-document-notification'
+
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

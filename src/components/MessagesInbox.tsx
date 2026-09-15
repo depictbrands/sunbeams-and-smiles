@@ -290,6 +290,20 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     );
     const map = await fetchProfiles(ids);
     setThreads(rows.map((t) => ({ ...t, parent: map.get(t.parent_id), teacher: t.assigned_teacher_id ? map.get(t.assigned_teacher_id) : undefined })));
+
+    // Solo cuentan como "Nuevo" los hilos con mensajes de otra persona sin leer
+    const threadIds = rows.map((t) => t.id);
+    if (threadIds.length > 0) {
+      const { data: unreadMsgs } = await supabase
+        .from("messages")
+        .select("thread_id")
+        .in("thread_id", threadIds)
+        .is("read_at", null)
+        .neq("sender_id", userId);
+      setUnreadThreadIds(new Set((unreadMsgs ?? []).map((m: { thread_id: string }) => m.thread_id)));
+    } else {
+      setUnreadThreadIds(new Set());
+    }
   };
 
   const loadMessages = async (threadId: string) => {
@@ -346,7 +360,6 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         const newMsg = payload.new as Message;
         if (activeId && newMsg.thread_id === activeId) {
           loadMessages(activeId);
-          markSeen(activeId);
         } else if (newMsg.sender_id !== userId) {
           toast({ title: "Nuevo mensaje", description: "Tienes un mensaje sin leer." });
         }
@@ -363,22 +376,10 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   useEffect(() => {
     if (activeId) {
       loadMessages(activeId);
-      markSeen(activeId);
     }
   }, [activeId]);
 
-  const markSeen = (threadId: string) => {
-    setLastSeen((prev) => {
-      const next = { ...prev, [threadId]: Date.now() };
-      saveLastSeen(userId, next);
-      return next;
-    });
-  };
-
-  const isUnread = (t: Thread) => {
-    const seen = lastSeen[t.id] ?? 0;
-    return new Date(t.last_message_at).getTime() > seen;
-  };
+  const isUnread = (t: Thread) => unreadThreadIds.has(t.id);
 
   const unreadCount = threads.filter(isUnread).length;
 

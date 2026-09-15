@@ -389,6 +389,13 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
 
   const unreadCount = threads.filter(isUnread).length;
 
+  const sortedThreads = [...threads].sort((a, b) => {
+    const ua = isUnread(a) ? 1 : 0;
+    const ub = isUnread(b) ? 1 : 0;
+    if (ua !== ub) return ub - ua;
+    return new Date(b.last_message_at ?? 0).getTime() - new Date(a.last_message_at ?? 0).getTime();
+  });
+
   useEffect(() => {
     onUnreadCountChange?.(unreadCount);
   }, [unreadCount, onUnreadCountChange]);
@@ -677,7 +684,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 {isStaff ? "Aún no hay conversaciones." : "No tienes mensajes. Crea uno nuevo."}
               </p>
             )}
-            {threads.map((t) => {
+            {sortedThreads.map((t) => {
               const other = otherOf(t);
 
               const unread = isUnread(t);

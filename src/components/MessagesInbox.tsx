@@ -79,19 +79,8 @@ interface Props {
   onUnreadCountChange?: (count: number) => void;
 }
 
-const lastSeenKey = (userId: string) => `msg-last-seen-v1-${userId}`;
-const loadLastSeen = (userId: string): Record<string, number> => {
+const noop = () => {
   try {
-    const raw = localStorage.getItem(lastSeenKey(userId));
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-};
-const saveLastSeen = (userId: string, map: Record<string, number>) => {
-  try {
-    localStorage.setItem(lastSeenKey(userId), JSON.stringify(map));
-  } catch {
     /* noop */
   }
 };

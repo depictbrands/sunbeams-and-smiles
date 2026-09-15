@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
     if (Array.isArray(body?.formIds) && body.formIds.length) {
       requestedForms = body.formIds.map((f: unknown) => String(f)).filter((f: string) => /^\d{6,24}$/.test(f));
     }
-    diag = body?.diag === true;
+    diag = body?.diag === true ? true : body?.diag === "dump" ? "dump" : false;
   } catch { /* no body */ }
 
   const { data: candidates } = await supabase

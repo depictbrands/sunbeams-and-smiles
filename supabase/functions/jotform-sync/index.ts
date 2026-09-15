@@ -133,17 +133,52 @@ Deno.serve(async (req) => {
 
   const summary: Record<string, unknown>[] = [];
 
+  // Diagnostics: verify the API key can read the account at all.
+  if (diag) {
+    const probes: Record<string, unknown> = {};
+    const urls: Record<string, string> = {
+      user: `https://api.jotform.com/user?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      forms: `https://api.jotform.com/user/forms?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=50`,
+      submissions: `https://api.jotform.com/user/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=5`,
+      signDocuments: `https://api.jotform.com/sign/documents?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=50`,
+    };
+    for (const [name, url] of Object.entries(urls)) {
+      try {
+        const res = await fetch(url);
+        const payload = await res.json();
+        probes[name] = res.ok
+          ? Array.isArray(payload?.content)
+            ? payload.content.map((f: any) => ({ id: f.id ?? f.documentID, title: f.title ?? f.name, status: f.status }))
+            : { ok: true }
+          : { status: res.status, message: payload?.message };
+      } catch (e) {
+        probes[name] = { error: String(e) };
+      }
+    }
+    return json(200, { ok: true, diag: probes });
+  }
+
   for (const formId of requestedForms) {
     const category = FORM_CATEGORY_MAP[formId] ?? "admision";
     let submissions: any[] = [];
+    const attempts: Record<string, unknown>[] = [];
     try {
-      const res = await fetch(
+      const endpoints = [
         `https://api.jotform.com/form/${formId}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=100&orderby=created_at`,
-      );
-      const payload = await res.json();
-      submissions = Array.isArray(payload?.content) ? payload.content : [];
-      if (!res.ok) {
-        summary.push({ formId, error: payload?.message ?? `http_${res.status}` });
+        `https://api.jotform.com/sign/documents/${formId}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=100`,
+        `https://api.jotform.com/sign/documents/${formId}/signers?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      ];
+      for (const endpoint of endpoints) {
+        const res = await fetch(endpoint);
+        const payload = await res.json().catch(() => ({}));
+        if (res.ok && Array.isArray(payload?.content)) {
+          submissions = payload.content;
+          break;
+        }
+        attempts.push({ endpoint: endpoint.split("?")[0], status: res.status, message: payload?.message });
+      }
+      if (!submissions.length) {
+        summary.push({ formId, error: "no_submissions_readable", attempts });
         continue;
       }
     } catch (e) {

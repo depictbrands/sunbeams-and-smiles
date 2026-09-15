@@ -79,22 +79,6 @@ interface Props {
   onUnreadCountChange?: (count: number) => void;
 }
 
-const lastSeenKey = (userId: string) => `msg-last-seen-v1-${userId}`;
-const loadLastSeen = (userId: string): Record<string, number> => {
-  try {
-    const raw = localStorage.getItem(lastSeenKey(userId));
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-};
-const saveLastSeen = (userId: string, map: Record<string, number>) => {
-  try {
-    localStorage.setItem(lastSeenKey(userId), JSON.stringify(map));
-  } catch {
-    /* noop */
-  }
-};
 
 
 const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024; // 10 MB
@@ -152,7 +136,7 @@ type StudentRecipient = {
 
 
 const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }: Props) => {
-  const [lastSeen, setLastSeen] = useState<Record<string, number>>(() => loadLastSeen(userId));
+  const [unreadThreadIds, setUnreadThreadIds] = useState<Set<string>>(new Set());
   const [threads, setThreads] = useState<Thread[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -306,6 +290,20 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     );
     const map = await fetchProfiles(ids);
     setThreads(rows.map((t) => ({ ...t, parent: map.get(t.parent_id), teacher: t.assigned_teacher_id ? map.get(t.assigned_teacher_id) : undefined })));
+
+    // Solo cuentan como "Nuevo" los hilos con mensajes de otra persona sin leer
+    const threadIds = rows.map((t) => t.id);
+    if (threadIds.length > 0) {
+      const { data: unreadMsgs } = await supabase
+        .from("messages")
+        .select("thread_id")
+        .in("thread_id", threadIds)
+        .is("read_at", null)
+        .neq("sender_id", userId);
+      setUnreadThreadIds(new Set((unreadMsgs ?? []).map((m: { thread_id: string }) => m.thread_id)));
+    } else {
+      setUnreadThreadIds(new Set());
+    }
   };
 
   const loadMessages = async (threadId: string) => {
@@ -326,6 +324,12 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         .from("messages")
         .update({ read_at: new Date().toISOString() })
         .in("id", unreadFromOthers);
+      setUnreadThreadIds((prev) => {
+        if (!prev.has(threadId)) return prev;
+        const next = new Set(prev);
+        next.delete(threadId);
+        return next;
+      });
     }
 
 
@@ -362,7 +366,6 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         const newMsg = payload.new as Message;
         if (activeId && newMsg.thread_id === activeId) {
           loadMessages(activeId);
-          markSeen(activeId);
         } else if (newMsg.sender_id !== userId) {
           toast({ title: "Nuevo mensaje", description: "Tienes un mensaje sin leer." });
         }
@@ -379,22 +382,10 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
   useEffect(() => {
     if (activeId) {
       loadMessages(activeId);
-      markSeen(activeId);
     }
   }, [activeId]);
 
-  const markSeen = (threadId: string) => {
-    setLastSeen((prev) => {
-      const next = { ...prev, [threadId]: Date.now() };
-      saveLastSeen(userId, next);
-      return next;
-    });
-  };
-
-  const isUnread = (t: Thread) => {
-    const seen = lastSeen[t.id] ?? 0;
-    return new Date(t.last_message_at).getTime() > seen;
-  };
+  const isUnread = (t: Thread) => unreadThreadIds.has(t.id);
 
   const unreadCount = threads.filter(isUnread).length;
 

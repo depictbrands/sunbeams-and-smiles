@@ -92,7 +92,10 @@ Deno.serve(async (req) => {
   // Auth: admin JWT, or internal call with the service-role key.
   const authHeader = req.headers.get("Authorization") ?? "";
   const token = authHeader.replace(/^Bearer\s+/i, "");
-  let authorized = token === SERVICE_KEY;
+  const syncToken = Deno.env.get("JOTFORM_SYNC_TOKEN");
+  let authorized =
+    token === SERVICE_KEY ||
+    (!!syncToken && (req.headers.get("x-sync-token") === syncToken || token === syncToken));
   if (!authorized && token) {
     const { data: userData } = await supabase.auth.getUser(token);
     const uid = userData?.user?.id;
@@ -108,11 +111,13 @@ Deno.serve(async (req) => {
   if (!authorized) return json(401, { error: "unauthorized" });
 
   let requestedForms: string[] = Object.keys(FORM_CATEGORY_MAP);
+  let diag: boolean | string = false;
   try {
     const body = await req.json();
     if (Array.isArray(body?.formIds) && body.formIds.length) {
       requestedForms = body.formIds.map((f: unknown) => String(f)).filter((f: string) => /^\d{6,24}$/.test(f));
     }
+    diag = body?.diag === true ? true : body?.diag === "dump" ? "dump" : false;
   } catch { /* no body */ }
 
   const { data: candidates } = await supabase
@@ -130,17 +135,60 @@ Deno.serve(async (req) => {
 
   const summary: Record<string, unknown>[] = [];
 
+  // Diagnostics: verify the API key can read the account at all.
+  if (diag === "dump") {
+    const res = await fetch(
+      `https://api.jotform.com/form/${requestedForms[0]}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=5`,
+    );
+    const payload = await res.json().catch(() => ({}));
+    return json(200, { ok: true, dump: payload?.content });
+  }
+
+  if (diag) {
+    const probes: Record<string, unknown> = {};
+    const urls: Record<string, string> = {
+      user: `https://api.jotform.com/user?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      forms: `https://api.jotform.com/user/forms?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=50`,
+      submissions: `https://api.jotform.com/user/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=5`,
+      signDocuments: `https://api.jotform.com/sign/documents?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=50`,
+    };
+    for (const [name, url] of Object.entries(urls)) {
+      try {
+        const res = await fetch(url);
+        const payload = await res.json();
+        probes[name] = res.ok
+          ? Array.isArray(payload?.content)
+            ? payload.content.map((f: any) => ({ id: f.id ?? f.documentID, title: f.title ?? f.name, status: f.status }))
+            : { ok: true }
+          : { status: res.status, message: payload?.message };
+      } catch (e) {
+        probes[name] = { error: String(e) };
+      }
+    }
+    return json(200, { ok: true, diag: probes });
+  }
+
   for (const formId of requestedForms) {
     const category = FORM_CATEGORY_MAP[formId] ?? "admision";
     let submissions: any[] = [];
+    const attempts: Record<string, unknown>[] = [];
     try {
-      const res = await fetch(
+      const endpoints = [
         `https://api.jotform.com/form/${formId}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=100&orderby=created_at`,
-      );
-      const payload = await res.json();
-      submissions = Array.isArray(payload?.content) ? payload.content : [];
-      if (!res.ok) {
-        summary.push({ formId, error: payload?.message ?? `http_${res.status}` });
+        `https://api.jotform.com/sign/documents/${formId}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=100`,
+        `https://api.jotform.com/sign/documents/${formId}/signers?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}`,
+      ];
+      for (const endpoint of endpoints) {
+        const res = await fetch(endpoint);
+        const payload = await res.json().catch(() => ({}));
+        if (res.ok && Array.isArray(payload?.content)) {
+          submissions = payload.content;
+          break;
+        }
+        attempts.push({ endpoint: endpoint.split("?")[0], status: res.status, message: payload?.message });
+      }
+      if (!submissions.length) {
+        summary.push({ formId, error: "no_submissions_readable", attempts });
         continue;
       }
     } catch (e) {

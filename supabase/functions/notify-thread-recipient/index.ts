@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,12 +12,29 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   })
 
+const TEMPLATE_NAME = 'portal-message-notification'
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders })
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const admin = createClient(supabaseUrl, serviceKey)
+
+  const logSend = async (
+    recipientEmail: string,
+    status: 'sent' | 'suppressed' | 'failed',
+    errorMessage?: string,
+  ) => {
+    const { error } = await admin.from('email_send_log').insert({
+      message_id: null,
+      template_name: TEMPLATE_NAME,
+      recipient_email: recipientEmail,
+      status,
+      error_message: errorMessage ? errorMessage.slice(0, 1000) : null,
+    })
+    if (error) console.error('Failed to write email_send_log', error)
+  }
 
   try {
     const authHeader = req.headers.get('Authorization') ?? ''
@@ -63,10 +81,8 @@ Deno.serve(async (req) => {
       .replace(/^\[[^\]]+\]\s*/, '')
       .slice(0, 200)
 
-    const { error } = await admin.functions.invoke('send-transactional-email', {
-      body: {
-        templateName: 'portal-message-notification',
-        recipientEmail,
+    try {
+      const result = await sendTemplateEmail(TEMPLATE_NAME, recipientEmail, {
         idempotencyKey: `thread-${threadId}-${Date.now()}`,
         templateData: {
           recipientName: (recipientProf?.display_name ?? '').split(' ')[0] ?? '',
@@ -75,14 +91,21 @@ Deno.serve(async (req) => {
           body: String(messageBody ?? '').slice(0, 2000),
           portalUrl: 'https://preescolarsonsoles.com/portal-padres',
         },
-      },
-    })
-    if (error) {
-      console.error('send-transactional-email failed', error)
+      })
+
+      if (!result.sent) {
+        await logSend(recipientEmail, 'suppressed')
+        return json({ success: false, reason: result.reason })
+      }
+
+      await logSend(recipientEmail, 'sent')
+      return json({ success: true })
+    } catch (sendError) {
+      const message = sendError instanceof Error ? sendError.message : String(sendError)
+      console.error('Notification email failed', message)
+      await logSend(recipientEmail, 'failed', message)
       return json({ error: 'Failed to send notification' }, 500)
     }
-
-    return json({ success: true })
   } catch (e) {
     console.error('notify-thread-recipient error', e)
     return json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500)

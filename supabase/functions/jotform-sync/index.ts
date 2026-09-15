@@ -136,6 +136,14 @@ Deno.serve(async (req) => {
   const summary: Record<string, unknown>[] = [];
 
   // Diagnostics: verify the API key can read the account at all.
+  if (diag === "dump") {
+    const res = await fetch(
+      `https://api.jotform.com/form/${requestedForms[0]}/submissions?apiKey=${encodeURIComponent(JOTFORM_API_KEY)}&limit=5`,
+    );
+    const payload = await res.json().catch(() => ({}));
+    return json(200, { ok: true, dump: payload?.content });
+  }
+
   if (diag) {
     const probes: Record<string, unknown> = {};
     const urls: Record<string, string> = {

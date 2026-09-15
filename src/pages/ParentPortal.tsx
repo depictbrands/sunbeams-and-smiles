@@ -16,6 +16,7 @@ import AdminStudentDocuments from "@/components/AdminStudentDocuments";
 import SchoolCalendarViewer from "@/components/SchoolCalendarViewer";
 import AcademicYearCalendar from "@/components/AcademicYearCalendar";
 import AnnouncementsViewer from "@/components/AnnouncementsViewer";
+import SchoolMenuViewer from "@/components/SchoolMenuViewer";
 import horarioPdf from "@/assets/horarios-costos-2026-2027.pdf.asset.json";
 
 // Public Cloudflare Turnstile site key (safe to expose in the client).
@@ -578,12 +579,7 @@ const ParentPortal = () => {
               Consulta el menú de alimentación semanal del preescolar.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Apple className="h-12 w-12 text-destructive mb-4" />
-            <p className="text-muted-foreground">
-              El menú estará disponible próximamente. La escuela lo publicará aquí.
-            </p>
-          </div>
+          <SchoolMenuViewer isAdmin={isAdmin} />
         </DialogContent>
       </Dialog>
 

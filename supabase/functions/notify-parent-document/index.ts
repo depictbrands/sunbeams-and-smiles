@@ -66,10 +66,22 @@ Deno.serve(async (req) => {
     }
     if (!recipientEmail) return json({ skipped: 'parent has no email' })
 
-    const { error } = await admin.functions.invoke('send-transactional-email', {
-      body: {
-        templateName: 'portal-document-notification',
-        recipientEmail,
+    const logSend = async (
+      status: 'sent' | 'suppressed' | 'failed',
+      errorMessage?: string,
+    ) => {
+      const { error: logError } = await admin.from('email_send_log').insert({
+        message_id: null,
+        template_name: TEMPLATE_NAME,
+        recipient_email: recipientEmail,
+        status,
+        error_message: errorMessage ? errorMessage.slice(0, 1000) : null,
+      })
+      if (logError) console.error('Failed to write email_send_log', logError)
+    }
+
+    try {
+      const result = await sendTemplateEmail(TEMPLATE_NAME, recipientEmail, {
         idempotencyKey: `doc-${studentId}-${categoryLabel}-${Date.now()}`,
         templateData: {
           recipientName: (prof?.display_name ?? '').split(' ')[0] ?? '',
@@ -78,14 +90,21 @@ Deno.serve(async (req) => {
           documentTitle,
           portalUrl: 'https://preescolarsonsoles.com/portal-padres',
         },
-      },
-    })
-    if (error) {
-      console.error('send-transactional-email failed', error)
+      })
+
+      if (!result.sent) {
+        await logSend('suppressed')
+        return json({ success: false, reason: result.reason })
+      }
+
+      await logSend('sent')
+      return json({ success: true })
+    } catch (sendError) {
+      const message = sendError instanceof Error ? sendError.message : String(sendError)
+      console.error('Document notification email failed', message)
+      await logSend('failed', message)
       return json({ error: 'Failed to send notification' }, 500)
     }
-
-    return json({ success: true })
   } catch (e) {
     console.error('notify-parent-document error', e)
     return json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500)

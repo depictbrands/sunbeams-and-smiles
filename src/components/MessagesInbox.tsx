@@ -684,7 +684,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
                 {isStaff ? "Aún no hay conversaciones." : "No tienes mensajes. Crea uno nuevo."}
               </p>
             )}
-            {threads.map((t) => {
+            {sortedThreads.map((t) => {
               const other = otherOf(t);
 
               const unread = isUnread(t);

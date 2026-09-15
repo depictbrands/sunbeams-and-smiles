@@ -111,11 +111,13 @@ Deno.serve(async (req) => {
   if (!authorized) return json(401, { error: "unauthorized" });
 
   let requestedForms: string[] = Object.keys(FORM_CATEGORY_MAP);
+  let diag = false;
   try {
     const body = await req.json();
     if (Array.isArray(body?.formIds) && body.formIds.length) {
       requestedForms = body.formIds.map((f: unknown) => String(f)).filter((f: string) => /^\d{6,24}$/.test(f));
     }
+    diag = body?.diag === true;
   } catch { /* no body */ }
 
   const { data: candidates } = await supabase

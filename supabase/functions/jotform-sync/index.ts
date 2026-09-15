@@ -92,7 +92,10 @@ Deno.serve(async (req) => {
   // Auth: admin JWT, or internal call with the service-role key.
   const authHeader = req.headers.get("Authorization") ?? "";
   const token = authHeader.replace(/^Bearer\s+/i, "");
-  let authorized = token === SERVICE_KEY;
+  const syncToken = Deno.env.get("JOTFORM_SYNC_TOKEN");
+  let authorized =
+    token === SERVICE_KEY ||
+    (!!syncToken && (req.headers.get("x-sync-token") === syncToken || token === syncToken));
   if (!authorized && token) {
     const { data: userData } = await supabase.auth.getUser(token);
     const uid = userData?.user?.id;

@@ -324,6 +324,12 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         .from("messages")
         .update({ read_at: new Date().toISOString() })
         .in("id", unreadFromOthers);
+      setUnreadThreadIds((prev) => {
+        if (!prev.has(threadId)) return prev;
+        const next = new Set(prev);
+        next.delete(threadId);
+        return next;
+      });
     }
 
 

@@ -28,15 +28,17 @@ export const SignupEmail = ({
   confirmationUrl,
 }: SignupEmailProps) => (
   <Html lang="es" dir="ltr">
-    <Head />
-    <Preview>Confirma tu correo en Preescolar Sonsoles</Preview>
+    <Head>
+      <style>{darkModeCss}</style>
+    </Head>
+    <Preview>Confirma tu correo en {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bienvenido a Preescolar Sonsoles</Heading>
+        <Heading style={h1}>Bienvenido a {siteName}</Heading>
         <Text style={text}>
           Gracias por crear tu cuenta en el Portal de Padres de{' '}
           <Link href={siteUrl} style={link}>
-            <strong>Preescolar Sonsoles</strong>
+            <strong>{siteName}</strong>
           </Link>
           .
         </Text>
@@ -47,7 +49,7 @@ export const SignupEmail = ({
           </Link>
           ) para activar tu cuenta:
         </Text>
-        <Button style={button} href={confirmationUrl}>
+        <Button className="dm-btn" style={button} href={confirmationUrl}>
           Confirmar correo
         </Button>
         <Text style={footer}>
@@ -72,7 +74,7 @@ const text = {
   fontSize: '14px',
   color: 'hsl(270, 6%, 40%)',
   lineHeight: '1.5',
-  margin: '0 0 20px',
+  margin: '0 0 25px',
 }
 const link = { color: 'hsl(25, 100%, 56%)', textDecoration: 'underline' }
 const button = {
@@ -80,8 +82,17 @@ const button = {
   color: '#ffffff',
   fontSize: '14px',
   fontWeight: 'bold' as const,
+  border: '1px solid hsl(25, 100%, 56%)',
   borderRadius: '20px',
-  padding: '12px 24px',
+  padding: '12px 20px',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+// Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.
+const darkModeCss = `
+  @media (prefers-color-scheme: dark) {
+    .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  }
+  [data-ogsc] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  [data-ogsb] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+`

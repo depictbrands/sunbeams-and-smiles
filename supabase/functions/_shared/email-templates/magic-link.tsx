@@ -18,18 +18,23 @@ interface MagicLinkEmailProps {
   confirmationUrl: string
 }
 
-export const MagicLinkEmail = ({ confirmationUrl }: MagicLinkEmailProps) => (
+export const MagicLinkEmail = ({
+  siteName,
+  confirmationUrl,
+}: MagicLinkEmailProps) => (
   <Html lang="es" dir="ltr">
-    <Head />
-    <Preview>Tu enlace de acceso a Preescolar Sonsoles</Preview>
+    <Head>
+      <style>{darkModeCss}</style>
+    </Head>
+    <Preview>Tu enlace de acceso a {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Tu enlace de acceso</Heading>
         <Text style={text}>
-          Haz clic en el botón para entrar al Portal de Padres de Preescolar
-          Sonsoles. Este enlace expira pronto.
+          Haz clic en el botón para entrar al Portal de Padres de {siteName}.
+          Este enlace expira pronto.
         </Text>
-        <Button style={button} href={confirmationUrl}>
+        <Button className="dm-btn" style={button} href={confirmationUrl}>
           Iniciar sesión
         </Button>
         <Text style={footer}>
@@ -61,8 +66,17 @@ const button = {
   color: '#ffffff',
   fontSize: '14px',
   fontWeight: 'bold' as const,
+  border: '1px solid hsl(25, 100%, 56%)',
   borderRadius: '20px',
-  padding: '12px 24px',
+  padding: '12px 20px',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+// Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.
+const darkModeCss = `
+  @media (prefers-color-scheme: dark) {
+    .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  }
+  [data-ogsc] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  [data-ogsb] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+`

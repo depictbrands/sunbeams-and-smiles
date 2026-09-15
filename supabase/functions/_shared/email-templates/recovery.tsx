@@ -18,24 +18,28 @@ interface RecoveryEmailProps {
   confirmationUrl: string
 }
 
-export const RecoveryEmail = ({ confirmationUrl }: RecoveryEmailProps) => (
+export const RecoveryEmail = ({
+  siteName,
+  confirmationUrl,
+}: RecoveryEmailProps) => (
   <Html lang="es" dir="ltr">
-    <Head />
-    <Preview>Restablece tu contraseña de Preescolar Sonsoles</Preview>
+    <Head>
+      <style>{darkModeCss}</style>
+    </Head>
+    <Preview>Restablece tu contraseña de {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Restablece tu contraseña</Heading>
         <Text style={text}>
           Recibimos una solicitud para restablecer la contraseña de tu cuenta en el
-          Portal de Padres de Preescolar Sonsoles. Haz clic en el botón para crear
-          una nueva.
+          Portal de Padres de {siteName}. Haz clic en el botón para crear una nueva.
         </Text>
-        <Button style={button} href={confirmationUrl}>
+        <Button className="dm-btn" style={button} href={confirmationUrl}>
           Restablecer contraseña
         </Button>
         <Text style={footer}>
-          Si no solicitaste este cambio, puedes ignorar este correo; tu
-          contraseña no será modificada.
+          Si no solicitaste este cambio, puedes ignorar este correo; tu contraseña
+          no será modificada.
         </Text>
       </Container>
     </Body>
@@ -63,8 +67,17 @@ const button = {
   color: '#ffffff',
   fontSize: '14px',
   fontWeight: 'bold' as const,
+  border: '1px solid hsl(25, 100%, 56%)',
   borderRadius: '20px',
-  padding: '12px 24px',
+  padding: '12px 20px',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+// Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.
+const darkModeCss = `
+  @media (prefers-color-scheme: dark) {
+    .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  }
+  [data-ogsc] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  [data-ogsb] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+`

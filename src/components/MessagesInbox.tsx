@@ -441,24 +441,8 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     threadId: string;
   }) => {
     try {
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("display_name, email")
-        .eq("user_id", userId)
-        .maybeSingle();
-      await supabase.functions.invoke("send-transactional-email", {
-        body: {
-          templateName: "new-parent-message",
-          recipientEmail: "preescolarsonsoles@gmail.com",
-          idempotencyKey: `msg-${params.threadId}-${Date.now()}`,
-          templateData: {
-            parentName: prof?.display_name || prof?.email || "Padre",
-            parentEmail: prof?.email ?? "",
-            teacherName: params.teacherName,
-            subject: params.subject,
-            body: params.bodyText,
-          },
-        },
+      await supabase.functions.invoke("notify-school-message", {
+        body: { threadId: params.threadId, body: params.bodyText },
       });
     } catch (e) {
       console.warn("Email notification failed", e);
@@ -622,29 +606,8 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
         });
       } else if (!activeThread.subject.startsWith("[Interno")) {
         try {
-          const { data: prof } = await supabase
-            .from("profiles")
-            .select("display_name, email")
-            .eq("user_id", userId)
-            .maybeSingle();
-          const { data: parentProf } = await supabase
-            .from("profiles")
-            .select("display_name, email")
-            .eq("user_id", activeThread.parent_id)
-            .maybeSingle();
-          await supabase.functions.invoke("send-transactional-email", {
-            body: {
-              templateName: "new-parent-message",
-              recipientEmail: "preescolarsonsoles@gmail.com",
-              idempotencyKey: `msg-${activeId}-${Date.now()}`,
-              templateData: {
-                parentName: `${prof?.display_name || prof?.email || "Staff"} (respuesta)`,
-                parentEmail: prof?.email ?? "",
-                teacherName: `${parentProf?.display_name || parentProf?.email || "Padre"}`,
-                subject: cleanSubject,
-                body: notifyBody,
-              },
-            },
+          await supabase.functions.invoke("notify-school-message", {
+            body: { threadId: activeId, body: notifyBody },
           });
         } catch (e) {
           console.warn("Email notification failed", e);

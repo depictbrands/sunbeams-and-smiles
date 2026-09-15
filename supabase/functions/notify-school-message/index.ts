@@ -12,24 +12,25 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   })
 
-const TEMPLATE_NAME = 'portal-message-notification'
+const TEMPLATE_NAME = 'new-parent-message'
+const SCHOOL_EMAIL = 'preescolarsonsoles@gmail.com'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders })
 
-  const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  const admin = createClient(supabaseUrl, serviceKey)
+  const admin = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+  )
 
   const logSend = async (
-    recipientEmail: string,
     status: 'sent' | 'suppressed' | 'failed',
     errorMessage?: string,
   ) => {
     const { error } = await admin.from('email_send_log').insert({
       message_id: null,
       template_name: TEMPLATE_NAME,
-      recipient_email: recipientEmail,
+      recipient_email: SCHOOL_EMAIL,
       status,
       error_message: errorMessage ? errorMessage.slice(0, 1000) : null,
     })
@@ -37,13 +38,14 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const authHeader = req.headers.get('Authorization') ?? ''
-    const token = authHeader.replace('Bearer ', '')
+    const token = (req.headers.get('Authorization') ?? '').replace('Bearer ', '')
     const { data: userData } = await admin.auth.getUser(token)
     const sender = userData?.user
     if (!sender) return json({ error: 'Unauthorized' }, 401)
 
-    const { threadId, body: messageBody } = await req.json()
+    const payload = await req.json().catch(() => ({}))
+    const threadId = typeof payload.threadId === 'string' ? payload.threadId : ''
+    const messageBody = String(payload.body ?? '').slice(0, 5000)
     if (!threadId) return json({ error: 'threadId is required' }, 400)
 
     const { data: thread } = await admin
@@ -52,62 +54,59 @@ Deno.serve(async (req) => {
       .eq('id', threadId)
       .maybeSingle()
     if (!thread) return json({ error: 'Thread not found' }, 404)
-
-    // Only participants may trigger a notification
     if (sender.id !== thread.parent_id && sender.id !== thread.assigned_teacher_id) {
       return json({ error: 'Forbidden' }, 403)
     }
 
-    const recipientId =
-      sender.id === thread.parent_id ? thread.assigned_teacher_id : thread.parent_id
-    if (!recipientId) return json({ skipped: 'no recipient assigned' })
+    const subject = String(thread.subject ?? '')
+    // Los mensajes internos entre personal no se copian a la oficina
+    if (subject.startsWith('[Interno')) return json({ skipped: 'internal thread' })
 
+    const cleanSubject = subject.replace(/^\[[^\]]+\]\s*/, '').slice(0, 200)
+    const contactMatch = subject.match(/\[(?:Interno · )?Para:\s*([^\]]+)\]/)
+
+    const ids = [sender.id, thread.parent_id].filter(Boolean) as string[]
     const { data: profs } = await admin
       .from('profiles')
       .select('user_id, display_name, email')
-      .in('user_id', [sender.id, recipientId])
-
+      .in('user_id', ids)
     const senderProf = (profs ?? []).find((p) => p.user_id === sender.id)
-    const recipientProf = (profs ?? []).find((p) => p.user_id === recipientId)
+    const parentProf = (profs ?? []).find((p) => p.user_id === thread.parent_id)
 
-    let recipientEmail = recipientProf?.email ?? ''
-    if (!recipientEmail) {
-      const { data: authUser } = await admin.auth.admin.getUserById(recipientId)
-      recipientEmail = authUser?.user?.email ?? ''
-    }
-    if (!recipientEmail) return json({ skipped: 'recipient has no email' })
-
-    const cleanSubject = String(thread.subject ?? '')
-      .replace(/^\[[^\]]+\]\s*/, '')
-      .slice(0, 200)
+    const senderIsParent = sender.id === thread.parent_id
+    const senderName = senderProf?.display_name || senderProf?.email || 'Portal'
+    const parentName = senderIsParent ? senderName : `${senderName} (respuesta)`
+    const teacherName = senderIsParent
+      ? (contactMatch?.[1]?.trim() || 'la escuela')
+      : (parentProf?.display_name || parentProf?.email || 'Padre')
 
     try {
-      const result = await sendTemplateEmail(TEMPLATE_NAME, recipientEmail, {
-        idempotencyKey: `thread-${threadId}-${Date.now()}`,
+      const result = await sendTemplateEmail(TEMPLATE_NAME, SCHOOL_EMAIL, {
+        idempotencyKey: `msg-${threadId}-${Date.now()}`,
         templateData: {
-          recipientName: (recipientProf?.display_name ?? '').split(' ')[0] ?? '',
-          senderName: senderProf?.display_name || senderProf?.email || 'Portal Sonsoles',
+          parentName,
+          parentEmail: senderProf?.email ?? '',
+          teacherName,
           subject: cleanSubject || '(sin asunto)',
-          body: String(messageBody ?? '').slice(0, 2000),
-          portalUrl: 'https://preescolarsonsoles.com/portal-padres',
+          body: messageBody,
         },
       })
 
       if (!result.sent) {
-        await logSend(recipientEmail, 'suppressed')
+        await logSend('suppressed')
         return json({ success: false, reason: result.reason })
       }
 
-      await logSend(recipientEmail, 'sent')
+      await logSend('sent')
       return json({ success: true })
     } catch (sendError) {
       const message = sendError instanceof Error ? sendError.message : String(sendError)
-      console.error('Notification email failed', message)
-      await logSend(recipientEmail, 'failed', message)
+      console.error('School notification email failed', message)
+      await logSend('failed', message)
       return json({ error: 'Failed to send notification' }, 500)
     }
   } catch (e) {
-    console.error('notify-thread-recipient error', e)
+    console.error('notify-school-message error', e)
     return json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500)
   }
 })

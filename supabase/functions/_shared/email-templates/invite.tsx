@@ -20,21 +20,27 @@ interface InviteEmailProps {
   confirmationUrl: string
 }
 
-export const InviteEmail = ({ siteUrl, confirmationUrl }: InviteEmailProps) => (
+export const InviteEmail = ({
+  siteName,
+  siteUrl,
+  confirmationUrl,
+}: InviteEmailProps) => (
   <Html lang="es" dir="ltr">
-    <Head />
-    <Preview>Has sido invitado al Portal de Padres de Preescolar Sonsoles</Preview>
+    <Head>
+      <style>{darkModeCss}</style>
+    </Head>
+    <Preview>Has sido invitado al Portal de Padres de {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Te invitamos al Portal de Padres</Heading>
         <Text style={text}>
           Has recibido una invitación para unirte al Portal de Padres de{' '}
           <Link href={siteUrl} style={link}>
-            <strong>Preescolar Sonsoles</strong>
+            <strong>{siteName}</strong>
           </Link>
           . Acepta la invitación para crear tu cuenta.
         </Text>
-        <Button style={button} href={confirmationUrl}>
+        <Button className="dm-btn" style={button} href={confirmationUrl}>
           Aceptar invitación
         </Button>
         <Text style={footer}>
@@ -67,8 +73,17 @@ const button = {
   color: '#ffffff',
   fontSize: '14px',
   fontWeight: 'bold' as const,
+  border: '1px solid hsl(25, 100%, 56%)',
   borderRadius: '20px',
-  padding: '12px 24px',
+  padding: '12px 20px',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+// Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.
+const darkModeCss = `
+  @media (prefers-color-scheme: dark) {
+    .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  }
+  [data-ogsc] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  [data-ogsb] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+`

@@ -291,13 +291,13 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     const map = await fetchProfiles(ids);
     setThreads(rows.map((t) => ({ ...t, parent: map.get(t.parent_id), teacher: t.assigned_teacher_id ? map.get(t.assigned_teacher_id) : undefined })));
 
-    // Solo cuentan como "Nuevo" los hilos con mensajes de otra persona sin leer
-    const threadIds = rows.map((t) => t.id);
-    if (threadIds.length > 0) {
+    // Solo cuentan como "Nuevo" los hilos donde participo (padre/madre o maestra asignada)
+    const myThreadIds = rows.filter((t) => t.parent_id === userId || t.assigned_teacher_id === userId).map((t) => t.id);
+    if (myThreadIds.length > 0) {
       const { data: unreadMsgs } = await supabase
         .from("messages")
         .select("thread_id")
-        .in("thread_id", threadIds)
+        .in("thread_id", myThreadIds)
         .is("read_at", null)
         .neq("sender_id", userId);
       setUnreadThreadIds(new Set((unreadMsgs ?? []).map((m: { thread_id: string }) => m.thread_id)));
@@ -317,8 +317,19 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     const map = await fetchProfiles(ids);
     setMessages(msgs.map((m) => ({ ...m, sender: map.get(m.sender_id) })));
 
-    // Acuse de recibo: marcar como leídos los mensajes de la otra parte
-    const unreadFromOthers = msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id);
+    // Acuse de recibo: solo quien participa en el hilo marca como leídos los mensajes ajenos.
+    // Un administrador que solo supervisa no debe borrar el "Nuevo" de la otra persona.
+    const { data: threadRow } = await supabase
+      .from("message_threads")
+      .select("parent_id, assigned_teacher_id")
+      .eq("id", threadId)
+      .maybeSingle();
+    const isParticipant =
+      !!threadRow && (threadRow.parent_id === userId || threadRow.assigned_teacher_id === userId);
+
+    const unreadFromOthers = isParticipant
+      ? msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id)
+      : [];
     if (unreadFromOthers.length > 0) {
       await supabase
         .from("messages")

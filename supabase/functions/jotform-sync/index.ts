@@ -301,6 +301,10 @@ Deno.serve(async (req) => {
     summary.push({ formId, category, total: submissions.length, imported, skipped, unmatched });
   }
 
+  const failures = summary.filter((s) => "error" in s);
+  if (failures.length) {
+    console.error("jotform-sync: forms could not be read (check JOTFORM_API_KEY access)", failures);
+  }
   console.log("jotform-sync done", summary);
-  return json(200, { ok: true, results: summary });
+  return json(200, { ok: true, results: summary, failures: failures.length });
 });

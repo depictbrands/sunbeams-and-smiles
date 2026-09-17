@@ -333,7 +333,10 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       .eq("id", threadId)
       .maybeSingle();
     const isParticipant =
-      !!threadRow && (threadRow.parent_id === userId || threadRow.assigned_teacher_id === userId);
+      !!threadRow &&
+      (threadRow.parent_id === userId ||
+        threadRow.assigned_teacher_id === userId ||
+        (isStaff && !threadRow.assigned_teacher_id));
 
     const unreadFromOthers = isParticipant
       ? msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id)

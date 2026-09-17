@@ -291,8 +291,16 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     const map = await fetchProfiles(ids);
     setThreads(rows.map((t) => ({ ...t, parent: map.get(t.parent_id), teacher: t.assigned_teacher_id ? map.get(t.assigned_teacher_id) : undefined })));
 
-    // Solo cuentan como "Nuevo" los hilos donde participo (padre/madre o maestra asignada)
-    const myThreadIds = rows.filter((t) => t.parent_id === userId || t.assigned_teacher_id === userId).map((t) => t.id);
+    // Cuentan como "Nuevo" los hilos donde participo (padre/madre o maestra asignada)
+    // y, para el staff, los hilos sin maestra asignada (van a la administración).
+    const myThreadIds = rows
+      .filter(
+        (t) =>
+          t.parent_id === userId ||
+          t.assigned_teacher_id === userId ||
+          (isStaff && !t.assigned_teacher_id),
+      )
+      .map((t) => t.id);
     if (myThreadIds.length > 0) {
       const { data: unreadMsgs } = await supabase
         .from("messages")

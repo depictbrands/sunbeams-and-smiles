@@ -292,13 +292,14 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
     setThreads(rows.map((t) => ({ ...t, parent: map.get(t.parent_id), teacher: t.assigned_teacher_id ? map.get(t.assigned_teacher_id) : undefined })));
 
     // Cuentan como "Nuevo" los hilos donde participo (padre/madre o maestra asignada)
-    // y, para el staff, los hilos sin maestra asignada (van a la administración).
+    // y, para la administración, los hilos sin maestra asignada (van a la oficina).
+    // Las maestras no ven ni marcan hilos que no les corresponden.
     const myThreadIds = rows
       .filter(
         (t) =>
           t.parent_id === userId ||
           t.assigned_teacher_id === userId ||
-          (isStaff && !t.assigned_teacher_id),
+          (isAdmin && !t.assigned_teacher_id),
       )
       .map((t) => t.id);
     if (myThreadIds.length > 0) {
@@ -327,6 +328,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
 
     // Acuse de recibo: solo quien participa en el hilo marca como leídos los mensajes ajenos.
     // Un administrador que solo supervisa no debe borrar el "Nuevo" de la otra persona.
+    // Los hilos sin maestra asignada son de la oficina: solo la administración los marca.
     const { data: threadRow } = await supabase
       .from("message_threads")
       .select("parent_id, assigned_teacher_id")
@@ -336,7 +338,7 @@ const MessagesInbox = ({ userId, isStaff, isAdmin = false, onUnreadCountChange }
       !!threadRow &&
       (threadRow.parent_id === userId ||
         threadRow.assigned_teacher_id === userId ||
-        (isStaff && !threadRow.assigned_teacher_id));
+        (isAdmin && !threadRow.assigned_teacher_id));
 
     const unreadFromOthers = isParticipant
       ? msgs.filter((m) => m.sender_id !== userId && !m.read_at).map((m) => m.id)

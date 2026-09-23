@@ -33,23 +33,49 @@ function normalizeName(s: string): string {
     .trim();
 }
 
+const EXPECTED_HOSTNAMES = new Set([
+  "preescolarsonsoles.com",
+  "www.preescolarsonsoles.com",
+  "preescolarsonsoles.lovable.app",
+  "id-preview--8a39e053-e280-4548-b112-974ec0e197cf.lovable.app",
+  "localhost",
+]);
+
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
   const secret = Deno.env.get("TURNSTILE_SECRET_KEY");
   if (!secret) {
     console.error("TURNSTILE_SECRET_KEY is not configured");
     return false;
   }
-  const form = new FormData();
-  form.append("secret", secret);
-  form.append("response", token);
-  if (ip) form.append("remoteip", ip);
+  if (token.length > 2048) return false;
+  const body = new URLSearchParams({ secret, response: token });
+  if (ip) body.set("remoteip", ip);
 
-  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    body: form,
-  });
-  const outcome = await res.json();
-  return outcome?.success === true;
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) {
+      console.error("siteverify HTTP", res.status);
+      return false;
+    }
+    const outcome = await res.json();
+    if (outcome?.success !== true) {
+      console.error("Turnstile failed:", outcome?.["error-codes"]);
+      return false;
+    }
+    if (outcome.action !== "signup" || !EXPECTED_HOSTNAMES.has(outcome.hostname)) {
+      console.error("Turnstile action/hostname mismatch:", outcome.action, outcome.hostname);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("siteverify error:", e);
+    return false;
+  }
 }
 
 Deno.serve(async (req) => {

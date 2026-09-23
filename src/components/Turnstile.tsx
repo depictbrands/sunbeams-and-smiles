@@ -56,6 +56,7 @@ const Turnstile = ({ siteKey, onVerify, onExpire, className }: TurnstileProps) =
         if (cancelled || !containerRef.current || !window.turnstile) return;
         widgetId.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
+          action: "signup",
           callback: (token: string) => onVerify(token),
           "expired-callback": () => onExpire?.(),
           "error-callback": () => onExpire?.(),

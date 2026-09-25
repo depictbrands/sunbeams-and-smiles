@@ -61,12 +61,12 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
       body,
       signal: AbortSignal.timeout(10_000),
     });
-    if (!res.ok) {
+    const outcome = await res.json().catch(() => null);
+    if (!outcome) {
       console.error("siteverify HTTP", res.status);
       lastReason = `http-${res.status}`;
       return false;
     }
-    const outcome = await res.json();
     if (outcome?.success !== true) {
       console.error("Turnstile failed:", outcome?.["error-codes"]);
       lastReason = (outcome?.["error-codes"] ?? []).join(",");

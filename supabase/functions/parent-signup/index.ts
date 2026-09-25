@@ -41,7 +41,9 @@ const EXPECTED_HOSTNAMES = new Set([
   "localhost",
 ]);
 
+let lastReason = "";
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
+  lastReason = "";
   const secret = Deno.env.get("TURNSTILE_SECRET_KEY");
   if (!secret) {
     console.error("TURNSTILE_SECRET_KEY is not configured");
@@ -65,10 +67,12 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
     const outcome = await res.json();
     if (outcome?.success !== true) {
       console.error("Turnstile failed:", outcome?.["error-codes"]);
+      lastReason = (outcome?.["error-codes"] ?? []).join(",");
       return false;
     }
     if (outcome.action !== "signup" || !EXPECTED_HOSTNAMES.has(outcome.hostname)) {
       console.error("Turnstile action/hostname mismatch:", outcome.action, outcome.hostname);
+      lastReason = `mismatch:${outcome.action}:${outcome.hostname}`;
       return false;
     }
     return true;
@@ -94,7 +98,7 @@ Deno.serve(async (req) => {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
     const human = await verifyTurnstile(captchaToken, ip);
     if (!human) {
-      return json({ success: false, error: "Verificación anti-robot fallida. Intenta de nuevo." }, 200);
+      return json({ success: false, error: "Verificación anti-robot fallida. Intenta de nuevo.", reason: lastReason }, 200);
     }
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;

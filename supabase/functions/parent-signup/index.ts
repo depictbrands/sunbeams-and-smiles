@@ -47,6 +47,7 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
   const secret = Deno.env.get("TURNSTILE_SECRET_KEY");
   if (!secret) {
     console.error("TURNSTILE_SECRET_KEY is not configured");
+    lastReason = "no-secret";
     return false;
   }
   if (token.length > 2048) return false;
@@ -62,6 +63,7 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
     });
     if (!res.ok) {
       console.error("siteverify HTTP", res.status);
+      lastReason = `http-${res.status}`;
       return false;
     }
     const outcome = await res.json();
@@ -78,6 +80,7 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
     return true;
   } catch (e) {
     console.error("siteverify error:", e);
+    lastReason = `exception:${String(e).slice(0,120)}`;
     return false;
   }
 }

@@ -15,6 +15,13 @@
       "when": 1794347387483,
       "tag": "0001_newsletter_insert_validation",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794349059261,
+      "tag": "0002_family_account_linking",
+      "breakpoints": true
     }
   ]
 }

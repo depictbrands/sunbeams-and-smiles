@@ -40,6 +40,10 @@ const AdminStudents = () => {
   const [newName, setNewName] = useState("");
   const [newGroup, setNewGroup] = useState<string>("");
   const [search, setSearch] = useState("");
+  const [parentEmails, setParentEmails] = useState<Record<string, string>>({});
+  const [mergeFrom, setMergeFrom] = useState("");
+  const [mergeTo, setMergeTo] = useState("");
+  const [merging, setMerging] = useState(false);
 
   useEffect(() => {
     document.title = "Estudiantes | Admin Sonsoles";
@@ -81,7 +85,48 @@ const AdminStudents = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
       return;
     }
-    setStudents((data ?? []) as unknown as Student[]);
+    const list = (data ?? []) as unknown as Student[];
+    setStudents(list);
+    const ids = Array.from(new Set(list.map((s) => s.parent_user_id).filter(Boolean))) as string[];
+    if (ids.length) {
+      const { data: profs } = await supabase.from("profiles").select("user_id, email").in("user_id", ids);
+      const map: Record<string, string> = {};
+      (profs ?? []).forEach((p) => { map[p.user_id] = p.email; });
+      setParentEmails(map);
+    }
+  };
+
+  const handleLinkParent = async (s: Student) => {
+    const current = s.parent_user_id ? parentEmails[s.parent_user_id] ?? "" : "";
+    const email = prompt(
+      `Correo de la cuenta del padre/madre para ${s.student_name ?? s.student_number}.\nDeja vacío para desvincular.`,
+      current,
+    );
+    if (email === null) return;
+    const { error } = await supabase.rpc("admin_link_student_to_parent", {
+      _student_id: s.id,
+      _parent_email: email.trim(),
+    });
+    if (error) toast({ title: "No se pudo vincular", description: error.message, variant: "destructive" });
+    else { toast({ title: email.trim() ? "Estudiante vinculado" : "Estudiante desvinculado" }); loadStudents(); }
+  };
+
+  const handleMerge = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const from = mergeFrom.trim(); const to = mergeTo.trim();
+    if (!from || !to) return;
+    if (!confirm(`Se pasarán todos los estudiantes, documentos y mensajes de ${from} a ${to}. ¿Continuar?`)) return;
+    setMerging(true);
+    const { data, error } = await supabase.rpc("admin_merge_parent_accounts", { _from_email: from, _to_email: to });
+    setMerging(false);
+    if (error) { toast({ title: "No se pudieron unir", description: error.message, variant: "destructive" }); return; }
+    const r = (data ?? {}) as { students?: number; documents?: number; threads?: number };
+    toast({
+      title: "Cuentas unidas",
+      description: `${r.students ?? 0} estudiante(s), ${r.documents ?? 0} documento(s) y ${r.threads ?? 0} conversación(es) ahora están en ${to}.`,
+    });
+    setMergeFrom(""); setMergeTo("");
+    loadStudents();
   };
 
   const handleAdd = async (e: React.FormEvent) => {
@@ -290,6 +335,19 @@ const AdminStudents = () => {
             </div>
           </Card>
 
+          <Card className="p-6 rounded-2xl border-2 mb-6">
+            <h2 className="font-bold text-ink mb-1">Unir cuentas de hermanos</h2>
+            <p className="text-sm text-muted-foreground mb-3">
+              Si una familia abrió una cuenta por cada hijo, pasa todo a una sola cuenta. La otra cuenta queda vacía.
+              Para ligar un hermano nuevo usa "Vincular" en el listado.
+            </p>
+            <form onSubmit={handleMerge} className="grid sm:grid-cols-[1fr_1fr_auto] gap-3">
+              <Input type="email" placeholder="Correo de la cuenta a unir (se vacía)" value={mergeFrom} onChange={(e) => setMergeFrom(e.target.value)} />
+              <Input type="email" placeholder="Correo de la cuenta que se queda" value={mergeTo} onChange={(e) => setMergeTo(e.target.value)} />
+              <Button type="submit" variant="hero" disabled={merging}>{merging ? "Uniendo…" : "Unir cuentas"}</Button>
+            </form>
+          </Card>
+
           <Card className="p-6 rounded-2xl border-2">
             <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
               <h2 className="font-bold text-ink">Listado ({students.length})</h2>
@@ -358,7 +416,14 @@ const AdminStudents = () => {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
-                          {s.parent_user_id ? "Sí" : "—"}
+                          <div className="flex items-center gap-2">
+                            <span className="truncate max-w-[180px]">
+                              {s.parent_user_id ? parentEmails[s.parent_user_id] ?? "Sí" : "—"}
+                            </span>
+                            <Button size="sm" variant="outline" className="h-7" onClick={() => handleLinkParent(s)}>
+                              Vincular
+                            </Button>
+                          </div>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="inline-flex gap-2">

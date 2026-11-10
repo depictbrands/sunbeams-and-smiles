@@ -568,6 +568,14 @@ export type Database = {
       }
     }
     Functions: {
+      admin_link_student_to_parent: {
+        Args: { _parent_email: string; _student_id: string }
+        Returns: undefined
+      }
+      admin_merge_parent_accounts: {
+        Args: { _from_email: string; _to_email: string }
+        Returns: Json
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

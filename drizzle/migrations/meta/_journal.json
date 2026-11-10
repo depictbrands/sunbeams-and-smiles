@@ -22,6 +22,13 @@
       "when": 1794349059261,
       "tag": "0002_family_account_linking",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794349713672,
+      "tag": "0003_allow_siblings_shared_parent_account",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,2 @@
+DROP INDEX IF EXISTS public.allowed_students_parent_user_id_key;
+CREATE INDEX IF NOT EXISTS allowed_students_parent_user_id_idx ON public.allowed_students (parent_user_id) WHERE parent_user_id IS NOT NULL;

@@ -7,6 +7,7 @@ import founderPhoto from "@/assets/founder-griselle-new.webp";
 import kidsDrawing from "@/assets/kids-drawing.gif";
 import nildaPhoto from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaPhoto from "@/assets/consultora-Delma.jpg.asset.json";
+import denissePhoto from "@/assets/staff-Denisse.jpg.asset.json";
 import mariaPhoto from "@/assets/asistente-Maria.jpg.asset.json";
 
 
@@ -250,9 +251,10 @@ const SobreCarousel = () => {
               <h3 className="text-4xl sm:text-5xl font-bold leading-[1.05] mb-6 tracking-tight text-center md:text-7xl" style={{ fontFamily: "'Sour Gummy', 'Sora', system-ui, sans-serif" }}>
                 Un equipo que cuida cada detalle
               </h3>
-              <div className="grid grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mx-auto mt-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 w-full max-w-3xl mx-auto mt-2">
                 {[
                   { src: nildaPhoto.url, name: "Nilda", role: "Subdirectora" },
+                  { src: denissePhoto.url, name: "Denisse", role: "Asistente Administrativa" },
                   { src: "/teacher-profile-pictures/maestra-Adriana.jpeg", name: "Adriana", role: "Administración" },
                   { src: delmaPhoto.url, name: "Delma", role: "Consultora Educación" },
                 ].map((p) => (

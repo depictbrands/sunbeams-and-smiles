@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Send, Plus, ArrowLeft, MessageCircle, Paperclip, X, FileIcon, Download, Link as LinkIcon, Check, CheckCheck } from "lucide-react";
 import nildaAsset from "@/assets/subdirectora-Nilda.png.asset.json";
 import delmaAsset from "@/assets/consultora-Delma.jpg.asset.json";
+import denisseAsset from "@/assets/staff-Denisse.jpg.asset.json";
 import mariaAsset from "@/assets/asistente-Maria.jpg.asset.json";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
@@ -104,8 +105,8 @@ const STAFF_CONTACTS: { name: string; role: string; avatar?: string; groups?: st
   { name: "Griselle", role: "Directora", avatar: "/teacher-profile-pictures/director-Griselle.png" },
   { name: "Adriana", role: "Administración", avatar: "/teacher-profile-pictures/maestra-Adriana.jpeg" },
   { name: "Nilda", role: "Subdirectora", avatar: nildaAsset.url },
+  { name: "Denisse", role: "Asistente Administrativa", avatar: denisseAsset.url },
   { name: "Delma", role: "Consultora Educación", avatar: delmaAsset.url },
-  { name: "Denisse", role: "Administración" },
   { name: "Yeidy", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Yeidy.jpg", groups: ["prekinder"] },
   { name: "Bea", role: "Maestra", avatar: "/teacher-profile-pictures/maestra-Bea.jpeg", groups: ["maternal"] },
   { name: "Zuania", role: "Asistente de maestra", avatar: "/teacher-profile-pictures/maestra-Zuania.jpeg", groups: ["prekinder"] },

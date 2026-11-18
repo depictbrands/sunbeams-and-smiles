@@ -135,7 +135,6 @@ const SobreCarousel = () => {
                 const mainTeachers: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Bea.jpeg", name: "Bea" },
                   { src: "/teacher-profile-pictures/maestra-Yeidy.jpg", name: "Yeidy" },
-                  { src: "/teacher-profile-pictures/maestra-Esmeralda.jpeg", name: "Esmeralda" },
                 ];
                 const assistants: { src?: string; name: string }[] = [
                   { src: "/teacher-profile-pictures/maestra-Zuania.jpeg", name: "Zuania" },

@@ -29,6 +29,13 @@
       "when": 1794349713672,
       "tag": "0003_allow_siblings_shared_parent_account",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795102780047,
+      "tag": "0004_bind_menu_calendar_reads_to_caller",
+      "breakpoints": true
     }
   ]
 }
